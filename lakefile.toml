@@ -5,19 +5,16 @@ defaultTargets = ["Poseidon2Fv"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
-relaxedAutoImplicit = false
-weak.linter.mathlibStandardSet = true
-maxSynthPendingDepth = 3
 
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.27.0-rc1"
+rev = "v4.27.0"
 
 [[require]]
-name = "LeanZKCircuit"
-git = "https://github.com/NethermindEth/leanzkcircuit.git"
-rev = "main"
+name = "LeanZKCircuit_Plonky3"
+git = "https://github.com/NethermindEth/LeanZKCircuit-Plonky3.git"
+rev = "Dom/4.27.0"
 
 [[lean_lib]]
 name = "Poseidon2Fv"
