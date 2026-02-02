@@ -6,6 +6,7 @@ open Plonky3
 
 set_option linter.all false
 
+register_simp_attr Poseidon2_expressions
 register_simp_attr Poseidon2_air_simplification
 register_simp_attr Poseidon2_constraint_and_interaction_simplification
 
