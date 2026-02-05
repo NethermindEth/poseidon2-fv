@@ -6,3 +6,4 @@ import Poseidon2Fv.FullRound1
 import Poseidon2Fv.FullRound2
 import Poseidon2Fv.FullRound3
 import Poseidon2Fv.PartialRounds
+import Poseidon2Fv.EquivalenceWithSpec
