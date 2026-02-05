@@ -110,19 +110,7 @@ def state4'
 : Fin 16 → F :=
   λ x => state3 c row x
 
-section sbox_state_zero
-  #tag_simp_range "constraint_" 0 16 1 "Poseidon2_expressions"
-  #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
-  #tag_simp_range "e" 673 94 1 "Poseidon2_expressions"
-  attribute [local simp]
-    eval_sbox_7_1
-    beginning_full_round_constants
-    beginning_full_rounds
-    state1
-    state2
-
-  #prove_eval_sbox_constraints 0 0 2 16
-end sbox_state_zero
+#prove_eval_sbox_constraints 0 0 2 16 "beginning"
 
 
 -- sbox result
@@ -134,19 +122,19 @@ def state5'
 : Fin 16 → F :=
   λ x => state2 c row x ^ 7
 
-#define_constraint_group "full_round_0_sbox_constraints" 0 16
+#define_constraint_group "beginning_full_round_0_sbox_constraints" 0 16
 
 section sbox_zero_external
 
-  #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_constraints"
-  #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
-  #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
-  #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
+  -- #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_constraints"
+  -- #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
+  -- #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
+  -- #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
 
   lemma state5_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
     (c : C F ExtF) (row: ℕ)
-    (h: full_round_0_sbox_constraints c row)
+    (h: beginning_full_round_0_sbox_constraints c row)
   :
     state5 c row = state5' c row
   := by
@@ -154,8 +142,23 @@ section sbox_zero_external
     funext x
     have (x: F) : x * x * x * (x * x * x) * x = x^7 := by grind
     simp [
-      full_round_0_sbox_constraints,
-      Poseidon2_constraints,
+      beginning_full_round_0_sbox_constraints,
+      constraint_equiv_0,
+      constraint_equiv_1,
+      constraint_equiv_2,
+      constraint_equiv_3,
+      constraint_equiv_4,
+      constraint_equiv_5,
+      constraint_equiv_6,
+      constraint_equiv_7,
+      constraint_equiv_8,
+      constraint_equiv_9,
+      constraint_equiv_10,
+      constraint_equiv_11,
+      constraint_equiv_12,
+      constraint_equiv_13,
+      constraint_equiv_14,
+      constraint_equiv_15,
       eval_sbox_7_1,
       beginning_full_rounds,
       state2,
@@ -164,10 +167,10 @@ section sbox_zero_external
     obtain ⟨h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩ := h
     fin_cases x <;> (
       simp [
-        Poseidon2_expressions,
-        h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15,
-        this
+        ←this,
+        ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15
       ]
+      rfl
     )
 
 end sbox_zero_external
@@ -193,7 +196,7 @@ section external_linear_layer_one
     fin_cases x
     all_goals (
       simp [
-        Poseidon2_expressions,
+        -- Poseidon2_expressions,
         state5, apply_m4_sums, apply_m4_loop, apply_m4
       ]
       congr
@@ -209,55 +212,81 @@ def state7'
 : Fin 16 → F :=
   λ x => (Circuit.main c (33 + x.val) row 0)
 
-#define_constraint_group "full_round_0_post_constraints" 16 16
+#define_constraint_group "beginning_full_round_0_post_constraints" 16 16
 
 section full_round_0_post
 
-  #tag_simp_range "constraint_" 16 16 1 "Poseidon2_expressions"
-  #tag_simp_range "e" 36 16 1 "Poseidon2_expressions"
-  #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
-  attribute [local simp]
-    eval_sbox_7_1
-    beginning_full_rounds
-    state7
-    sub_eq_zero
+  -- #tag_simp_range "constraint_" 16 16 1 "Poseidon2_expressions"
+  -- #tag_simp_range "e" 36 16 1 "Poseidon2_expressions"
+  -- #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
+  -- attribute [local simp]
+  --   eval_sbox_7_1
+  --   beginning_full_rounds
+  --   state7
+  --   sub_eq_zero
 
   #prove_full_round_post_constraints 16 0 7 16
 
   lemma state7_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
     (c : C F ExtF) (row: ℕ)
-    (h: full_round_0_post_constraints c row)
+    (h: beginning_full_round_0_post_constraints c row)
   :
     state7 c row = state7' c row
   := by
     unfold state7 state7'
     funext x
     simp [
-      full_round_0_post_constraints,
-      Poseidon2_expressions,
+      beginning_full_round_0_post_constraints,
+      constraint_16,
+      constraint_17,
+      constraint_18,
+      constraint_19,
+      constraint_20,
+      constraint_21,
+      constraint_22,
+      constraint_23,
+      constraint_24,
+      constraint_25,
+      constraint_26,
+      constraint_27,
+      constraint_28,
+      constraint_29,
+      constraint_30,
+      constraint_31,
+      e841,
+      e842,
+      e843,
+      e844,
+      e845,
+      e846,
+      e847,
+      e848,
+      e849,
+      e850,
+      e851,
+      e852,
+      e853,
+      e854,
+      e855,
+      e856,
       sub_eq_zero
     ] at h
-    obtain ⟨h16, h17, h18, h19, h20, h21, h22, h23, h24, h25, h26, h27, h28, h29, h30, h31⟩ := h
-    fin_cases x <;> (
-      simp [
-        Poseidon2_expressions,
-        h16, h17, h18, h19, h20, h21, h22, h23, h24, h25, h26, h27, h28, h29, h30, h31
-      ]
-    )
+    simp [h]
+    fin_cases x <;> rfl
 end full_round_0_post
 
-def full_round_0_constraints
+def beginning_full_round_0_constraints
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 : Prop :=
-  full_round_0_sbox_constraints c row ∧
-  full_round_0_post_constraints c row
+  beginning_full_round_0_sbox_constraints c row ∧
+  beginning_full_round_0_post_constraints c row
 
-lemma full_round_0
+lemma beginning_full_round_0
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-  (h: full_round_0_constraints c row)
+  (h: beginning_full_round_0_constraints c row)
 :
   (beginning_full_rounds c row 0).post =
   beginning_full_round (
@@ -298,3 +327,7 @@ lemma full_round_0
   rewrite [←this]; clear this
 
   rfl
+
+#prove_beginning_full_round 1
+#prove_beginning_full_round 2
+#prove_beginning_full_round 3

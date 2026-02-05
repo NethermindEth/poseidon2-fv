@@ -121,74 +121,140 @@ def generic_internal_linear_layer [Field F] (state : Fin 16 → F) : Fin 16 → 
     | x => state x
   internal_layer_mat_mul state' (part_sum + state 0)
 
--- WIDTH → F
-def beginning_full_round_constants [Field F] : Fin 4 → Fin 16 → F :=
-  λ x y => match x, y with
-    | 0, 0 => 0x69cbb6af
-    | 0, 1 => 0x46ad93f9
-    | 0, 2 => 0x60a00f4e
-    | 0, 3 => 0x6b1297cd
-    | 0, 4 => 0x23189afe
-    | 0, 5 => 0x732e7bef
-    | 0, 6 => 0x72c246de
-    | 0, 7 => 0x2c941900
-    | 0, 8 => 0x0557eede
-    | 0, 9 => 0x1580496f
-    | 0, 10 => 0x3a3ea77b
-    | 0, 11 => 0x54f3f271
-    | 0, 12 => 0x0f49b029
-    | 0, 13 => 0x47872fe1
-    | 0, 14 => 0x221e2e36
-    | 0, 15 => 0x1ab7202e
-    | 1, 0 => 0x487779a6
-    | 1, 1 => 0x3851c9d8
-    | 1, 2 => 0x38dc17c0
-    | 1, 3 => 0x209f8849
-    | 1, 4 => 0x268dcee8
-    | 1, 5 => 0x350c48da
-    | 1, 6 => 0x5b9ad32e
-    | 1, 7 => 0x0523272b
-    | 1, 8 => 0x3f89055b
-    | 1, 9 => 0x01e894b2
-    | 1, 10 => 0x13ddedde
-    | 1, 11 => 0x1b2ef334
-    | 1, 12 => 0x7507d8b4
-    | 1, 13 => 0x6ceeb94e
-    | 1, 14 => 0x52eb6ba2
-    | 1, 15 => 0x50642905
-    | 2, 0 => 0x05453f3f
-    | 2, 1 => 0x06349efc
-    | 2, 2 => 0x6922787c
-    | 2, 3 => 0x04bfff9c
-    | 2, 4 => 0x768c714a
-    | 2, 5 => 0x3e9ff21a
-    | 2, 6 => 0x15737c9c
-    | 2, 7 => 0x2229c807
-    | 2, 8 => 0x0d47f88c
-    | 2, 9 => 0x097e0ecc
-    | 2, 10 => 0x27eadba0
-    | 2, 11 => 0x2d7d29e4
-    | 2, 12 => 0x3502aaa0
-    | 2, 13 => 0x0f475fd7
-    | 2, 14 => 0x29fbda49
-    | 2, 15 => 0x018afffd
-    | 3, 0 => 0x0315b618
-    | 3, 1 => 0x6d4497d1
-    | 3, 2 => 0x1b171d9e
-    | 3, 3 => 0x52861abd
-    | 3, 4 => 0x2e5d0501
-    | 3, 5 => 0x3ec8646c
-    | 3, 6 => 0x6e5f250a
-    | 3, 7 => 0x148ae8e6
-    | 3, 8 => 0x17f5fa4a
-    | 3, 9 => 0x3e66d284
-    | 3, 10 => 0x0051aa3b
-    | 3, 11 => 0x483f7913
-    | 3, 12 => 0x2cfe5f15
-    | 3, 13 => 0x023427ca
-    | 3, 14 => 0x2cc78315
-    | 3, 15 => 0x1e36ea47
-    | _, _ => 0
+-- HALF_FULL_ROUNDS → WIDTH → F
+def beginning_full_round_constants [Field F] : Fin 4 → Fin 16 → F
+  | 0, 0 => 0x69cbb6af
+  | 0, 1 => 0x46ad93f9
+  | 0, 2 => 0x60a00f4e
+  | 0, 3 => 0x6b1297cd
+  | 0, 4 => 0x23189afe
+  | 0, 5 => 0x732e7bef
+  | 0, 6 => 0x72c246de
+  | 0, 7 => 0x2c941900
+  | 0, 8 => 0x0557eede
+  | 0, 9 => 0x1580496f
+  | 0, 10 => 0x3a3ea77b
+  | 0, 11 => 0x54f3f271
+  | 0, 12 => 0x0f49b029
+  | 0, 13 => 0x47872fe1
+  | 0, 14 => 0x221e2e36
+  | 0, 15 => 0x1ab7202e
+  | 1, 0 => 0x487779a6
+  | 1, 1 => 0x3851c9d8
+  | 1, 2 => 0x38dc17c0
+  | 1, 3 => 0x209f8849
+  | 1, 4 => 0x268dcee8
+  | 1, 5 => 0x350c48da
+  | 1, 6 => 0x5b9ad32e
+  | 1, 7 => 0x0523272b
+  | 1, 8 => 0x3f89055b
+  | 1, 9 => 0x01e894b2
+  | 1, 10 => 0x13ddedde
+  | 1, 11 => 0x1b2ef334
+  | 1, 12 => 0x7507d8b4
+  | 1, 13 => 0x6ceeb94e
+  | 1, 14 => 0x52eb6ba2
+  | 1, 15 => 0x50642905
+  | 2, 0 => 0x05453f3f
+  | 2, 1 => 0x06349efc
+  | 2, 2 => 0x6922787c
+  | 2, 3 => 0x04bfff9c
+  | 2, 4 => 0x768c714a
+  | 2, 5 => 0x3e9ff21a
+  | 2, 6 => 0x15737c9c
+  | 2, 7 => 0x2229c807
+  | 2, 8 => 0x0d47f88c
+  | 2, 9 => 0x097e0ecc
+  | 2, 10 => 0x27eadba0
+  | 2, 11 => 0x2d7d29e4
+  | 2, 12 => 0x3502aaa0
+  | 2, 13 => 0x0f475fd7
+  | 2, 14 => 0x29fbda49
+  | 2, 15 => 0x018afffd
+  | 3, 0 => 0x0315b618
+  | 3, 1 => 0x6d4497d1
+  | 3, 2 => 0x1b171d9e
+  | 3, 3 => 0x52861abd
+  | 3, 4 => 0x2e5d0501
+  | 3, 5 => 0x3ec8646c
+  | 3, 6 => 0x6e5f250a
+  | 3, 7 => 0x148ae8e6
+  | 3, 8 => 0x17f5fa4a
+  | 3, 9 => 0x3e66d284
+  | 3, 10 => 0x0051aa3b
+  | 3, 11 => 0x483f7913
+  | 3, 12 => 0x2cfe5f15
+  | 3, 13 => 0x023427ca
+  | 3, 14 => 0x2cc78315
+  | 3, 15 => 0x1e36ea47
+  | _, _ => 0
+
+def ending_full_round_constants [Field F] : Fin 4 → Fin 16 → F
+  | 0, 0 => 0x7290a80d
+  | 0, 1 => 0x6f7e5329
+  | 0, 2 => 0x598ec8a8
+  | 0, 3 => 0x76a859a0
+  | 0, 4 => 0x6559e868
+  | 0, 5 => 0x657b83af
+  | 0, 6 => 0x13271d3f
+  | 0, 7 => 0x1f876063
+  | 0, 8 => 0x0aeeae37
+  | 0, 9 => 0x706e9ca6
+  | 0, 10 => 0x46400cee
+  | 0, 11 => 0x72a05c26
+  | 0, 12 => 0x2c589c9e
+  | 0, 13 => 0x20bd37a7
+  | 0, 14 => 0x6a2d3d10
+  | 0, 15 => 0x20523767
+  | 1, 0 => 0x5b8fe9c4
+  | 1, 1 => 0x2aa501d6
+  | 1, 2 => 0x1e01ac3e
+  | 1, 3 => 0x1448bc54
+  | 1, 4 => 0x5ce5ad1c
+  | 1, 5 => 0x4918a14d
+  | 1, 6 => 0x2c46a83f
+  | 1, 7 => 0x4fcf6876
+  | 1, 8 => 0x61d8d5c8
+  | 1, 9 => 0x6ddf4ff9
+  | 1, 10 => 0x11fda4d3
+  | 1, 11 => 0x02933a8f
+  | 1, 12 => 0x170eaf81
+  | 1, 13 => 0x5a9c314f
+  | 1, 14 => 0x49a12590
+  | 1, 15 => 0x35ec52a1
+  | 2, 0 => 0x58eb1611
+  | 2, 1 => 0x5e481e65
+  | 2, 2 => 0x367125c9
+  | 2, 3 => 0x0eba33ba
+  | 2, 4 => 0x1fc28ded
+  | 2, 5 => 0x066399ad
+  | 2, 6 => 0x0cbec0ea
+  | 2, 7 => 0x75fd1af0
+  | 2, 8 => 0x50f5bf4e
+  | 2, 9 => 0x643d5f41
+  | 2, 10 => 0x6f4fe718
+  | 2, 11 => 0x5b3cbbde
+  | 2, 12 => 0x1e3afb3e
+  | 2, 13 => 0x296fb027
+  | 2, 14 => 0x45e1547b
+  | 2, 15 => 0x4a8db2ab
+  | 3, 0 => 0x59986d19
+  | 3, 1 => 0x30bcdfa3
+  | 3, 2 => 0x1db63932
+  | 3, 3 => 0x1d7c2824
+  | 3, 4 => 0x53b33681
+  | 3, 5 => 0x0673b747
+  | 3, 6 => 0x038a98a3
+  | 3, 7 => 0x2c5bce60
+  | 3, 8 => 0x351979cd
+  | 3, 9 => 0x5008fb73
+  | 3, 10 => 0x547bca78
+  | 3, 11 => 0x711af481
+  | 3, 12 => 0x3f93bf64
+  | 3, 13 => 0x644d987b
+  | 3, 14 => 0x3c8bcd87
+  | 3, 15 => 0x608758b8
+  | _, _ => 0
 
 def partial_round_constants [Field F] : Fin 13 → F
   | 0 => 0x5a8053c0
@@ -223,6 +289,16 @@ def partial_round [Field F] (state : Fin 16 → F) (round : Fin 13) : Fin 16 →
   generic_internal_linear_layer (
     apply_partial_round_sbox (
       add_partial_round_constant state round
+    )
+  )
+
+def add_ending_full_round_constants [Field F] (state: Fin 16 → F) (round : Fin 4) : Fin 16 → F :=
+  λ x => state x + ending_full_round_constants round x
+
+def ending_full_round [Field F] (state: Fin 16 → F) (round : Fin 4) : Fin 16 → F :=
+  mds_light_permutation (
+    apply_full_round_sbox (
+      add_ending_full_round_constants state round
     )
   )
 

@@ -1,4 +1,4 @@
-import Poseidon2Fv.FullRound3
+import Poseidon2Fv.BeginningFullRounds
 
 open Plonky3
 open Poseidon2.Extraction
@@ -21,7 +21,7 @@ def state26'
 lemma state26_equiv
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-  (h : full_round_3_post_constraints c row)
+  (h : beginning_full_round_3_post_constraints c row)
 :
   state26 c row = state26' c row
 := by
@@ -187,7 +187,7 @@ def state30'
 lemma state30_equiv
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-  (h: full_round_3_post_constraints c row)
+  (h: beginning_full_round_3_post_constraints c row)
   (h_halve : ∀ x: F, x * 1006632961 = x / 2)
   (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)
   (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)
@@ -239,7 +239,7 @@ lemma partial_round_0
   (c : C F ExtF) (row: ℕ)
   (h128: constraint_128 c row)
   (h129: constraint_129 c row)
-  (h_round_3: full_round_3_constraints c row)
+  (h_round_3: beginning_full_round_3_constraints c row)
   (h_halve : ∀ x: F, x * 1006632961 = x / 2)
   (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)
   (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)
