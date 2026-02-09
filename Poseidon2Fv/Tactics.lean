@@ -5,7 +5,7 @@ import LeanZKCircuit_Plonky3.Plonky3.Command.util
 open Plonky3
 
 def define_opaque_state
-  (idx: ℕ) (expression : ℕ) (step: ℕ)
+  (idx: ℕ) (expression : ℕ) (step: ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let def_string :=
     s!"def state{idx} {"{"}F ExtF C{"}"}" ++
@@ -30,15 +30,18 @@ def define_opaque_state
     s!"    | 14 => e{expression + 14*step} c row" ++
     s!"    | 15 => e{expression + 15*step} c row" ++
     s!"    | _ => 0"
-  runAsCommand def_string
+  runAsCommand def_string log
 
 elab "#define_opaque_state" idx:num expression:num step:num : command => do
   define_opaque_state idx.getNat expression.getNat step.getNat
 
+elab "#define_opaque_state?" idx:num expression:num step:num : command => do
+  define_opaque_state idx.getNat expression.getNat step.getNat true
+
 
 -- expression is the number after the end of the state
 def define_internal_matrix_state
-  (idx: ℕ) (expression : ℕ) (round : ℕ)
+  (idx: ℕ) (expression : ℕ) (round : ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let part_sum_def_string :=
     s!"def part_sum_{round} {"{"}F ExtF C{"}"}" ++
@@ -76,12 +79,15 @@ def define_internal_matrix_state
     s!"    | 15 => e{expression - 1} c row" ++
     s!"    | _ => 0"
 
-  runAsCommand part_sum_def_string
-  runAsCommand full_sum_def_string
-  runAsCommand state_def_string
+  runAsCommand part_sum_def_string log
+  runAsCommand full_sum_def_string log
+  runAsCommand state_def_string log
 
 elab "#define_internal_matrix_state" idx:num expression:num round:num : command => do
   define_internal_matrix_state idx.getNat expression.getNat round.getNat
+
+elab "#define_internal_matrix_state?" idx:num expression:num round:num : command => do
+  define_internal_matrix_state idx.getNat expression.getNat round.getNat true
 
 def define_constraint_group_string
   (start: ℕ) (count: ℕ)
@@ -93,7 +99,7 @@ def define_constraint_group_string
     s!"{define_constraint_group_string (start+1) (count-1)}"
 
 def define_constraint_group
-  (name: String) (start: ℕ) (count: ℕ)
+  (name: String) (start: ℕ) (count: ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let def_string :=
     s!"def {name} {"{"}F ExtF C{"}"}" ++
@@ -102,23 +108,29 @@ def define_constraint_group
     s!": Prop :=" ++
     s!"{define_constraint_group_string start count}"
 
-  runAsCommand def_string
+  runAsCommand def_string log
 
 elab "#define_constraint_group" name:str start:num count:num : command => do
   define_constraint_group name.getString start.getNat count.getNat
 
+elab "#define_constraint_group?" name:str start:num count:num : command => do
+  define_constraint_group name.getString start.getNat count.getNat true
+
 def tag_simp_range
-  (name: String) (start: ℕ) (count : ℕ) (step: ℕ) (tag: String)
+  (name: String) (start: ℕ) (count : ℕ) (step: ℕ) (tag: String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   if count ≠ 0 then
-    runAsCommand s!"attribute [local {tag}] {name}{start}"
+    runAsCommand s!"attribute [local {tag}] {name}{start}" log
     tag_simp_range name (start + step) (count - 1) step tag
 
 elab "#tag_simp_range" name:str start:num count:num step:num tag:str : command => do
   tag_simp_range name.getString start.getNat count.getNat step.getNat tag.getString
 
+elab "#tag_simp_range?" name:str start:num count:num step:num tag:str : command => do
+  tag_simp_range name.getString start.getNat count.getNat step.getNat tag.getString true
+
 def prove_eval_sbox_constraint
-  (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (state: ℕ) (scope : String)
+  (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (state: ℕ) (scope : String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let lemma_string :=
     s!"lemma constraint_equiv_{constraint_idx}"++
@@ -132,10 +144,10 @@ def prove_eval_sbox_constraint
     s!"    (state{state} c row {idx})"++
     s!":= rfl"
 
-  runAsCommand lemma_string true
+  runAsCommand lemma_string log
 
 def prove_eval_sbox_constraints
-  (start_constraint: ℕ) (round: ℕ) (state: ℕ) (width: ℕ) (scope : String)
+  (start_constraint: ℕ) (round: ℕ) (state: ℕ) (width: ℕ) (scope : String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   if width ≠ 0 then
     prove_eval_sbox_constraint
@@ -144,13 +156,17 @@ def prove_eval_sbox_constraints
       round
       state
       scope
-    prove_eval_sbox_constraints start_constraint round state (width - 1) scope
+      log
+    prove_eval_sbox_constraints start_constraint round state (width - 1) scope log
 
 elab "#prove_eval_sbox_constraints" start_constraint:num round:num state:num width:num scope:str : command => do
   prove_eval_sbox_constraints start_constraint.getNat round.getNat state.getNat width.getNat scope.getString
 
+elab "#prove_eval_sbox_constraints?" start_constraint:num round:num state:num width:num scope:str : command => do
+  prove_eval_sbox_constraints start_constraint.getNat round.getNat state.getNat width.getNat scope.getString true
+
 def prove_full_round_post_constraint
-  (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (state: ℕ)
+  (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (state: ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let lemma_string :=
     s!"lemma constraint_equiv_{constraint_idx}\n" ++
@@ -164,10 +180,10 @@ def prove_full_round_post_constraint
     s!"  0)\n" ++
     s!":= rfl"
 
-  runAsCommand lemma_string true
+  runAsCommand lemma_string log
 
 def prove_full_round_post_constraints
-  (start_constraint: ℕ) (round: ℕ) (state: ℕ) (width: ℕ)
+  (start_constraint: ℕ) (round: ℕ) (state: ℕ) (width: ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   if width ≠ 0 then
     prove_full_round_post_constraint
@@ -175,13 +191,17 @@ def prove_full_round_post_constraints
       (start_constraint + width - 1)
       round
       state
-    prove_full_round_post_constraints start_constraint round state (width - 1)
+      log
+    prove_full_round_post_constraints start_constraint round state (width - 1) log
 
 elab "#prove_full_round_post_constraints" start_constraint:num round:num state:num width:num : command => do
   prove_full_round_post_constraints start_constraint.getNat round.getNat state.getNat width.getNat
 
+elab "#prove_full_round_post_constraints?" start_constraint:num round:num state:num width:num : command => do
+  prove_full_round_post_constraints start_constraint.getNat round.getNat state.getNat width.getNat true
+
 def prove_partial_round
-  (round : ℕ)
+  (round : ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let state1 :=
     s!"def state{26 + 5*round}\n" ++
@@ -219,9 +239,9 @@ def prove_partial_round
     s!"    ]\n" ++
     s!"  )"
 
-  runAsCommand state1
-  runAsCommand state1'
-  runAsCommand state1_equiv
+  runAsCommand state1 log
+  runAsCommand state1' log
+  runAsCommand state1_equiv log
 
   let state2 :=
     s!"def state{27 + 5*round}\n" ++
@@ -257,9 +277,9 @@ def prove_partial_round
     s!"    ]\n" ++
     s!"  all_goals simp"
 
-  runAsCommand state2
-  runAsCommand state2'
-  runAsCommand state2_equiv
+  runAsCommand state2 log
+  runAsCommand state2' log
+  runAsCommand state2_equiv log
 
   let constraint1_equiv :=
     s!"lemma constraint_equiv_{128 + 2*round}\n" ++
@@ -282,7 +302,7 @@ def prove_partial_round
     s!"    e{1411 + 56*round}, e{1410 + 56*round}\n" ++
     s!"  ]"
 
-  runAsCommand constraint1_equiv
+  runAsCommand constraint1_equiv log
 
   let state3 :=
     s!"def state{28 + 5*round}\n" ++
@@ -327,9 +347,9 @@ def prove_partial_round
     s!"    grind\n" ++
     s!"  all_goals simp"
 
-  runAsCommand state3
-  runAsCommand state3'
-  runAsCommand state3_equiv
+  runAsCommand state3 log
+  runAsCommand state3' log
+  runAsCommand state3_equiv log
 
   let constraint2_equiv :=
     s!"lemma constraint_equiv_{129 + 2*round}\n" ++
@@ -348,7 +368,7 @@ def prove_partial_round
     s!"    e{149 + 2*round}\n" ++
     s!"  ]"
 
-  runAsCommand constraint2_equiv
+  runAsCommand constraint2_equiv log
 
   let state4 :=
     s!"def state{29 + 5*round}\n" ++
@@ -384,9 +404,9 @@ def prove_partial_round
     s!"    simp [e{149 + 2*round}, h]\n" ++
     s!"  all_goals simp"
 
-  runAsCommand state4
-  runAsCommand state4'
-  runAsCommand state4_equiv
+  runAsCommand state4 log
+  runAsCommand state4' log
+  runAsCommand state4_equiv log
 
   let state5 :=
     s!"#define_internal_matrix_state {30 + 5*round} {1465 + 56*round} {round}"
@@ -447,9 +467,9 @@ def prove_partial_round
     s!"  . congr\n" ++
     s!"  . congr"
 
-  runAsCommand state5
-  runAsCommand state5'
-  runAsCommand state5_equiv
+  runAsCommand state5 log
+  runAsCommand state5' log
+  runAsCommand state5_equiv log
 
   let round_lemma :=
     s!"lemma partial_round_{round}\n" ++
@@ -485,13 +505,16 @@ def prove_partial_round
     s!"  unfold state{26 + 5*round}'\n" ++
     s!"  rfl"
 
-  runAsCommand round_lemma
+  runAsCommand round_lemma log
 
 elab "#prove_partial_round" round:num : command => do
   prove_partial_round round.getNat
 
+elab "#prove_partial_round?" round:num : command => do
+  prove_partial_round round.getNat true
+
 def prove_full_round
-  (round : ℕ) (state : ℕ) (expr_base: ℕ) (col_base: ℕ) (constraint_base: ℕ) (scope : String)
+  (round : ℕ) (state : ℕ) (expr_base: ℕ) (col_base: ℕ) (constraint_base: ℕ) (scope : String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let state1' :=
     s!"def state{state}' {"{"}F ExtF C{"}"}\n" ++
@@ -513,9 +536,9 @@ def prove_full_round
     s!"  rewrite [state{state-1}_equiv c row h]\n" ++
     s!"  fin_cases x <;> rfl"
 
-  define_opaque_state state (expr_base + 184*round) 6
-  runAsCommand state1'
-  runAsCommand state1_equiv
+  define_opaque_state state (expr_base + 184*round) 6 log
+  runAsCommand state1' log
+  runAsCommand state1_equiv log
 
   let state2' :=
     s!"def state{state+1}' {"{"}F ExtF C{"}"}\n" ++
@@ -538,9 +561,9 @@ def prove_full_round
     s!"    congr\n" ++
     s!"  )"
 
-  define_opaque_state (state+1) (expr_base + 2 + 184*round) 6
-  runAsCommand state2'
-  runAsCommand state2_equiv
+  define_opaque_state (state+1) (expr_base + 2 + 184*round) 6 log
+  runAsCommand state2' log
+  runAsCommand state2_equiv log
 
   let state3' :=
     s!"def state{state+2}' {"{"}F ExtF C{"}"}\n" ++
@@ -549,9 +572,9 @@ def prove_full_round
     s!": Fin 16 → F :=\n" ++
     s!"  λ x => state{state+1} c row x"
 
-  define_opaque_state (state+2) (col_base + 3 + 32*round) 1
-  runAsCommand state3'
-  prove_eval_sbox_constraints (constraint_base + 32*round) round state 16 scope
+  define_opaque_state (state+2) (col_base + 3 + 32*round) 1 log
+  runAsCommand state3' log
+  prove_eval_sbox_constraints (constraint_base + 32*round) round state 16 scope log
 
   let state4' :=
     s!"def state{state+3}' {"{"}F ExtF C{"}"}\n" ++
@@ -603,10 +626,10 @@ def prove_full_round
     s!"    rfl\n" ++
     s!"  )"
 
-  define_opaque_state (state+3) (expr_base + 5 + 184*round) 6
-  runAsCommand state4'
-  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 32*round) 16
-  runAsCommand state4_equiv
+  define_opaque_state (state+3) (expr_base + 5 + 184*round) 6 log
+  runAsCommand state4' log
+  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 32*round) 16 log
+  runAsCommand state4_equiv log
 
   let state5' :=
     s!"def state{state+4}' {"{"}F ExtF C{"}"}\n" ++
@@ -632,9 +655,9 @@ def prove_full_round
     s!"    congr\n" ++
     s!"  )"
 
-  define_opaque_state (state+4) (expr_base + 152 + 184*round) 1
-  runAsCommand state5'
-  runAsCommand state5_equiv
+  define_opaque_state (state+4) (expr_base + 152 + 184*round) 1 log
+  runAsCommand state5' log
+  runAsCommand state5_equiv log
 
   let state6' :=
     s!"def state{state+5}' {"{"}F ExtF C{"}"}\n" ++
@@ -692,10 +715,10 @@ def prove_full_round
     s!"  simp [h]\n" ++
     s!"  fin_cases x <;> rfl\n"
 
-  define_opaque_state (state+5) (expr_base + 152 + 184*round) 1
-  runAsCommand state6'
-  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 16 + 32*round) 16
-  runAsCommand state6_equiv
+  define_opaque_state (state+5) (expr_base + 152 + 184*round) 1 log
+  runAsCommand state6' log
+  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 16 + 32*round) 16 log
+  runAsCommand state6_equiv log
 
   let full_round_constraints :=
     s!"def {scope}_full_round_{round}_constraints {"{"}F ExtF C{"}"}\n" ++
@@ -746,12 +769,18 @@ def prove_full_round
     s!"\n" ++
     s!"  rfl"
 
-  runAsCommand full_round_constraints
-  runAsCommand full_round_lemma
+  runAsCommand full_round_constraints log
+  runAsCommand full_round_lemma log
 
 
 elab "#prove_beginning_full_round" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 2) 673 17 0 "beginning"
 
+elab "#prove_beginning_full_round?" round:num : command => do
+  prove_full_round round.getNat (round.getNat*6 + 2) 673 17 0 "beginning" true
+
 elab "#prove_ending_full_round" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending"
+
+elab "#prove_ending_full_round?" round:num : command => do
+  prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending" true
