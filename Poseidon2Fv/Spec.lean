@@ -56,19 +56,22 @@ def internalLinearLayer : HashM profile PUnit := do
   let diag := (← read).internalMatrixDiag
   modify (fun ⟨r, vec⟩ => ⟨r, internalMatrixAction diag vec⟩)
 
-instance : YatimaRing (ZMod P) where
-  zero := 0
-  one := 1
-  coe := λ x => (x: ZMod P)
+-- instance : YatimaRing (ZMod P) where
+--   zero := 0
+--   one := 1
+--   coe := λ x => (x: ZMod P)
+
+def matrix_action{R} [OfNat R (nat_lit 0)] [Add R] [Mul R] (M : Array (Array R)) (v : Array R) : Array R :=
+  M.zip v |>.foldl (fun v (col, r) => add_array v (col.map (λ x => x * r))) (Array.replicate v.size 0)
 
 -- depends on `vec` having size 4
 def smallMatrixAction (vec : Array (ZMod p)) : Array (ZMod p) :=
-  let smallMatrix : YatimaMatrix (ZMod p) :=
+  let smallMatrix : Array (Array (ZMod p)) :=
     #[#[2, 1, 1, 3],
       #[3, 2, 1, 1],
       #[1, 3, 2, 1],
       #[1, 1, 3, 2]]
-  smallMatrix.action vec
+  matrix_action smallMatrix vec
 
 -- depends on `vec` having size 4 * t
 def externalMatrixAction (vec : Array (ZMod p)) : Array (ZMod p) := Id.run do
