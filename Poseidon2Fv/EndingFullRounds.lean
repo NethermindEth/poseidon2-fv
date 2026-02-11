@@ -269,52 +269,9 @@ lemma poseidon_permutation
   (h_ending_3: ending_full_round_3_constraints c row)
 :
   (ending_full_rounds c row 3).post =
-  ending_full_round (
-    ending_full_round (
-      ending_full_round (
-        ending_full_round (
-          partial_round (
-            partial_round (
-              partial_round (
-                partial_round (
-                  partial_round (
-                    partial_round (
-                      partial_round (
-                        partial_round (
-                          partial_round (
-                            partial_round (
-                              partial_round (
-                                partial_round (
-                                  partial_round (
-                                    beginning_full_round (
-                                      beginning_full_round (
-                                        beginning_full_round (
-                                          beginning_full_round (
-                                            mds_light_permutation (
-                                              inputs c row
-                                            )
-                                          ) 0
-                                        ) 1
-                                      ) 2
-                                    ) 3
-                                  ) 0
-                                ) 1
-                              ) 2
-                            ) 3
-                          ) 4
-                        ) 5
-                      ) 6
-                    ) 7
-                  ) 8
-                ) 9
-              ) 10
-            ) 11
-          ) 12
-        ) 0
-      ) 1
-    ) 2
-  ) 3
+  permutation (inputs c row)
 := by
+  unfold permutation
   rw [
     ←beginning_full_round_0 c row h_beginning_0,
     ←beginning_full_round_1 c row h_beginning_0 h_beginning_1,

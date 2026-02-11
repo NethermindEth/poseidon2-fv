@@ -7,4 +7,9 @@ import Poseidon2Fv.Folding
 import Poseidon2Fv.BeginningFullRounds
 import Poseidon2Fv.PartialRounds
 import Poseidon2Fv.EndingFullRounds
+import Poseidon2Fv.Equivalence.ExternalLinearLayer
+import Poseidon2Fv.Equivalence.InternalLinearLayer
+import Poseidon2Fv.Equivalence.FullRound
+import Poseidon2Fv.Equivalence.PartialRound
+import Poseidon2Fv.Equivalence.Permutation
 import Poseidon2Fv.EquivalenceWithSpec

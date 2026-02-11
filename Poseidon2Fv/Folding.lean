@@ -346,4 +346,51 @@ def ending_full_rounds
     post := λ x => (Circuit.main c (187 + 32*round.val + x.val) row 0)
   }
 
+def permutation [Field F] (input : Fin 16 → F) :=
+  ending_full_round (
+    ending_full_round (
+      ending_full_round (
+        ending_full_round (
+          partial_round (
+            partial_round (
+              partial_round (
+                partial_round (
+                  partial_round (
+                    partial_round (
+                      partial_round (
+                        partial_round (
+                          partial_round (
+                            partial_round (
+                              partial_round (
+                                partial_round (
+                                  partial_round (
+                                    beginning_full_round (
+                                      beginning_full_round (
+                                        beginning_full_round (
+                                          beginning_full_round (
+                                            mds_light_permutation (
+                                              input
+                                            )
+                                          ) 0
+                                        ) 1
+                                      ) 2
+                                    ) 3
+                                  ) 0
+                                ) 1
+                              ) 2
+                            ) 3
+                          ) 4
+                        ) 5
+                      ) 6
+                    ) 7
+                  ) 8
+                ) 9
+              ) 10
+            ) 11
+          ) 12
+        ) 0
+      ) 1
+    ) 2
+  ) 3
+
 end Poseidon2.Folding
