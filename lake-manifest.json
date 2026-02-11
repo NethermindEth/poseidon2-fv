@@ -5,7 +5,7 @@
    "type": "git",
    "subDir": null,
    "scope": "",
-   "rev": "64930093dfd5ed94fb424e93fcb7c10a6d1399e1",
+   "rev": "08a6ef18548a7e3ed5a00714d360dd3d17921f11",
    "name": "Poseidon.lean",
    "manifestFile": "lake-manifest.json",
    "inputRev": "Dan/width16",

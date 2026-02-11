@@ -14,9 +14,9 @@ def input16 : List ℤ := Array.iota 15 |>.toList
 
 -- Expects width 16
 def poseidon2Spec (input : List ℤ) : List ℤ :=
-  let inputAsArray : Array <| Zmod p := List.map (fun x ↦ .mk x) input |>.toArray
+  let inputAsArray : Array <| ZMod p := input |>.toArray
   let output := Poseidon2.hashInputWithCtx BabyBear16.hashProfile BabyBear16.lurkContext inputAsArray
-  List.map (fun x ↦ x.rep) output.toList
+  List.map (fun x ↦ x.cast) output.toList
 
 -- #eval poseidon2Spec input16
 

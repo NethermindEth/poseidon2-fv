@@ -1,25 +1,25 @@
 import Mathlib
 
-import Poseidon2Fv.Spec
+import Poseidon.Hash
 import Poseidon2Fv.Folding
 
 lemma smallMatrixAction_size
   (slice : Array (ZMod P))
   (h_slice : slice.size = 4)
 :
-  (Poseidon2Spec.smallMatrixAction slice).size = 4
+  (Poseidon2.smallMatrixAction slice).size = 4
 := by
   have : slice = #[slice[0], slice[1], slice[2], slice[3]] := by grind
   rewrite [this]; clear this
   simp [
-    Poseidon2Spec.smallMatrixAction,
-    Poseidon2Spec.matrix_action,
-    Poseidon2Spec.add_array
+    Poseidon2.smallMatrixAction,
+    Poseidon2.matrix_action,
+    Poseidon2.add_array
   ]
 
 lemma apply_m4_equiv
   [Fact P.Prime]
-  (x0 x1 x2 x3: ZMod P) --mathlib zmod
+  (x0 x1 x2 x3: ZMod P)
   (state : Fin 16 → ZMod P)
   (h_state0 : state offset = x0)
   (h_state1 : state (offset + 1) = x1)
@@ -27,14 +27,14 @@ lemma apply_m4_equiv
   (h_state3 : state (offset + 3) = x3)
 :
   ∀ idx: Fin 4,
-  (Poseidon2Spec.smallMatrixAction #[x0, x1, x2, x3])[idx]? =
+  (Poseidon2.smallMatrixAction #[x0, x1, x2, x3])[idx]? =
   .some ↑(Poseidon2.Folding.apply_m4 state offset idx)
 := by
   simp [
-    Poseidon2Spec.smallMatrixAction,
+    Poseidon2.smallMatrixAction,
     Poseidon2.Folding.apply_m4,
-    Poseidon2Spec.matrix_action,
-    Poseidon2Spec.add_array
+    Poseidon2.matrix_action,
+    Poseidon2.add_array
   ]
   intro idx; fin_cases idx <;> {
     simp [
