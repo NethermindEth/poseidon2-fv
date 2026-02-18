@@ -6,16 +6,21 @@ open Plonky3 Poseidon2.Extraction
 
 namespace Poseidon2.Folding
 
+-- Change to two defs, due to it using 2 registers rather than one (11, 2)
 def eval_sbox_7_1 [Field F] (x3 x : F) : Prop :=
   x3 - (x * x) * x = 0
 
+-- Change exponent to 11
 def apply_full_round_sbox [Field F] (state: Fin 16 → F) : Fin 16 → F :=
   λ x => state x ^ 7
 
+-- Change exponent to 11
 def apply_partial_round_sbox [Field F] (state: Fin 16 → F) : Fin 16 → F
   | 0 => state 0 ^ 7
   | x => state x
 
+-- Fin 16 to Fin 24
+-- Different matrix so different functions for doing the matrix multiplication, follow Rust
 def apply_m4 [Field F] (state: Fin 16 → F) (idx: Fin 16) : Fin 4 → F :=
   λ x =>
   let x0 := state idx
@@ -121,6 +126,7 @@ def generic_internal_linear_layer [Field F] (state : Fin 16 → F) : Fin 16 → 
     | x => state x
   internal_layer_mat_mul state' (part_sum + state 0)
 
+-- Copy in new round constants
 -- HALF_FULL_ROUNDS → WIDTH → F
 def beginning_full_round_constants [Field F] : Fin 4 → Fin 16 → F
   | 0, 0 => 0x69cbb6af
@@ -316,6 +322,7 @@ def inputs
 : Fin 16 → F :=
   λ x => (Circuit.main c (1 + x.val) row 0)
 
+-- Column offsets need to change
 -- HALF FULL ROUNDS →
 def beginning_full_rounds
   [Field F] [Field ExtF] [Circuit F ExtF C]

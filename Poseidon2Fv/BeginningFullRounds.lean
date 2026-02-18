@@ -4,6 +4,7 @@ open Plonky3
 open Poseidon2.Extraction
 open Poseidon2.Folding
 
+-- Offsets will need to change
 -- Start state
 #define_opaque_state 0 4 1
 
@@ -51,6 +52,18 @@ section external_linear_layer_zero
     )
 end external_linear_layer_zero
 
+-- To find these ("2 673 6"):
+--    Search for a particular round constant in Extraction.lean (written there in base 10 not hex)
+--    Subexpresion before adding the round constant will be the final one from doing the matrix multiplication
+--    Width-many before the round constant is the output from the previous output so far
+
+-- How Dom figured this out (for example):
+-- In Plonky3/poseidon2-air/src
+-- We can look at, e.g., fn eval_sbox in air.rs
+-- Click on externalLinearLayer, which takes us to poseidon2/src/generic.rs
+-- Which shows how the Rust evaluates sbox
+
+-- Round constant to round constant is the step
 #define_opaque_state 2 673 6
 
 -- After adding round constants
