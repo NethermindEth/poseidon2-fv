@@ -491,43 +491,43 @@ def permutation [Field F] (input : Fin 24 → F) :=
                     partial_round (
                       partial_round (
                         partial_round (
-          partial_round (
-            partial_round (
-              partial_round (
-                partial_round (
-                  partial_round (
-                    partial_round (
-                      partial_round (
-                        partial_round (
                           partial_round (
                             partial_round (
                               partial_round (
                                 partial_round (
                                   partial_round (
-                                    beginning_full_round (
-                                      beginning_full_round (
-                                        beginning_full_round (
-                                          beginning_full_round (
-                                            mds_light_permutation (
-                                              input
-                                            )
-                                          ) 0
-                                        ) 1
-                                      ) 2
-                                    ) 3
-                                  ) 0
-                                ) 1
-                              ) 2
-                            ) 3
-                          ) 4
-                        ) 5
-                      ) 6
-                    ) 7
-                  ) 8
-                ) 9
-              ) 10
-            ) 11
-          ) 12
+                                    partial_round (
+                                      partial_round (
+                                        partial_round (
+                                          partial_round (
+                                            partial_round (
+                                              partial_round (
+                                                partial_round (
+                                                  partial_round (
+                                                    beginning_full_round (
+                                                      beginning_full_round (
+                                                        beginning_full_round (
+                                                          beginning_full_round (
+                                                            mds_light_permutation (
+                                                              input
+                                                            )
+                                                          ) 0
+                                                        ) 1
+                                                      ) 2
+                                                    ) 3
+                                                  ) 0
+                                                ) 1
+                                              ) 2
+                                            ) 3
+                                          ) 4
+                                        ) 5
+                                      ) 6
+                                    ) 7
+                                  ) 8
+                                ) 9
+                              ) 10
+                            ) 11
+                          ) 12
                         ) 13
                       ) 14
                     ) 15
