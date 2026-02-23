@@ -491,6 +491,14 @@ def permutation [Field F] (input : Fin 24 → F) :=
                     partial_round (
                       partial_round (
                         partial_round (
+          partial_round (
+            partial_round (
+              partial_round (
+                partial_round (
+                  partial_round (
+                    partial_round (
+                      partial_round (
+                        partial_round (
                           partial_round (
                             partial_round (
                               partial_round (
@@ -520,6 +528,14 @@ def permutation [Field F] (input : Fin 24 → F) :=
               ) 10
             ) 11
           ) 12
+                        ) 13
+                      ) 14
+                    ) 15
+                  ) 16
+                ) 17
+              ) 18
+            ) 19
+          ) 20
         ) 0
       ) 1
     ) 2
