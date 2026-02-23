@@ -35,7 +35,6 @@ def apply_m4 [Field F] (state: Fin 24 → F) (idx: Fin 24) : Fin 4 → F :=
     | 1 => x01123 + (state (idx + 2) + state (idx + 2))
     | 2 => x01233 + x23
     | 3 => x01233 + (state idx + state idx)
-    | _ => 0
 
 def apply_m4_loop [Field F] (state : Fin 24 → F) : Fin 24 → F
   | 0 => apply_m4 state 0 0
@@ -62,7 +61,7 @@ def apply_m4_loop [Field F] (state : Fin 24 → F) : Fin 24 → F
   | 21 => apply_m4 state 16 1
   | 22 => apply_m4 state 16 2
   | 23 => apply_m4 state 16 3
-  | _ => 0
+  | ⟨_ + 24, _⟩ => by exfalso; omega
 
 def apply_m4_sums [Field F] (state : Fin 24 → F) : Fin 4 → F
   | 0 => (apply_m4_loop state 0) + (apply_m4_loop state 4) + (apply_m4_loop state 8) + (apply_m4_loop state 12) + (apply_m4_loop state 16) + (apply_m4_loop state 20)
@@ -95,7 +94,7 @@ def mds_light_permutation [Field F] (state : Fin 24 → F) : Fin 24 → F
   | 21 =>apply_m4_loop state 21 + apply_m4_sums state 1
   | 22 =>apply_m4_loop state 22 + apply_m4_sums state 2
   | 23 =>apply_m4_loop state 23 + apply_m4_sums state 3
-  | _ => 0
+  | ⟨_ + 24, _⟩ => by exfalso; omega
 
 -- BabyBearInternalLayerParameters::
 def internal_layer_mat_mul [Field F] (state : Fin 24 → F) (sum : F) : Fin 24 → F
@@ -141,7 +140,7 @@ def internal_layer_mat_mul [Field F] (state : Fin 24 → F) (sum : F) : Fin 24 �
   -- state[23] = state[23].div_2exp_u64(27);
   -- state[23] = sum.clone() - state[23].clone();
   | 23 => sum - state 23 / (2 ^ 27)
-  | _ => 0
+  | ⟨_ + 24, _⟩ => by exfalso; omega
 
 -- InternalLayerBaseParameters::
 def generic_internal_linear_layer [Field F] (state : Fin 24 → F) : Fin 24 → F :=
@@ -271,7 +270,11 @@ def beginning_full_round_constants [Field F] : Fin 4 → Fin 24 → F
   | 3, 21 => 0x1051b5c6
   | 3, 22 => 0x6a36dbbe
   | 3, 23 => 0x4cff27a5
-  | _, _ => 0
+  | 0, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 1, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 2, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 3, ⟨_ + 24, _⟩ => by exfalso; omega
+ 
 
 def ending_full_round_constants [Field F] : Fin 4 → Fin 24 → F
   | 0, 0 => 0x032959ad
@@ -370,7 +373,10 @@ def ending_full_round_constants [Field F] : Fin 4 → Fin 24 → F
   | 3, 21 => 0x63ac0b37
   | 3, 22 => 0x5fe5bb14
   | 3, 23 => 0x5244e9d4
-  | _, _ => 0
+  | 0, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 1, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 2, ⟨_ + 24, _⟩ => by exfalso; omega
+  | 3, ⟨_ + 24, _⟩ => by exfalso; omega
 
 def partial_round_constants [Field F] : Fin 21 → F
   | 0 => 0x1da78ec2
@@ -394,7 +400,7 @@ def partial_round_constants [Field F] : Fin 21 → F
   | 18 => 0x4f22d482
   | 19 => 0x482a9aee
   | 20 => 0x6beb839d
-  | _ => 0
+  | ⟨_ + 21, _⟩ => by exfalso; omega
 
 def add_beginning_full_round_constants [Field F] (state: Fin 24 → F) (round : Fin 4) : Fin 24 → F :=
   λ x => state x + beginning_full_round_constants round x
