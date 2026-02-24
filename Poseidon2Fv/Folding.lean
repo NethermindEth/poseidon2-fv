@@ -447,15 +447,14 @@ def inputs
 : Fin 16 → F :=
   λ x => (Circuit.main c (1 + x.val) row 0)
 
--- TODO: Column offsets need to change
 -- HALF FULL ROUNDS →
 def beginning_full_rounds
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 : Fin 4 → FullRound F :=
   λ round => {
-    sbox := λ x => (Circuit.main c (17 + 32*round.val + x.val) row 0)
-    post := λ x => (Circuit.main c (33 + 32*round.val + x.val) row 0)
+    sbox := λ x => (Circuit.main c (25 /- 1 + 24 -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
+    post := λ x => (Circuit.main c (73 /- 1 + 24 + (2 * 24) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
   }
 
 -- PARTIAL ROUNDS →
@@ -464,8 +463,8 @@ def partial_rounds
   (c : C F ExtF) (row : ℕ)
 : Fin 13 → PartialRound F :=
   λ round => {
-    sbox := (Circuit.main c (145 + 2*round.val) row 0)
-    post_sbox := (Circuit.main c (146 + 2*round.val) row 0)
+    sbox := (Circuit.main c (313 /- 1 + 24 + (4 * (3 * 24)) -/ + 3 * round.val) row 0)
+    post_sbox := (Circuit.main c (315 /- 1 + 24 + (4 * (3 * 24)) + 2 -/ + 3 * round.val) row 0)
   }
 
 -- HALF FULL ROUNDS →
@@ -474,8 +473,8 @@ def ending_full_rounds
   (c : C F ExtF) (row: ℕ)
 : Fin 4 → FullRound F :=
   λ round => {
-    sbox := λ x => (Circuit.main c (171 + 32*round.val + x.val) row 0)
-    post := λ x => (Circuit.main c (187 + 32*round.val + x.val) row 0)
+    sbox := λ x => (Circuit.main c (376 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
+    post := λ x => (Circuit.main c (424 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) + (2 * 24) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
   }
 
 def permutation [Field F] (input : Fin 24 → F) :=
