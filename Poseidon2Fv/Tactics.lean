@@ -11,7 +11,7 @@ def define_opaque_state
     s!"def state{idx} {"{"}F ExtF C{"}"}" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]" ++
     s!"  (c : C F ExtF) (row: ℕ)" ++
-    s!": Fin 16 → F :=" ++
+    s!": Fin 24 → F :=" ++
     s!"  λ x => match x with" ++
     s!"    | 0 => e{expression} c row" ++
     s!"    | 1 => e{expression + step} c row" ++
@@ -29,6 +29,14 @@ def define_opaque_state
     s!"    | 13 => e{expression + 13*step} c row" ++
     s!"    | 14 => e{expression + 14*step} c row" ++
     s!"    | 15 => e{expression + 15*step} c row" ++
+    s!"    | 16 => e{expression + 16*step} c row" ++
+    s!"    | 17 => e{expression + 17*step} c row" ++
+    s!"    | 18 => e{expression + 18*step} c row" ++
+    s!"    | 19 => e{expression + 19*step} c row" ++
+    s!"    | 20 => e{expression + 20*step} c row" ++
+    s!"    | 21 => e{expression + 21*step} c row" ++
+    s!"    | 22 => e{expression + 22*step} c row" ++
+    s!"    | 23 => e{expression + 23*step} c row" ++
     s!"    | _ => 0"
   runAsCommand def_string log
 
