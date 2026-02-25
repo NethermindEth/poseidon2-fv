@@ -123,28 +123,7 @@ def state4'
 : Fin 24 → F :=
   λ x => state3 c row x
 
-lemma constraint_equiv_0 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_0 c row =  eval_sbox_11_2_A    ((beginning_full_rounds c row 0).sbox_r1 0)    (state2 c row 0):= by 
-  rfl
-
-lemma constraint_equiv_1 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_1 c row = eval_sbox_11_2_B    ((beginning_full_rounds c row 0).sbox_r2 0)    ((beginning_full_rounds c row 0).sbox_r1 0)
-  := by
-  rfl
-  
-lemma constraint_equiv_2 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_2 c row =  eval_sbox_11_2_A    ((beginning_full_rounds c row 0).sbox_r1 1)    (state2 c row 1):= by 
-  rfl
-
-lemma constraint_equiv_3 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_3 c row = eval_sbox_11_2_B    ((beginning_full_rounds c row 0).sbox_r2 1)    ((beginning_full_rounds c row 0).sbox_r1 1)
-  := by
-  rfl
-
-lemma constraint_equiv_4 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_4 c row =  eval_sbox_11_2_A    ((beginning_full_rounds c row 0).sbox_r1 2)    (state2 c row 2):= by 
-  rfl
-
-lemma constraint_equiv_5 {C : Type → Type → Type} {F ExtF : Type}  [Field F] [Field ExtF] [Circuit F ExtF C]  (c : C F ExtF) (row: ℕ):  constraint_5 c row = eval_sbox_11_2_B    ((beginning_full_rounds c row 0).sbox_r2 2)    ((beginning_full_rounds c row 0).sbox_r1 2)
-  := by
-  rfl
-
-
+#prove_eval_sbox_constraints 0 0 2 24 "beginning"
 -- sbox result
 #define_opaque_state 5 678 6
 

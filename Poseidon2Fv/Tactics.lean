@@ -137,7 +137,7 @@ elab "#tag_simp_range" name:str start:num count:num step:num tag:str : command =
 elab "#tag_simp_range?" name:str start:num count:num step:num tag:str : command => do
   tag_simp_range name.getString start.getNat count.getNat step.getNat tag.getString true
 
-def prove_eval_sbox_constraint
+def prove_eval_sbox_r1_constraint
   (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (state: ℕ) (scope : String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   let lemma_string :=
@@ -147,9 +147,26 @@ def prove_eval_sbox_constraint
     s!"  (c : C F ExtF) (row: ℕ)"++
     s!":"++
     s!"  constraint_{constraint_idx} c row ="++
-    s!"  eval_sbox_7_1"++
-    s!"    (({scope}_full_rounds c row {round}).sbox {idx})"++
+    s!"  eval_sbox_11_2_A"++
+    s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++
     s!"    (state{state} c row {idx})"++
+    s!":= rfl"
+
+  runAsCommand lemma_string log
+
+def prove_eval_sbox_r2_constraint
+  (idx: ℕ) (constraint_idx: ℕ) (round: ℕ) (scope : String) (log: Bool := false)
+: Lean.Elab.Command.CommandElabM Unit := do
+  let lemma_string :=
+    s!"lemma constraint_equiv_{constraint_idx}"++
+    s!"  {"{"}C : Type → Type → Type{"}"} {"{"}F ExtF : Type{"}"}"++
+    s!"  [Field F] [Field ExtF] [Circuit F ExtF C]"++
+    s!"  (c : C F ExtF) (row: ℕ)"++
+    s!":"++
+    s!"  constraint_{constraint_idx} c row ="++
+    s!"  eval_sbox_11_2_B"++
+    s!"    (({scope}_full_rounds c row {round}).sbox_r2 {idx})"++
+    s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++    
     s!":= rfl"
 
   runAsCommand lemma_string log
@@ -158,11 +175,17 @@ def prove_eval_sbox_constraints
   (start_constraint: ℕ) (round: ℕ) (state: ℕ) (width: ℕ) (scope : String) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
   if width ≠ 0 then
-    prove_eval_sbox_constraint
+    prove_eval_sbox_r1_constraint
       (width - 1)
-      (start_constraint + width - 1)
+      (start_constraint + width * 2 - 2)
       round
       state
+      scope
+      log
+    prove_eval_sbox_r2_constraint
+      (width - 1)
+      (start_constraint + width * 2 - 1)
+      round
       scope
       log
     prove_eval_sbox_constraints start_constraint round state (width - 1) scope log
