@@ -137,7 +137,7 @@ def state5'
 
 section sbox_zero_external
 
-  -- #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_constraints"
+  #tag_simp_range "constraint_equiv_" 0 48 1 "Poseidon2_constraints"
   -- #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
   -- #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
   -- #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
@@ -154,56 +154,7 @@ section sbox_zero_external
     have hExp11 (x : F) : ((x * x) * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
     simp [
       beginning_full_round_0_sbox_constraints,
-      constraint_equiv_0,
-      constraint_equiv_1,
-      constraint_equiv_2,
-      constraint_equiv_3,
-      constraint_equiv_4,
-      constraint_equiv_5,
-      constraint_equiv_6,
-      constraint_equiv_7,
-      constraint_equiv_8,
-      constraint_equiv_9,
-      constraint_equiv_10,
-      constraint_equiv_11,
-      constraint_equiv_12,
-      constraint_equiv_13,
-      constraint_equiv_14,
-      constraint_equiv_15,
-      constraint_equiv_16,
-      constraint_equiv_17,
-      constraint_equiv_18,
-      constraint_equiv_19,
-      constraint_equiv_20,
-      constraint_equiv_21,
-      constraint_equiv_22,
-      constraint_equiv_23,
-      
-      constraint_equiv_24,
-      constraint_equiv_25,
-      constraint_equiv_26,
-      constraint_equiv_27,
-      constraint_equiv_28,
-      constraint_equiv_29,
-      constraint_equiv_30,
-      constraint_equiv_31,
-      constraint_equiv_32,
-      constraint_equiv_33,
-      constraint_equiv_34,
-      constraint_equiv_35,
-      constraint_equiv_36,
-      constraint_equiv_37,
-      constraint_equiv_38,
-      constraint_equiv_39,
-      constraint_equiv_40,
-      constraint_equiv_41,
-      constraint_equiv_42,
-      constraint_equiv_43,
-      constraint_equiv_44,
-      constraint_equiv_45,
-      constraint_equiv_46,
-      constraint_equiv_47,
-      
+      Poseidon2_constraints,
       eval_sbox_11_2_r1,
       eval_sbox_11_2_r2,
       beginning_full_rounds,
