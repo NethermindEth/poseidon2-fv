@@ -129,7 +129,7 @@ def tag_simp_range
 : Lean.Elab.Command.CommandElabM Unit := do
   if count ≠ 0 then
     runAsCommand s!"attribute [local {tag}] {name}{start}" log
-    tag_simp_range name (start + step) (count - 1) step tag
+    tag_simp_range name (start + step) (count - 1) step tag log
 
 elab "#tag_simp_range" name:str start:num count:num step:num tag:str : command => do
   tag_simp_range name.getString start.getNat count.getNat step.getNat tag.getString
