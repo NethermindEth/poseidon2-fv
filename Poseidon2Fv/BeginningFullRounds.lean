@@ -11,7 +11,7 @@ open Poseidon2.Folding
 def state0'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   inputs c row
 
 lemma state0_equiv
@@ -30,7 +30,7 @@ lemma state0_equiv
 def state1'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   mds_light_permutation (state0 c row)
 
 section external_linear_layer_zero
@@ -70,7 +70,7 @@ end external_linear_layer_zero
 def state2'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => state1 c row x + beginning_full_round_constants 0 x
 
 lemma state2_equiv
@@ -89,7 +89,7 @@ lemma state2_equiv
 def state3'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => state2 c row x ^ 3
 
 section sbox_zero_internal
@@ -120,7 +120,7 @@ end sbox_zero_internal
 def state4'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => state3 c row x
 
 #prove_eval_sbox_constraints 0 0 2 16 "beginning"
@@ -132,7 +132,7 @@ def state4'
 def state5'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => state2 c row x ^ 7
 
 #define_constraint_group "beginning_full_round_0_sbox_constraints" 0 16
@@ -194,7 +194,7 @@ end sbox_zero_external
 def state6'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   mds_light_permutation (state5 c row)
 
 section external_linear_layer_one
@@ -222,7 +222,7 @@ end external_linear_layer_one
 def state7'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => (Circuit.main c (33 + x.val) row 0)
 
 #define_constraint_group "beginning_full_round_0_post_constraints" 16 16
