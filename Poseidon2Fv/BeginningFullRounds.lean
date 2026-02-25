@@ -151,7 +151,7 @@ section sbox_zero_external
   := by
     unfold state5 state5' state2
     funext x
-    have (x : F) : ((x * x) * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
+    have hExp11 (x : F) : ((x * x) * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
     simp [
       beginning_full_round_0_sbox_constraints,
       constraint_equiv_0,
@@ -216,7 +216,7 @@ section sbox_zero_external
             h38, h39, h40, h41, h42, h43, h44, h45, h46, h47⟩ := h
     try fin_cases x <;> (
       simp [
-        ←this,
+        ←hExp11,
         ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15,
         ←h16, ←h17, ←h18, ←h19, ←h20, ←h21, ←h22, ←h23,
         ←h24, ←h25, ←h26, ←h27, ←h28, ←h29, ←h30, ←h31, ←h32, ←h33, ←h34, ←h35, ←h36, ←h37,
