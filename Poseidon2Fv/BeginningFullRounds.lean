@@ -125,15 +125,15 @@ def state4'
 
 #prove_eval_sbox_constraints 0 0 2 24 "beginning"
 -- sbox result
-#define_opaque_state 5 678 6
+#define_opaque_state 5 1448 8
 
 def state5'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 : Fin 24 → F :=
-  λ x => state2 c row x ^ 7
+  λ x => state2 c row x ^ 11
 
-#define_constraint_group "beginning_full_round_0_sbox_constraints" 0 16
+#define_constraint_group "beginning_full_round_0_sbox_constraints" 0 48 -- 24 * 2 (width * sbox_registers)
 
 section sbox_zero_external
 
@@ -151,7 +151,7 @@ section sbox_zero_external
   := by
     unfold state5 state5' state2
     funext x
-    have (x: F) : x * x * x * (x * x * x) * x = x^7 := by grind
+    have (x : F) : ((x * x) * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
     simp [
       beginning_full_round_0_sbox_constraints,
       constraint_equiv_0,
@@ -170,22 +170,63 @@ section sbox_zero_external
       constraint_equiv_13,
       constraint_equiv_14,
       constraint_equiv_15,
-      eval_sbox_7_1,
+      constraint_equiv_16,
+      constraint_equiv_17,
+      constraint_equiv_18,
+      constraint_equiv_19,
+      constraint_equiv_20,
+      constraint_equiv_21,
+      constraint_equiv_22,
+      constraint_equiv_23,
+      
+      constraint_equiv_24,
+      constraint_equiv_25,
+      constraint_equiv_26,
+      constraint_equiv_27,
+      constraint_equiv_28,
+      constraint_equiv_29,
+      constraint_equiv_30,
+      constraint_equiv_31,
+      constraint_equiv_32,
+      constraint_equiv_33,
+      constraint_equiv_34,
+      constraint_equiv_35,
+      constraint_equiv_36,
+      constraint_equiv_37,
+      constraint_equiv_38,
+      constraint_equiv_39,
+      constraint_equiv_40,
+      constraint_equiv_41,
+      constraint_equiv_42,
+      constraint_equiv_43,
+      constraint_equiv_44,
+      constraint_equiv_45,
+      constraint_equiv_46,
+      constraint_equiv_47,
+      
+      eval_sbox_11_2_r1,
+      eval_sbox_11_2_r2,
       beginning_full_rounds,
       state2,
       sub_eq_zero
     ] at h
-    obtain ⟨h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩ := h
-    fin_cases x <;> (
+    obtain ⟨h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15,
+            h16, h17, h18, h19, h20, h21, h22, h23,
+            h24, h25, h26, h27, h28, h29, h30, h31, h32, h33, h34, h35, h36, h37,
+            h38, h39, h40, h41, h42, h43, h44, h45, h46, h47⟩ := h
+    try fin_cases x <;> (
       simp [
         ←this,
-        ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15
+        ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15,
+        ←h16, ←h17, ←h18, ←h19, ←h20, ←h21, ←h22, ←h23,
+        ←h24, ←h25, ←h26, ←h27, ←h28, ←h29, ←h30, ←h31, ←h32, ←h33, ←h34, ←h35, ←h36, ←h37,
+        ←h38, ←h39, ←h40, ←h41, ←h42, ←h43, ←h44, ←h45, ←h46, ←h47,
       ]
       rfl
     )
 
 end sbox_zero_external
-
+/- UP TO HERE
 -- After external linear layer
 #define_opaque_state 6 825 1
 
@@ -342,3 +383,5 @@ lemma beginning_full_round_0
 #prove_beginning_full_round 1
 #prove_beginning_full_round 2
 #prove_beginning_full_round 3
+
+TODO: Remove this line when done -/
