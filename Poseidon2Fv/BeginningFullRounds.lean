@@ -64,7 +64,7 @@ end external_linear_layer_zero
 -- Which shows how the Rust evaluates sbox
 
 -- Round constant to round constant is the step
-#define_opaque_state? 2 1441 8
+#define_opaque_state 2 1441 8
 
 -- After adding round constants
 def state2'
