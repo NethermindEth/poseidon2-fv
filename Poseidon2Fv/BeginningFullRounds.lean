@@ -25,7 +25,7 @@ lemma state0_equiv
   fin_cases x <;> rfl
 
 -- After first external linear layer
-#define_opaque_state 1 657 1
+#define_opaque_state 1 1417 1
 
 def state1'
   [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -52,7 +52,7 @@ section external_linear_layer_zero
     )
 end external_linear_layer_zero
 
--- To find these ("2 673 6"):
+-- To find these ("2 1441 8"):
 --    Search for a particular round constant in Extraction.lean (written there in base 10 not hex)
 --    Subexpresion before adding the round constant will be the final one from doing the matrix multiplication
 --    Width-many before the round constant is the output from the previous output so far
@@ -64,7 +64,7 @@ end external_linear_layer_zero
 -- Which shows how the Rust evaluates sbox
 
 -- Round constant to round constant is the step
-#define_opaque_state 2 673 6
+#define_opaque_state? 2 1441 8
 
 -- After adding round constants
 def state2'
@@ -84,7 +84,7 @@ lemma state2_equiv
   fin_cases x <;> rfl
 
 -- sbox internal state
-#define_opaque_state 3 675 6
+#define_opaque_state 3 1443 8
 
 def state3'
   [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -94,8 +94,8 @@ def state3'
 
 section sbox_zero_internal
 
-  #tag_simp_range "e" 674 16 6 "Poseidon2_expressions"
-  #tag_simp_range "e" 675 16 6 "Poseidon2_expressions"
+  #tag_simp_range "e" 1442 24 8 "Poseidon2_expressions"
+  #tag_simp_range "e" 1443 24 8 "Poseidon2_expressions"
 
   lemma state3_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -115,7 +115,7 @@ section sbox_zero_internal
 end sbox_zero_internal
 
 -- saved sbox internal state
-#define_opaque_state 4 20 1
+#define_opaque_state 4 28 1
 
 def state4'
   [Field F] [Field ExtF] [Circuit F ExtF C]
