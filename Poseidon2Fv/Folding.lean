@@ -10,7 +10,7 @@ def eval_sbox_11_2_A [Field F] (x3 x : F) : Prop :=
   x3 - ((x * x) * x) = 0
 
 def eval_sbox_11_2_B [Field F] (x9 x3 : F) : Prop :=
-  x9 - (x3 ^ 3) = 0
+  x9 - ((x3 * x3) * x3) = 0
 
 def apply_full_round_sbox [Field F] (state: Fin 24 → F) : Fin 24 → F :=
   λ x => state x ^ 11
@@ -434,7 +434,8 @@ def ending_full_round [Field F] (state: Fin 24 → F) (round : Fin 4) : Fin 24 �
   )
 
 structure FullRound (F: Type) where
-  sbox : Fin 24 → F -- WIDTH sboxes, each of which is 1 register
+  sbox_r1 : Fin 24 → F -- WIDTH sboxes, each of which uses 2 registers
+  sbox_r2 : Fin 24 → F
   post : Fin 24 → F
 
 structure PartialRound (F: Type) where
@@ -453,7 +454,8 @@ def beginning_full_rounds
   (c : C F ExtF) (row: ℕ)
 : Fin 4 → FullRound F :=
   λ round => {
-    sbox := λ x => (Circuit.main c (25 /- 1 + 24 -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
+    sbox_r1 := λ x => (Circuit.main c (25 /- 1 + 24 -/ + 72 /- (3 * 24) -/ * round.val + 2 * x.val) row 0)
+    sbox_r2 := λ x => (Circuit.main c (26 /- 1 + 24 -/ + 72 /- (3 * 24) -/ * round.val + 2 * x.val) row 0)
     post := λ x => (Circuit.main c (73 /- 1 + 24 + (2 * 24) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
   }
 
@@ -473,7 +475,8 @@ def ending_full_rounds
   (c : C F ExtF) (row: ℕ)
 : Fin 4 → FullRound F :=
   λ round => {
-    sbox := λ x => (Circuit.main c (376 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
+    sbox_r1 := λ x => (Circuit.main c (376 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) -/ + 72 /- (3 * 24) -/ * round.val + 2 * x.val) row 0)
+    sbox_r2 := λ x => (Circuit.main c (377 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) -/ + 72 /- (3 * 24) -/ * round.val + 2 * x.val) row 0)
     post := λ x => (Circuit.main c (424 /- 1 + 24 + (4 * (3 * 24)) + (21 * 3) + (2 * 24) -/ + 72 /- (3 * 24) -/ * round.val + x.val) row 0)
   }
 
