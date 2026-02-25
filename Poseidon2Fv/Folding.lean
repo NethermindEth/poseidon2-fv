@@ -53,14 +53,14 @@ def apply_m4_loop [Field F] (state : Fin 24 → F) : Fin 24 → F
   | 13 => apply_m4 state 12 1
   | 14 => apply_m4 state 12 2
   | 15 => apply_m4 state 12 3
-  | 16 => apply_m4 state 14 0
-  | 17 => apply_m4 state 14 1
-  | 18 => apply_m4 state 14 2
-  | 19 => apply_m4 state 14 3
-  | 20 => apply_m4 state 16 0
-  | 21 => apply_m4 state 16 1
-  | 22 => apply_m4 state 16 2
-  | 23 => apply_m4 state 16 3
+  | 16 => apply_m4 state 16 0
+  | 17 => apply_m4 state 16 1
+  | 18 => apply_m4 state 16 2
+  | 19 => apply_m4 state 16 3
+  | 20 => apply_m4 state 20 0
+  | 21 => apply_m4 state 20 1
+  | 22 => apply_m4 state 20 2
+  | 23 => apply_m4 state 20 3
   | ⟨_ + 24, _⟩ => by exfalso; omega
 
 def apply_m4_sums [Field F] (state : Fin 24 → F) : Fin 4 → F
@@ -444,7 +444,7 @@ structure PartialRound (F: Type) where
 def inputs
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => (Circuit.main c (1 + x.val) row 0)
 
 -- HALF FULL ROUNDS →
