@@ -147,7 +147,7 @@ def prove_eval_sbox_r1_constraint
     s!"  (c : C F ExtF) (row: ℕ)"++
     s!":"++
     s!"  constraint_{constraint_idx} c row ="++
-    s!"  eval_sbox_11_2_A"++
+    s!"  eval_sbox_11_2_r1"++
     s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++
     s!"    (state{state} c row {idx})"++
     s!":= rfl"
@@ -164,7 +164,7 @@ def prove_eval_sbox_r2_constraint
     s!"  (c : C F ExtF) (row: ℕ)"++
     s!":"++
     s!"  constraint_{constraint_idx} c row ="++
-    s!"  eval_sbox_11_2_B"++
+    s!"  eval_sbox_11_2_r2"++
     s!"    (({scope}_full_rounds c row {round}).sbox_r2 {idx})"++
     s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++    
     s!":= rfl"

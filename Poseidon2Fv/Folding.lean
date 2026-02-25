@@ -6,10 +6,10 @@ open Plonky3 Poseidon2.Extraction
 
 namespace Poseidon2.Folding
 
-def eval_sbox_11_2_A [Field F] (x3 x : F) : Prop :=
+def eval_sbox_11_2_r1 [Field F] (x3 x : F) : Prop :=
   x3 - ((x * x) * x) = 0
 
-def eval_sbox_11_2_B [Field F] (x9 x3 : F) : Prop :=
+def eval_sbox_11_2_r2 [Field F] (x9 x3 : F) : Prop :=
   x9 - ((x3 * x3) * x3) = 0
 
 def apply_full_round_sbox [Field F] (state: Fin 24 → F) : Fin 24 → F :=
