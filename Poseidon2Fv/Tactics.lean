@@ -67,7 +67,7 @@ def define_internal_matrix_state
     s!"def state{idx} {"{"}F ExtF C{"}"}" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]" ++
     s!"  (c : C F ExtF) (row: ℕ)" ++
-    s!": Fin 16 → F :=" ++
+    s!": Fin 24 → F :=" ++
     s!"  λ x => match x with" ++
     s!"    | 0 => e{expression - 34} c row" ++
     s!"    | 1 => e{expression - 33} c row" ++
@@ -238,7 +238,7 @@ def prove_partial_round
     s!"def state{26 + 5*round}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
     s!"    | 0 => e{1409 + 56*round} c row\n" ++
     s!"    | x => state{25 + 5*round} c row x"
@@ -247,7 +247,7 @@ def prove_partial_round
     s!"def state{26 + 5*round}'\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  add_partial_round_constant (state{25 + 5*round} c row) {round}"
 
   let state1_equiv :=
@@ -278,7 +278,7 @@ def prove_partial_round
     s!"def state{27 + 5*round}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
     s!"    | 0 => e{1411 + 56*round} c row\n" ++
     s!"    | x => state{26 + 5*round} c row x"
@@ -288,7 +288,7 @@ def prove_partial_round
     s!"def state{27 + 5*round}'\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F\n" ++
+    s!": Fin 24 → F\n" ++
     s!"  | 0 => (state{26 + 5*round} c row 0) ^ 3\n" ++
     s!"  | x => state{26 + 5*round} c row x"
 
@@ -339,7 +339,7 @@ def prove_partial_round
     s!"def state{28 + 5*round}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
     s!"    | 0 => e{1414 + 56*round} c row\n" ++
     s!"    | x => state{26 + 5*round} c row x"
@@ -348,7 +348,7 @@ def prove_partial_round
     s!"def state{28 + 5*round}'\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F\n" ++
+    s!": Fin 24 → F\n" ++
     s!"  | 0 => (state{26 + 5*round} c row 0) ^ 7\n" ++
     s!"  | x => state{26 + 5*round} c row x"
 
@@ -405,7 +405,7 @@ def prove_partial_round
     s!"def state{29 + 5*round}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
     s!"    | 0 => e{149 + 2*round} c row\n" ++
     s!"    | x => state{28 + 5*round} c row x"
@@ -414,7 +414,7 @@ def prove_partial_round
     s!"def state{29 + 5*round}'\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  state{28 + 5*round} c row"
 
   let state4_equiv :=
@@ -446,7 +446,7 @@ def prove_partial_round
     s!"def state{30 + 5*round}'\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  generic_internal_linear_layer (state{29 + 5*round} c row)"
 
   let state5_equiv :=
@@ -551,7 +551,7 @@ def prove_full_round
     s!"def state{state}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => state{state-1} c row x + {scope}_full_round_constants {round} x"
 
   let state1_equiv :=
@@ -575,7 +575,7 @@ def prove_full_round
     s!"def state{state+1}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => state{state} c row x ^ 3"
 
   let state2_equiv :=
@@ -600,7 +600,7 @@ def prove_full_round
     s!"def state{state+2}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => state{state+1} c row x"
 
   define_opaque_state (state+2) (col_base + 3 + 32*round) 1 log
@@ -611,7 +611,7 @@ def prove_full_round
     s!"def state{state+3}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => state{state} c row x ^ 7\n"
 
   let state4_equiv :=
@@ -666,7 +666,7 @@ def prove_full_round
     s!"def state{state+4}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  mds_light_permutation (state{state+3} c row)"
 
   let state5_equiv :=
@@ -694,7 +694,7 @@ def prove_full_round
     s!"def state{state+5}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!": Fin 16 → F :=\n" ++
+    s!": Fin 24 → F :=\n" ++
     s!"  λ x => (Circuit.main c ({col_base + 16 + 32*round} + x.val) row 0)"
 
   let state6_equiv :=
