@@ -177,9 +177,8 @@ section sbox_zero_external
     )
 
 end sbox_zero_external
-/- UP TO HERE
 -- After external linear layer
-#define_opaque_state 6 825 1
+#define_opaque_state 6 1719 1
 
 def state6'
   [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -207,20 +206,20 @@ section external_linear_layer_one
 end external_linear_layer_one
 
 -- Round 0 post
-#define_opaque_state 7 825 1
+#define_opaque_state 7 1719 1
 
 def state7'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 : Fin 24 → F :=
-  λ x => (Circuit.main c (33 + x.val) row 0)
+  λ x => (Circuit.main c (73 + x.val) row 0) -- 1 + 24 + 24 * 2
 
-#define_constraint_group "beginning_full_round_0_post_constraints" 16 16
+#define_constraint_group "beginning_full_round_0_post_constraints" 48 24
 
 section full_round_0_post
 
-  -- #tag_simp_range "constraint_" 16 16 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 36 16 1 "Poseidon2_expressions"
+  #tag_simp_range "constraint_" 48 24 1 "Poseidon2_constraints"
+  #tag_simp_range "e" 1743 24 1 "Poseidon2_expressions"
   -- #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
   -- attribute [local simp]
   --   eval_sbox_7_1
@@ -228,7 +227,7 @@ section full_round_0_post
   --   state7
   --   sub_eq_zero
 
-  #prove_full_round_post_constraints 16 0 7 16
+  #prove_full_round_post_constraints 48 0 7 24
 
   lemma state7_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -241,38 +240,8 @@ section full_round_0_post
     funext x
     simp [
       beginning_full_round_0_post_constraints,
-      constraint_16,
-      constraint_17,
-      constraint_18,
-      constraint_19,
-      constraint_20,
-      constraint_21,
-      constraint_22,
-      constraint_23,
-      constraint_24,
-      constraint_25,
-      constraint_26,
-      constraint_27,
-      constraint_28,
-      constraint_29,
-      constraint_30,
-      constraint_31,
-      e841,
-      e842,
-      e843,
-      e844,
-      e845,
-      e846,
-      e847,
-      e848,
-      e849,
-      e850,
-      e851,
-      e852,
-      e853,
-      e854,
-      e855,
-      e856,
+      Poseidon2_constraints,
+      Poseidon2_expressions,
       sub_eq_zero
     ] at h
     simp [h]
