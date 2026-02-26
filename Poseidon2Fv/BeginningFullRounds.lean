@@ -114,14 +114,15 @@ section sbox_zero_internal
 
 end sbox_zero_internal
 
+-- TODO: Investigate further why state4 is not needed.
 -- saved sbox internal state
-#define_opaque_state 4 28 1
+-- #define_opaque_state 4 28 2
 
-def state4'
-  [Field F] [Field ExtF] [Circuit F ExtF C]
-  (c : C F ExtF) (row: ℕ)
-: Fin 24 → F :=
-  λ x => state3 c row x
+-- def state4'
+--   [Field F] [Field ExtF] [Circuit F ExtF C]
+--   (c : C F ExtF) (row: ℕ)
+-- : Fin 24 → F :=
+--   λ x => state3 c row x
 
 #prove_eval_sbox_constraints 0 0 2 24 "beginning"
 -- sbox result
