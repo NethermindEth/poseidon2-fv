@@ -331,8 +331,6 @@ lemma beginning_full_round_0
 
   rfl
 
-#prove_beginning_full_round 1
-#prove_beginning_full_round 2
-#prove_beginning_full_round 3
-
-TODO: Remove this line when done -/
+-- #prove_beginning_full_round 1
+-- #prove_beginning_full_round 2
+-- #prove_beginning_full_round 3
