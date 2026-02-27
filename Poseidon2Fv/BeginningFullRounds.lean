@@ -353,7 +353,7 @@ section sbox_zero_internal
 end sbox_zero_internal
 
 -- saved sbox internal state
-#define_opaque_state 10 100 1
+#define_opaque_state 10 1769 8
 
 def state10'
   [Field F] [Field ExtF] [Circuit F ExtF C]
