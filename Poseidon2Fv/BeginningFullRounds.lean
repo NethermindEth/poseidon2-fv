@@ -178,7 +178,6 @@ section sbox_zero_external
     )
 
 end sbox_zero_external
--- After external linear layer
 #define_opaque_state 6 1719 1
 
 def state6'
