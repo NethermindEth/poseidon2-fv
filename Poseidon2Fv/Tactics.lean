@@ -567,7 +567,7 @@ def prove_full_round
     s!"  rewrite [state{state-1}_equiv c row h]\n" ++
     s!"  fin_cases x <;> rfl"
 
-  define_opaque_state state (expr_base + 184*round) 6 log
+  define_opaque_state state (expr_base + 326*round) 8 log
   runAsCommand state1' log
   runAsCommand state1_equiv log
 
@@ -592,7 +592,7 @@ def prove_full_round
     s!"    congr\n" ++
     s!"  )"
 
-  define_opaque_state (state+1) (expr_base + 2 + 184*round) 6 log
+  define_opaque_state (state+1) (expr_base + 2 + 326*round) 8 log
   runAsCommand state2' log
   runAsCommand state2_equiv log
 
@@ -603,16 +603,16 @@ def prove_full_round
     s!": Fin 24 → F :=\n" ++
     s!"  λ x => state{state+1} c row x"
 
-  define_opaque_state (state+2) (col_base + 3 + 32*round) 1 log
+  define_opaque_state (state+2) (col_base + 3 + 48*round) 1 log
   runAsCommand state3' log
-  prove_eval_sbox_constraints (constraint_base + 32*round) round state 16 scope log
+  prove_eval_sbox_constraints (constraint_base + 72*round) round state 24 scope log
 
   let state4' :=
     s!"def state{state+3}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
-    s!"  λ x => state{state} c row x ^ 7\n"
+    s!"  λ x => state{state} c row x ^ 11\n" -- UP TO HERE and line 373 in diff between 788048a and 4b5b2cc
 
   let state4_equiv :=
     s!"lemma state{state+3}_equiv {"{"}F ExtF C{"}"}\n" ++
@@ -657,9 +657,9 @@ def prove_full_round
     s!"    rfl\n" ++
     s!"  )"
 
-  define_opaque_state (state+3) (expr_base + 5 + 184*round) 6 log
+  define_opaque_state (state+3) (expr_base + 5 + 326*round) 8 log
   runAsCommand state4' log
-  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 32*round) 16 log
+  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 32*round) 18 log
   runAsCommand state4_equiv log
 
   let state5' :=
@@ -686,7 +686,7 @@ def prove_full_round
     s!"    congr\n" ++
     s!"  )"
 
-  define_opaque_state (state+4) (expr_base + 152 + 184*round) 1 log
+  define_opaque_state (state+4) (expr_base + 152 + 326*round) 1 log
   runAsCommand state5' log
   runAsCommand state5_equiv log
 
@@ -725,30 +725,30 @@ def prove_full_round
     s!"    constraint_{constraint_base+29+32*round},\n" ++
     s!"    constraint_{constraint_base+30+32*round},\n" ++
     s!"    constraint_{constraint_base+31+32*round},\n" ++
-    s!"    e{expr_base + 168 + 184*round},\n" ++
-    s!"    e{expr_base + 169 + 184*round},\n" ++
-    s!"    e{expr_base + 170 + 184*round},\n" ++
-    s!"    e{expr_base + 171 + 184*round},\n" ++
-    s!"    e{expr_base + 172 + 184*round},\n" ++
-    s!"    e{expr_base + 173 + 184*round},\n" ++
-    s!"    e{expr_base + 174 + 184*round},\n" ++
-    s!"    e{expr_base + 175 + 184*round},\n" ++
-    s!"    e{expr_base + 176 + 184*round},\n" ++
-    s!"    e{expr_base + 177 + 184*round},\n" ++
-    s!"    e{expr_base + 178 + 184*round},\n" ++
-    s!"    e{expr_base + 179 + 184*round},\n" ++
-    s!"    e{expr_base + 180 + 184*round},\n" ++
-    s!"    e{expr_base + 181 + 184*round},\n" ++
-    s!"    e{expr_base + 182 + 184*round},\n" ++
-    s!"    e{expr_base + 183 + 184*round},\n" ++
+    s!"    e{expr_base + 168 + 326*round},\n" ++
+    s!"    e{expr_base + 169 + 326*round},\n" ++
+    s!"    e{expr_base + 170 + 326*round},\n" ++
+    s!"    e{expr_base + 171 + 326*round},\n" ++
+    s!"    e{expr_base + 172 + 326*round},\n" ++
+    s!"    e{expr_base + 173 + 326*round},\n" ++
+    s!"    e{expr_base + 174 + 326*round},\n" ++
+    s!"    e{expr_base + 175 + 326*round},\n" ++
+    s!"    e{expr_base + 176 + 326*round},\n" ++
+    s!"    e{expr_base + 177 + 326*round},\n" ++
+    s!"    e{expr_base + 178 + 326*round},\n" ++
+    s!"    e{expr_base + 179 + 326*round},\n" ++
+    s!"    e{expr_base + 180 + 326*round},\n" ++
+    s!"    e{expr_base + 181 + 326*round},\n" ++
+    s!"    e{expr_base + 182 + 326*round},\n" ++
+    s!"    e{expr_base + 183 + 326*round},\n" ++
     s!"    sub_eq_zero\n" ++
     s!"  ] at h\n" ++
     s!"  simp [h]\n" ++
     s!"  fin_cases x <;> rfl\n"
 
-  define_opaque_state (state+5) (expr_base + 152 + 184*round) 1 log
+  define_opaque_state (state+5) (expr_base + 152 + 326*round) 1 log
   runAsCommand state6' log
-  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 16 + 32*round) 16 log
+  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 16 + 32*round) 18 log
   runAsCommand state6_equiv log
 
   let full_round_constraints :=
@@ -805,10 +805,10 @@ def prove_full_round
 
 
 elab "#prove_beginning_full_round" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 2) 673 17 0 "beginning"
+  prove_full_round round.getNat (round.getNat*6 + 2) 1443 25 0 "beginning"
 
 elab "#prove_beginning_full_round?" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 2) 673 17 0 "beginning" true
+  prove_full_round round.getNat (round.getNat*6 + 2) 1443 25 0 "beginning" true
 
 elab "#prove_ending_full_round" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending"
