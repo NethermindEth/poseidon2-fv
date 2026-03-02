@@ -166,7 +166,7 @@ def prove_eval_sbox_r2_constraint
     s!"  constraint_{constraint_idx} c row ="++
     s!"  eval_sbox_11_2_r2"++
     s!"    (({scope}_full_rounds c row {round}).sbox_r2 {idx})"++
-    s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++    
+    s!"    (({scope}_full_rounds c row {round}).sbox_r1 {idx})"++
     s!":= rfl"
 
   runAsCommand lemma_string log
@@ -624,42 +624,84 @@ def prove_full_round
     s!":= by\n" ++
     s!"  unfold state{state+3} state{state+3}' state{state}\n" ++
     s!"  funext x\n" ++
-    s!"  have (x: F) : x * x * x * (x * x * x) * x = x^7 := by grind\n" ++
+    s!"  have (x: F) : (x * x * x) * (x * x * x) * (x * x * x) * (x * x) = x^11 := by ring\n" ++
     s!"  simp [\n" ++
     s!"    {scope}_full_round_{round}_sbox_constraints,\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+1},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+2},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+3},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+4},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+5},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+6},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+7},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+8},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+9},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+10},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+11},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+12},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+13},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+14},\n" ++
-    s!"    constraint_equiv_{constraint_base + 32*round+15},\n" ++
-    s!"    eval_sbox_7_1,\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+1},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+2},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+3},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+4},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+5},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+6},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+7},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+8},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+9},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+10},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+11},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+12},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+13},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+14},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+15},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+16},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+17},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+18},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+19},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+20},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+21},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+22},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+23},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+24},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+25},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+26},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+27},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+28},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+29},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+30},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+31},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+32},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+33},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+34},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+35},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+36},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+37},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+38},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+39},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+40},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+41},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+42},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+43},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+44},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+45},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+46},\n" ++
+    s!"    constraint_equiv_{constraint_base + 72*round+47},\n" ++
+    s!"    eval_sbox_11_2_r1,\n" ++
+    s!"    eval_sbox_11_2_r2,\n" ++
     s!"    {scope}_full_rounds,\n" ++
     s!"    state{state},\n" ++
     s!"    sub_eq_zero\n" ++
     s!"  ] at h\n" ++
-    s!"  obtain ⟨h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩ := h\n" ++
+    s!"  obtain ⟨\n" ++
+    s!"     h0, h1, h2, h3, h4, h5, h6, h7, h8,\n" ++
+    s!"     h9, h10, h11, h12, h13, h14, h15,\n" ++
+    s!"     h16, h17, h18, h19, h20, h21, h22, h23,\n" ++
+    s!"     h24, h25, h26, h27, h28, h29, h30, h31,\n" ++
+    s!"     h32, h33, h34, h35, h36, h37, h38, h39,\n" ++
+    s!"     h40, h41, h42, h43, h44, h45, h46, h47\n" ++
+    s!"  ⟩ := h\n" ++
     s!"  fin_cases x <;> (\n" ++
     s!"    simp [\n" ++
     s!"      ←this,\n" ++
-    s!"      ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15\n" ++
+    s!"      ←h0, ←h1, ←h2, ←h3, ←h4, ←h5, ←h6, ←h7, ←h8, ←h9, ←h10, ←h11, ←h12, ←h13, ←h14, ←h15,\n" ++
+    s!"      ←h16, ←h17, ←h18, ←h19, ←h20, ←h21, ←h22, ←h23, ←h24, ←h25, ←h26, ←h27, ←h28, ←h29, ←h30, ←h31,\n" ++
+    s!"      ←h32, ←h33, ←h34, ←h35, ←h36, ←h37, ←h38, ←h39, ←h40, ←h41, ←h42, ←h43, ←h44, ←h45, ←h46, ←h47\n" ++
     s!"    ]\n" ++
     s!"    rfl\n" ++
     s!"  )"
 
-  define_opaque_state (state+3) (expr_base + 5 + 326*round) 8 log
+  define_opaque_state (state+3) (expr_base + 7 + 326*round) 8 log
   runAsCommand state4' log
-  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 32*round) 18 log
+  define_constraint_group s!"{scope}_full_round_{round}_sbox_constraints" (constraint_base + 72*round) 48 log
   runAsCommand state4_equiv log
 
   let state5' :=
@@ -686,7 +728,7 @@ def prove_full_round
     s!"    congr\n" ++
     s!"  )"
 
-  define_opaque_state (state+4) (expr_base + 152 + 326*round) 1 log
+  define_opaque_state (state+4) (expr_base + 278 + 326*round) 1 log
   runAsCommand state5' log
   runAsCommand state5_equiv log
 
@@ -695,7 +737,7 @@ def prove_full_round
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
-    s!"  λ x => (Circuit.main c ({col_base + 16 + 32*round} + x.val) row 0)"
+    s!"  λ x => (Circuit.main c ({col_base + 48 + 72*round} + x.val) row 0)"
 
   let state6_equiv :=
     s!"lemma state{state+5}_equiv {"{"}F ExtF C{"}"}\n" ++
@@ -709,46 +751,62 @@ def prove_full_round
     s!"  funext x\n" ++
     s!"  simp [\n" ++
     s!"    {scope}_full_round_{round}_post_constraints,\n" ++
-    s!"    constraint_{constraint_base+16+32*round},\n" ++
-    s!"    constraint_{constraint_base+17+32*round},\n" ++
-    s!"    constraint_{constraint_base+18+32*round},\n" ++
-    s!"    constraint_{constraint_base+19+32*round},\n" ++
-    s!"    constraint_{constraint_base+20+32*round},\n" ++
-    s!"    constraint_{constraint_base+21+32*round},\n" ++
-    s!"    constraint_{constraint_base+22+32*round},\n" ++
-    s!"    constraint_{constraint_base+23+32*round},\n" ++
-    s!"    constraint_{constraint_base+24+32*round},\n" ++
-    s!"    constraint_{constraint_base+25+32*round},\n" ++
-    s!"    constraint_{constraint_base+26+32*round},\n" ++
-    s!"    constraint_{constraint_base+27+32*round},\n" ++
-    s!"    constraint_{constraint_base+28+32*round},\n" ++
-    s!"    constraint_{constraint_base+29+32*round},\n" ++
-    s!"    constraint_{constraint_base+30+32*round},\n" ++
-    s!"    constraint_{constraint_base+31+32*round},\n" ++
-    s!"    e{expr_base + 168 + 326*round},\n" ++
-    s!"    e{expr_base + 169 + 326*round},\n" ++
-    s!"    e{expr_base + 170 + 326*round},\n" ++
-    s!"    e{expr_base + 171 + 326*round},\n" ++
-    s!"    e{expr_base + 172 + 326*round},\n" ++
-    s!"    e{expr_base + 173 + 326*round},\n" ++
-    s!"    e{expr_base + 174 + 326*round},\n" ++
-    s!"    e{expr_base + 175 + 326*round},\n" ++
-    s!"    e{expr_base + 176 + 326*round},\n" ++
-    s!"    e{expr_base + 177 + 326*round},\n" ++
-    s!"    e{expr_base + 178 + 326*round},\n" ++
-    s!"    e{expr_base + 179 + 326*round},\n" ++
-    s!"    e{expr_base + 180 + 326*round},\n" ++
-    s!"    e{expr_base + 181 + 326*round},\n" ++
-    s!"    e{expr_base + 182 + 326*round},\n" ++
-    s!"    e{expr_base + 183 + 326*round},\n" ++
+    s!"    constraint_{constraint_base+48+72*round},\n" ++
+    s!"    constraint_{constraint_base+49+72*round},\n" ++
+    s!"    constraint_{constraint_base+50+72*round},\n" ++
+    s!"    constraint_{constraint_base+51+72*round},\n" ++
+    s!"    constraint_{constraint_base+52+72*round},\n" ++
+    s!"    constraint_{constraint_base+53+72*round},\n" ++
+    s!"    constraint_{constraint_base+54+72*round},\n" ++
+    s!"    constraint_{constraint_base+55+72*round},\n" ++
+    s!"    constraint_{constraint_base+56+72*round},\n" ++
+    s!"    constraint_{constraint_base+57+72*round},\n" ++
+    s!"    constraint_{constraint_base+58+72*round},\n" ++
+    s!"    constraint_{constraint_base+59+72*round},\n" ++
+    s!"    constraint_{constraint_base+60+72*round},\n" ++
+    s!"    constraint_{constraint_base+61+72*round},\n" ++
+    s!"    constraint_{constraint_base+62+72*round},\n" ++
+    s!"    constraint_{constraint_base+63+72*round},\n" ++
+    s!"    constraint_{constraint_base+64+72*round},\n" ++
+    s!"    constraint_{constraint_base+65+72*round},\n" ++
+    s!"    constraint_{constraint_base+66+72*round},\n" ++
+    s!"    constraint_{constraint_base+67+72*round},\n" ++
+    s!"    constraint_{constraint_base+68+72*round},\n" ++
+    s!"    constraint_{constraint_base+69+72*round},\n" ++
+    s!"    constraint_{constraint_base+70+72*round},\n" ++
+    s!"    constraint_{constraint_base+71+72*round},\n" ++
+    s!"    e{expr_base + 302 + 0 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 1 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 2 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 3 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 4 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 5 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 6 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 7 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 8 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 9 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 10 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 11 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 12 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 13 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 14 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 15 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 16 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 17 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 18 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 19 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 20 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 21 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 22 + 326*round},\n" ++
+    s!"    e{expr_base + 302 + 23 + 326*round},\n" ++
     s!"    sub_eq_zero\n" ++
     s!"  ] at h\n" ++
     s!"  simp [h]\n" ++
     s!"  fin_cases x <;> rfl\n"
 
-  define_opaque_state (state+5) (expr_base + 152 + 326*round) 1 log
+  define_opaque_state (state+5) (expr_base + 278 + 326*round) 1 log
   runAsCommand state6' log
-  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 16 + 32*round) 18 log
+  define_constraint_group s!"{scope}_full_round_{round}_post_constraints" (constraint_base + 48 + 72*round) 24 log
   runAsCommand state6_equiv log
 
   let full_round_constraints :=
@@ -805,10 +863,10 @@ def prove_full_round
 
 
 elab "#prove_beginning_full_round" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 2) 1443 25 0 "beginning"
+  prove_full_round round.getNat (round.getNat*6 + 2) 1441 25 0 "beginning"
 
 elab "#prove_beginning_full_round?" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 2) 1443 25 0 "beginning" true
+  prove_full_round round.getNat (round.getNat*6 + 2) 1441 25 0 "beginning" true
 
 elab "#prove_ending_full_round" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending"
