@@ -55,13 +55,13 @@ def define_internal_matrix_state
     s!"def part_sum_{round} {"{"}F ExtF C{"}"}" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]" ++
     s!"  (c : C F ExtF) (row: ℕ)" ++
-    s!": F := e{expression - 36} c row"
+    s!": F := e{expression - 52} c row"
 
   let full_sum_def_string :=
     s!"def full_sum_{round} {"{"}F ExtF C{"}"}" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]" ++
     s!"  (c : C F ExtF) (row: ℕ)" ++
-    s!": F := e{expression - 35} c row"
+    s!": F := e{expression - 51} c row"
 
   let state_def_string :=
     s!"def state{idx} {"{"}F ExtF C{"}"}" ++
@@ -69,22 +69,30 @@ def define_internal_matrix_state
     s!"  (c : C F ExtF) (row: ℕ)" ++
     s!": Fin 24 → F :=" ++
     s!"  λ x => match x with" ++
-    s!"    | 0 => e{expression - 34} c row" ++
-    s!"    | 1 => e{expression - 33} c row" ++
-    s!"    | 2 => e{expression - 31} c row" ++
-    s!"    | 3 => e{expression - 29} c row" ++
-    s!"    | 4 => e{expression - 26} c row" ++
-    s!"    | 5 => e{expression - 23} c row" ++
-    s!"    | 6 => e{expression - 21} c row" ++
-    s!"    | 7 => e{expression - 18} c row" ++
-    s!"    | 8 => e{expression - 15} c row" ++
-    s!"    | 9 => e{expression - 13} c row" ++
-    s!"    | 10 => e{expression - 11} c row" ++
-    s!"    | 11 => e{expression - 9} c row" ++
-    s!"    | 12 => e{expression - 7} c row" ++
-    s!"    | 13 => e{expression - 5} c row" ++
-    s!"    | 14 => e{expression - 3} c row" ++
-    s!"    | 15 => e{expression - 1} c row" ++
+    s!"    | 0 => e{expression - 50} c row" ++
+    s!"    | 1 => e{expression - 49} c row" ++
+    s!"    | 2 => e{expression - 47} c row" ++
+    s!"    | 3 => e{expression - 45} c row" ++
+    s!"    | 4 => e{expression - 42} c row" ++
+    s!"    | 5 => e{expression - 39} c row" ++
+    s!"    | 6 => e{expression - 37} c row" ++
+    s!"    | 7 => e{expression - 34} c row" ++
+    s!"    | 8 => e{expression - 31} c row" ++
+    s!"    | 9 => e{expression - 29} c row" ++
+    s!"    | 10 => e{expression - 27} c row" ++
+    s!"    | 11 => e{expression - 25} c row" ++
+    s!"    | 12 => e{expression - 23} c row" ++
+    s!"    | 13 => e{expression - 21} c row" ++
+    s!"    | 14 => e{expression - 19} c row" ++
+    s!"    | 15 => e{expression - 17} c row" ++
+    s!"    | 16 => e{expression - 15} c row" ++
+    s!"    | 17 => e{expression - 13} c row" ++
+    s!"    | 18 => e{expression - 11} c row" ++
+    s!"    | 19 => e{expression - 9} c row" ++
+    s!"    | 20 => e{expression - 7} c row" ++
+    s!"    | 21 => e{expression - 5} c row" ++
+    s!"    | 22 => e{expression - 3} c row" ++
+    s!"    | 23 => e{expression - 1} c row" ++
     s!"    | _ => 0"
 
   runAsCommand part_sum_def_string log
@@ -234,35 +242,58 @@ elab "#prove_full_round_post_constraints?" start_constraint:num round:num state:
 def prove_partial_round
   (round : ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
+  let base_starting_state := 26
+  let states_per_round := 6
+  let state := base_starting_state + states_per_round*round
+
+  let base_starting_expression := 2745
+  let expressions_per_round := 82
+  let starting_expression := base_starting_expression + expressions_per_round * round
+
+  let base_starting_constraint := 288
+  let sbox_registers := 2
+  let constraints_per_round := sbox_registers + 1
+  let starting_constraint := base_starting_constraint + constraints_per_round * round
+
+  let width := 24
+  let base_starting_column := base_starting_constraint + width + 1
+  let column_expr_offset := 3
+  let column_expr := column_expr_offset + base_starting_column + constraints_per_round * round
+
+  let sbox_constraint_1 := "eval_sbox_11_2_r1"
+  let sbox_member_1 := "sbox_r1"
+  let sbox_constraint_2 := "eval_sbox_11_2_r2"
+  let sbox_member_2 := "sbox_r2"
+
   let state1 :=
-    s!"def state{26 + 5*round}\n" ++
+    s!"def state{state} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
-    s!"    | 0 => e{1409 + 56*round} c row\n" ++
-    s!"    | x => state{25 + 5*round} c row x"
+    s!"    | 0 => e{starting_expression} c row\n" ++
+    s!"    | x => state{state-1} c row x"
 
   let state1' :=
-    s!"def state{26 + 5*round}'\n" ++
+    s!"def state{state}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
-    s!"  add_partial_round_constant (state{25 + 5*round} c row) {round}"
+    s!"  add_partial_round_constant (state{state - 1} c row) {round}"
 
   let state1_equiv :=
-    s!"lemma state{26 + 5*round}_equiv\n" ++
+    s!"lemma state{state}_equiv {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!":\n" ++
-    s!"  state{26 + 5*round} c row = state{26 + 5*round}' c row\n" ++
+    s!"  state{state} c row = state{state}' c row\n" ++
     s!":= by\n" ++
-    s!"  unfold state{26 + 5*round} state{26 + 5*round}'\n" ++
+    s!"  unfold state{state} state{state}'\n" ++
     s!"  funext x\n" ++
     s!"  fin_cases x\n" ++
     s!"  . simp [\n" ++
     s!"      add_partial_round_constant, partial_round_constants,\n" ++
-    s!"      e{1409 + 56*round}, state{25 + 5*round}\n" ++
+    s!"      e{starting_expression}, state{state - 1}\n" ++
     s!"    ]\n" ++
     s!"  all_goals (\n" ++
     s!"    simp [\n" ++
@@ -275,265 +306,321 @@ def prove_partial_round
   runAsCommand state1_equiv log
 
   let state2 :=
-    s!"def state{27 + 5*round}\n" ++
+    s!"def state{state + 1} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
-    s!"    | 0 => e{1411 + 56*round} c row\n" ++
-    s!"    | x => state{26 + 5*round} c row x"
+    s!"    | 0 => e{starting_expression + 2} c row\n" ++
+    s!"    | x => state{state} c row x"
 
 
   let state2' :=
-    s!"def state{27 + 5*round}'\n" ++
+    s!"def state{state + 1}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F\n" ++
-    s!"  | 0 => (state{26 + 5*round} c row 0) ^ 3\n" ++
-    s!"  | x => state{26 + 5*round} c row x"
+    s!"  | 0 => (state{state} c row 0) ^ 3\n" ++
+    s!"  | x => state{state} c row x"
 
   let state2_equiv :=
-    s!"lemma state{27 + 5*round}_equiv\n" ++
+    s!"lemma state{state + 1}_equiv {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!":\n" ++
-    s!"  state{27 + 5*round} c row = state{27 + 5*round}' c row\n" ++
+    s!"  state{state + 1} c row = state{state + 1}' c row\n" ++
     s!":= by\n" ++
-    s!"  unfold state{27 + 5*round} state{27 + 5*round}'\n" ++
+    s!"  unfold state{state + 1} state{state + 1}'\n" ++
     s!"  funext x\n" ++
     s!"  fin_cases x\n" ++
     s!"  . simp [\n" ++
-    s!"      e{1411 + 56*round}, e{1410 + 56*round}, state{26 + 5*round},\n" ++
+    s!"      e{starting_expression + 2}, e{starting_expression + 1}, state{state},\n" ++
     s!"      pow_three'\n" ++
     s!"    ]\n" ++
-    s!"  all_goals simp"
+    s!"  all_goals rfl"
 
   runAsCommand state2 log
   runAsCommand state2' log
   runAsCommand state2_equiv log
 
   let constraint1_equiv :=
-    s!"lemma constraint_equiv_{128 + 2*round}\n" ++
+    s!"lemma constraint_equiv_{starting_constraint} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!":\n" ++
-    s!"  constraint_{128 + 2*round} c row =\n" ++
-    s!"  eval_sbox_7_1\n" ++
-    s!"    ((partial_rounds c row {round}).sbox)\n" ++
-    s!"    (state{26 + 5*round} c row 0)\n" ++
-    s!":= by\n" ++
-    s!"  simp [\n" ++
-    s!"    constraint_{128 + 2*round},\n" ++
-    s!"    eval_sbox_7_1,\n" ++
-    s!"    partial_rounds,\n" ++
-    s!"    state{26 + 5*round},\n" ++
-    s!"    sub_eq_zero,\n" ++
-    s!"    e{1412 + 56*round},\n" ++
-    s!"    e{148 + 2*round},\n" ++
-    s!"    e{1411 + 56*round}, e{1410 + 56*round}\n" ++
-    s!"  ]"
+    s!"  constraint_{starting_constraint} c row =\n" ++
+    s!"  {sbox_constraint_1}\n" ++
+    s!"    ((partial_rounds c row {round}).{sbox_member_1})\n" ++
+    s!"    (state{state} c row 0)\n" ++
+    s!":= rfl"
 
   runAsCommand constraint1_equiv log
 
   let state3 :=
-    s!"def state{28 + 5*round}\n" ++
+    s!"def state{state + 2} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
-    s!"    | 0 => e{1414 + 56*round} c row\n" ++
-    s!"    | x => state{26 + 5*round} c row x"
+    s!"    | 0 => e{starting_expression + 5} c row\n" ++
+    s!"    | x => state{state} c row x"
 
   let state3' :=
-    s!"def state{28 + 5*round}'\n" ++
+    s!"def state{state + 2}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F\n" ++
-    s!"  | 0 => (state{26 + 5*round} c row 0) ^ 7\n" ++
-    s!"  | x => state{26 + 5*round} c row x"
+    s!"  | 0 => (state{state} c row 0) ^ 9\n" ++
+    s!"  | x => state{state} c row x"
 
   let state3_equiv :=
-    s!"lemma state{28 + 5*round}_equiv\n" ++
+    s!"lemma state{state + 2}_equiv {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!"  (h : constraint_{128 + 2*round} c row)\n" ++
+    s!"  (h : constraint_{starting_constraint} c row)\n" ++
     s!":\n" ++
-    s!"  state{28 + 5*round} c row = state{28 + 5*round}' c row\n" ++
+    s!"  state{state + 2} c row = state{state + 2}' c row\n" ++
     s!":= by\n" ++
-    s!"  unfold state{28 + 5*round} state{28 + 5*round}'\n" ++
+    s!"  unfold state{state + 2} state{state + 2}'\n" ++
     s!"  funext x\n" ++
     s!"  fin_cases x\n" ++
     s!"  . simp [\n" ++
-    s!"      constraint_equiv_{128 + 2*round} c row,\n" ++
-    s!"      eval_sbox_7_1,\n" ++
-    s!"      partial_rounds, state{26 + 5*round},\n" ++
+    s!"      constraint_equiv_{starting_constraint} c row,\n" ++
+    s!"      {sbox_constraint_1},\n" ++
+    s!"      partial_rounds, state{state},\n" ++
     s!"      sub_eq_zero\n" ++
     s!"    ] at h\n" ++
     s!"    simp [\n" ++
-    s!"      e{1414 + 56*round}, state{26 + 5*round},\n" ++
-    s!"      e{1413 + 56*round},\n" ++
-    s!"      e{148 + 2*round},\n" ++
+    s!"      e{starting_expression+5}, e{starting_expression+4},\n" ++
+    s!"      e{column_expr},\n" ++
+    s!"      state{state},\n" ++
     s!"      h\n" ++
     s!"    ]\n" ++
-    s!"    grind\n" ++
-    s!"  all_goals simp"
+    s!"    ring\n" ++
+    s!"  all_goals rfl"
 
   runAsCommand state3 log
   runAsCommand state3' log
   runAsCommand state3_equiv log
 
   let constraint2_equiv :=
-    s!"lemma constraint_equiv_{129 + 2*round}\n" ++
+    s!"lemma constraint_equiv_{starting_constraint+1} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
     s!":\n" ++
-    s!"  constraint_{129 + 2*round} c row =\n" ++
-    s!"  (state{28 + 5*round} c row 0 = (partial_rounds c row {round}).post_sbox)\n" ++
-    s!":= by\n" ++
-    s!"  simp [\n" ++
-    s!"    constraint_{129 + 2*round},\n" ++
-    s!"    e{1415 + 56*round},\n" ++
-    s!"    sub_eq_zero,\n" ++
-    s!"    state{28 + 5*round},\n" ++
-    s!"    partial_rounds,\n" ++
-    s!"    e{149 + 2*round}\n" ++
-    s!"  ]"
+    s!"  constraint_{starting_constraint+1} c row =\n" ++
+    s!"  {sbox_constraint_2}\n" ++
+    s!"    ((partial_rounds c row {round}).{sbox_member_2})\n" ++
+    s!"    ((partial_rounds c row {round}).{sbox_member_1})\n" ++
+    s!":= rfl"
 
   runAsCommand constraint2_equiv log
 
   let state4 :=
-    s!"def state{29 + 5*round}\n" ++
+    s!"def state{state + 3} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
     s!"  λ x => match x with\n" ++
-    s!"    | 0 => e{149 + 2*round} c row\n" ++
-    s!"    | x => state{28 + 5*round} c row x"
+    s!"    | 0 => e{starting_expression + 7} c row\n" ++
+    s!"    | x => state{state} c row x"
 
   let state4' :=
-    s!"def state{29 + 5*round}'\n" ++
+    s!"def state{state + 3}' {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
-    s!": Fin 24 → F :=\n" ++
-    s!"  state{28 + 5*round} c row"
+    s!": Fin 24 → F\n" ++
+    s!"  | 0 => (state{state} c row 0) ^ 11\n" ++
+    s!"  | x => state{state} c row x"
 
   let state4_equiv :=
-    s!"lemma state{29 + 5*round}_equiv\n" ++
+    s!"lemma state{state + 3}_equiv {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!"  (h : constraint_{129 + 2*round} c row)\n" ++
+    s!"  (h1 : constraint_{starting_constraint} c row)\n" ++
+    s!"  (h2 : constraint_{starting_constraint+1} c row)\n" ++
     s!":\n" ++
-    s!"  state{29 + 5*round} c row = state{29 + 5*round}' c row\n" ++
+    s!"  state{state + 3} c row = state{state + 3}' c row\n" ++
     s!":= by\n" ++
-    s!"  unfold state{29 + 5*round} state{29 + 5*round}'\n" ++
+    s!"  unfold state{state + 3} state{state + 3}'\n" ++
     s!"  funext x\n" ++
     s!"  fin_cases x\n" ++
     s!"  . simp [\n" ++
-    s!"      constraint_equiv_{129 + 2*round},\n" ++
-    s!"      partial_rounds\n" ++
-    s!"    ] at h\n" ++
-    s!"    simp [e{149 + 2*round}, h]\n" ++
-    s!"  all_goals simp"
+    s!"      constraint_equiv_{starting_constraint} c row,\n" ++
+    s!"      {sbox_constraint_1},\n" ++
+    s!"      partial_rounds,\n" ++
+    s!"      sub_eq_zero\n" ++
+    s!"    ] at h1\n" ++
+    s!"    simp [\n" ++
+    s!"      constraint_equiv_{starting_constraint+1} c row,\n" ++
+    s!"      {sbox_constraint_2},\n" ++
+    s!"      partial_rounds,\n" ++
+    s!"      sub_eq_zero\n" ++
+    s!"    ] at h2\n" ++
+    s!"    simp [\n" ++
+    s!"      state{state},\n" ++
+    s!"      e{starting_expression+7},\n"++
+    s!"      e{starting_expression+1},\n" ++
+    s!"      e{column_expr+1},\n" ++
+    s!"      h1, h2\n" ++
+    s!"    ]\n" ++
+    s!"    ring\n" ++
+    s!"  all_goals rfl"
 
   runAsCommand state4 log
   runAsCommand state4' log
   runAsCommand state4_equiv log
 
-  let state5 :=
-    s!"#define_internal_matrix_state {30 + 5*round} {1465 + 56*round} {round}"
+  let constraint3_equiv :=
+    s!"lemma constraint_equiv_{starting_constraint+2} {"{"}F ExtF C{"}"}\n" ++
+    s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
+    s!"  (c : C F ExtF) (row: ℕ)\n" ++
+    s!":\n" ++
+    s!"  constraint_{starting_constraint+2} c row =\n" ++
+    s!"  (state{state + 3} c row 0 = (partial_rounds c row {round}).post_sbox)\n" ++
+    s!":= by\n" ++
+    s!"  simp [\n" ++
+    s!"    constraint_{starting_constraint+2},\n" ++
+    s!"    e{starting_expression+8},\n" ++
+    s!"    sub_eq_zero,\n" ++
+    s!"    state{state + 3},\n" ++
+    s!"    partial_rounds,\n" ++
+    s!"    e{column_expr+2}\n" ++
+    s!"  ]"
 
-  let state5' :=
-    s!"def state{30 + 5*round}'\n" ++
+  runAsCommand constraint3_equiv log
+
+  let state5 :=
+    s!"def state{state + 4} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!": Fin 24 → F :=\n" ++
-    s!"  generic_internal_linear_layer (state{29 + 5*round} c row)"
+    s!"  λ x => match x with\n" ++
+    s!"    | 0 => e{column_expr+2} c row\n" ++
+    s!"    | x => state{state + 3} c row x"
+
+  let state5' :=
+    s!"def state{state + 4}' {"{"}F ExtF C{"}"}\n" ++
+    s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
+    s!"  (c : C F ExtF) (row : ℕ)\n" ++
+    s!": Fin 24 → F :=\n" ++
+    s!"  state{state + 3} c row"
 
   let state5_equiv :=
-    s!"lemma state{30 + 5*round}_equiv\n" ++
+    s!"lemma state{state + 4}_equiv {"{"}F ExtF C{"}"}\n" ++
+    s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
+    s!"  (c : C F ExtF) (row: ℕ)\n" ++
+    s!"  (h : constraint_{starting_constraint+2} c row)\n" ++
+    s!":\n" ++
+    s!"  state{state + 4} c row = state{state + 4}' c row\n" ++
+    s!":= by\n" ++
+    s!"  unfold state{state + 4} state{state + 4}'\n" ++
+    s!"  funext x\n" ++
+    s!"  fin_cases x\n" ++
+    s!"  . simp [\n" ++
+    s!"      constraint_equiv_{starting_constraint+2},\n" ++
+    s!"      partial_rounds\n" ++
+    s!"    ] at h\n" ++
+    s!"    simp [e{column_expr+2}, h]\n" ++
+    s!"  all_goals rfl"
+
+  runAsCommand state5 log
+  runAsCommand state5' log
+  runAsCommand state5_equiv log
+
+  let state6 :=
+    s!"#define_internal_matrix_state {state + 5} {starting_expression+expressions_per_round} {round}"
+
+  let state6' :=
+    s!"def state{state + 5}' {"{"}F ExtF C{"}"}\n" ++
+    s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
+    s!"  (c : C F ExtF) (row : ℕ)\n" ++
+    s!": Fin 24 → F :=\n" ++
+    s!"  generic_internal_linear_layer (state{state + 4} c row)"
+
+  let state6_equiv :=
+    s!"lemma state{state + 5}_equiv {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row : ℕ)\n" ++
     s!"  (h_halve : ∀ x: F, x * 1006632961 = x / 2)\n" ++
     s!"  (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)\n" ++
     s!"  (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)\n" ++
     s!"  (h_div_pow_4 : ∀ x: F, x * 1887436801 = x / 2 ^ 4)\n" ++
+    s!"  (h_div_pow_5 : ∀ x: F, x * 1950351361 = x / 2 ^ 5)\n" ++
+    s!"  (h_div_pow_6 : ∀ x: F, x * 1981808641 = x / 2 ^ 6)\n" ++
+    s!"  (h_div_pow_7 : ∀ x: F, x * 1997537281 = x / 2 ^ 7)\n" ++
     s!"  (h_div_pow_8 : ∀ x: F, x * 2005401601 = x / 2 ^ 8)\n" ++
+    s!"  (h_div_pow_9 : ∀ x: F, x * 2009333761 = x / 2 ^ 9)\n" ++
     s!"  (h_div_pow_27 : ∀ x: F, x * 2013265906 = x / 2 ^ 27)\n" ++
     s!":\n" ++
-    s!"  state{30 + 5*round} c row = state{30 + 5*round}' c row\n" ++
+    s!"  state{state + 5} c row = state{state + 5}' c row\n" ++
     s!":= by\n" ++
-    s!"  unfold state{30 + 5*round} state{30 + 5*round}'\n" ++
+    s!"  unfold state{state + 5} state{state + 5}'\n" ++
     s!"  funext x\n" ++
     s!"  fin_cases x\n" ++
     s!"  all_goals (\n" ++
     s!"    simp [\n" ++
     s!"      generic_internal_linear_layer,\n" ++
     s!"      internal_layer_mat_mul,\n" ++
-    s!"      state{29 + 5*round},\n" ++
-    s!"      state{28 + 5*round},\n" ++
-    s!"      state{26 + 5*round},\n" ++
-    s!"      state{25 + 5*round},\n" ++
+    s!"      state{state + 4},\n" ++
+    s!"      state{state + 3},\n" ++
+    s!"      state{state},\n" ++
+    s!"      state{state - 1},\n" ++
     s!"      ←h_halve,\n" ++
     s!"      ←h_div_pow_2,\n" ++
     s!"      ←h_div_pow_3,\n" ++
     s!"      ←h_div_pow_4,\n" ++
+    s!"      ←h_div_pow_5,\n" ++
+    s!"      ←h_div_pow_6,\n" ++
+    s!"      ←h_div_pow_7,\n" ++
     s!"      ←h_div_pow_8,\n" ++
+    s!"      ←h_div_pow_9,\n" ++
     s!"      ←h_div_pow_27,\n" ++
     s!"    ]\n" ++
     s!"  )\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr\n" ++
-    s!"  . congr"
+    s!"  all_goals rfl"
 
-  runAsCommand state5 log
-  runAsCommand state5' log
-  runAsCommand state5_equiv log
+  runAsCommand state6 log
+  runAsCommand state6' log
+  runAsCommand state6_equiv log
 
   let round_lemma :=
-    s!"lemma partial_round_{round}\n" ++
+    s!"lemma partial_round_{round} {"{"}F ExtF C{"}"}\n" ++
     s!"  [Field F] [Field ExtF] [Circuit F ExtF C]\n" ++
     s!"  (c : C F ExtF) (row: ℕ)\n" ++
-    s!"  (h1: constraint_{128 + 2*round} c row)\n" ++
-    s!"  (h2: constraint_{129 + 2*round} c row)\n" ++
+    s!"  (h1: constraint_{starting_constraint} c row)\n" ++
+    s!"  (h2: constraint_{starting_constraint+1} c row)\n" ++
+    s!"  (h3: constraint_{starting_constraint+2} c row)\n" ++
     s!"  (h_halve : ∀ x: F, x * 1006632961 = x / 2)\n" ++
     s!"  (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)\n" ++
     s!"  (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)\n" ++
     s!"  (h_div_pow_4 : ∀ x: F, x * 1887436801 = x / 2 ^ 4)\n" ++
+    s!"  (h_div_pow_5 : ∀ x: F, x * 1950351361 = x / 2 ^ 5)\n" ++
+    s!"  (h_div_pow_6 : ∀ x: F, x * 1981808641 = x / 2 ^ 6)\n" ++
+    s!"  (h_div_pow_7 : ∀ x: F, x * 1997537281 = x / 2 ^ 7)\n" ++
     s!"  (h_div_pow_8 : ∀ x: F, x * 2005401601 = x / 2 ^ 8)\n" ++
+    s!"  (h_div_pow_9 : ∀ x: F, x * 2009333761 = x / 2 ^ 9)\n" ++
     s!"  (h_div_pow_27 : ∀ x: F, x * 2013265906 = x / 2 ^ 27)\n" ++
     s!":\n" ++
-    s!"  state{30 + 5*round} c row =\n" ++
+    s!"  state{state + 5} c row =\n" ++
     s!"  partial_round (\n" ++
-    s!"    state{25 + 5*round} c row\n" ++
+    s!"    state{state - 1} c row\n" ++
     s!"  ) {round}\n" ++
     s!":= by\n" ++
     s!"\n" ++
     s!"  rewrite [\n" ++
-    s!"    state{30 + 5*round}_equiv c row h_halve h_div_pow_2 h_div_pow_3 h_div_pow_4 h_div_pow_8 h_div_pow_27\n" ++
+    s!"    state{state + 5}_equiv c row h_halve h_div_pow_2 h_div_pow_3 h_div_pow_4 h_div_pow_5 h_div_pow_6 h_div_pow_7 h_div_pow_8 h_div_pow_9 h_div_pow_27\n" ++
     s!"  ]\n" ++
-    s!"  unfold state{30 + 5*round}' partial_round\n" ++
+    s!"  unfold state{state + 5}' partial_round\n" ++
     s!"\n" ++
-    s!"  rewrite [state{29 + 5*round}_equiv c row h2]\n" ++
-    s!"  unfold state{29 + 5*round}'\n" ++
+    s!"  rewrite [state{state + 4}_equiv c row h3]\n" ++
+    s!"  unfold state{state + 4}'\n" ++
     s!"\n" ++
-    s!"  rewrite [state{28 + 5*round}_equiv c row h1]\n" ++
-    s!"  unfold state{28 + 5*round}'\n" ++
+    s!"  rewrite [state{state + 3}_equiv c row h1 h2]\n" ++
+    s!"  unfold state{state + 3}'\n" ++
     s!"\n" ++
-    s!"  rewrite [state{26 + 5*round}_equiv c row]\n" ++
-    s!"  unfold state{26 + 5*round}'\n" ++
+    s!"  rewrite [state{state}_equiv c row]\n" ++
+    s!"  unfold state{state}'\n" ++
     s!"  rfl"
 
   runAsCommand round_lemma log
@@ -606,6 +693,7 @@ def prove_full_round
   define_opaque_state (state+2) (col_base + 3 + 48*round) 1 log
   runAsCommand state3' log
   prove_eval_sbox_constraints (constraint_base + 72*round) round state 24 scope log
+  -- if scope == "beginning" then
 
   let state4' :=
     s!"def state{state+3}' {"{"}F ExtF C{"}"}\n" ++
@@ -860,6 +948,9 @@ def prove_full_round
 
   runAsCommand full_round_constraints log
   runAsCommand full_round_lemma log
+  -- else
+  --   pure ()
+
 
 
 elab "#prove_beginning_full_round" round:num : command => do
@@ -869,7 +960,7 @@ elab "#prove_beginning_full_round?" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 2) 1441 25 0 "beginning" true
 
 elab "#prove_ending_full_round" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending"
+  prove_full_round round.getNat (round.getNat*6 + 152) 4467 376 351 "ending"
 
 elab "#prove_ending_full_round?" round:num : command => do
-  prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending" true
+  prove_full_round round.getNat (round.getNat*6 + 152) 4467 376 351 "ending" true

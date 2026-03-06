@@ -1,7 +1,7 @@
 import Poseidon2Fv.Equivalence.InternalLinearLayer
 
 lemma add_partial_round_constants_equiv
-  (fin_state : Fin 16 → ZMod P)
+  (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
   ((Array.ofFn fin_state).modify 0 fun x ↦ x + Poseidon2.Folding.partial_round_constants partial_round) =
@@ -11,21 +11,21 @@ lemma add_partial_round_constants_equiv
   simp [Poseidon2.Folding.add_partial_round_constant]
 
 lemma apply_partial_round_sbox_equiv
-  (fin_state : Fin 16 → ZMod P)
+  (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
-  (Array.ofFn fin_state).modify 0 (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 7⟩, full_rounds, partial_rounds⟩) =
+  (Array.ofFn fin_state).modify 0 (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 11⟩, full_rounds, partial_rounds⟩) =
   Array.ofFn (Poseidon2.Folding.apply_partial_round_sbox fin_state)
 := by
   apply Array.toList_inj.mp
   simp [Poseidon.HashProfile.sBox, Poseidon2.Folding.apply_partial_round_sbox]
 
 lemma partial_round_equiv
-  (fin_state : Fin 16 → (ZMod P))
+  (fin_state : Fin 24 → (ZMod P))
   (full_round_constants : Array (Array (ZMod P)))
   [Fact P.Prime]
 :
-  let profile := ⟨⟨p1, p2, P, 7⟩, 8, 13⟩
+  let profile := ⟨⟨p1, p2, P, 11⟩, 8, 21⟩
   Poseidon2.partialRound
     profile
     ⟨internalMatrixDiag profile, full_round_constants, Array.ofFn Poseidon2.Folding.partial_round_constants⟩

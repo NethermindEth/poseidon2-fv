@@ -110,14 +110,14 @@ def internal_layer_mat_mul [Field F] (state : Fin 24 → F) (sum : F) : Fin 24 �
   | 9 => state 9 / (2 ^ 8) + sum
   | 10 => state 10 / (2 ^ 2) + sum
   | 11 => state 11 / (2 ^ 3) + sum
-  | 12 => state 12 / (2 ^ 27) + sum
-  | 13 => sum - state 13 / (2 ^ 8)
-  | 14 => sum - state 14 / (2 ^ 4)
+  | 12 => state 12 / (2 ^ 4) + sum
+  | 13 => state 13 / (2 ^ 7) + sum
+  | 14 => state 14 / (2 ^ 9) + sum
   -- state[15] = state[15].div_2exp_u64(27);
   -- state[15] += sum.clone();
-  | 15 => sum - state 15 / (2 ^ 27)
+  | 15 => state 15 / (2 ^ 27) + sum
   -- state[16] = state[16].div_2exp_u64(8);
-  -- state[16] = sum.clone() - state[16].clone();      
+  -- state[16] = sum.clone() - state[16].clone();
   | 16 => sum - state 16 / (2 ^ 8)
   -- state[17] = state[17].div_2exp_u64(2);
   -- state[17] = sum.clone() - state[17].clone();
@@ -274,7 +274,7 @@ def beginning_full_round_constants [Field F] : Fin 4 → Fin 24 → F
   | 1, ⟨_ + 24, _⟩ => by exfalso; omega
   | 2, ⟨_ + 24, _⟩ => by exfalso; omega
   | 3, ⟨_ + 24, _⟩ => by exfalso; omega
- 
+
 
 def ending_full_round_constants [Field F] : Fin 4 → Fin 24 → F
   | 0, 0 => 0x032959ad
@@ -439,7 +439,8 @@ structure FullRound (F: Type) where
   post : Fin 24 → F
 
 structure PartialRound (F: Type) where
-  sbox : F -- a single one-register sbox
+  sbox_r1 : F -- a two-register sbox
+  sbox_r2 : F
   post_sbox : F -- its result
 
 def inputs
@@ -463,9 +464,10 @@ def beginning_full_rounds
 def partial_rounds
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 13 → PartialRound F :=
+: Fin 21 → PartialRound F :=
   λ round => {
-    sbox := (Circuit.main c (313 /- 1 + 24 + (4 * (3 * 24)) -/ + 3 * round.val) row 0)
+    sbox_r1 := (Circuit.main c (313 /- 1 + 24 + (4 * (3 * 24)) -/ + 3 * round.val) row 0)
+    sbox_r2 := (Circuit.main c (314 /- 1 + 24 + (4 * (3 * 24)) -/ + 3 * round.val) row 0)
     post_sbox := (Circuit.main c (315 /- 1 + 24 + (4 * (3 * 24)) + 2 -/ + 3 * round.val) row 0)
   }
 
