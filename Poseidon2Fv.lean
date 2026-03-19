@@ -15,7 +15,6 @@ import Poseidon2Fv.Width16SBoxDeg7.Equivalence.InternalLinearLayer
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.Permutation
-import Poseidon2Fv.Width16SBoxDeg7.EquivalenceWithSpec
 
 -- Width 24, with SBox Degree 11
 import Poseidon2Fv.Width24SBoxDeg11.Extraction
@@ -32,4 +31,3 @@ import Poseidon2Fv.Width24SBoxDeg11.Equivalence.InternalLinearLayer
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.FullRound
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.PartialRound
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.Permutation
-import Poseidon2Fv.Width24SBoxDeg11.EquivalenceWithSpec

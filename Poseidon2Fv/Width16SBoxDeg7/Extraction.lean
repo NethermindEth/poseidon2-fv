@@ -8,7 +8,7 @@ set_option linter.all false
 
 namespace Poseidon2W16S7.Extraction
 
-@[Poseidon2_W16S7_expressions] def e0 {{C : Type → Type → Type}} {{F ExtF : Type}} [Field F] [Field ExtF] [Circuit F ExtF C] (c : C F ExtF) (row: ℕ) : F :=
+def e0 {{C : Type → Type → Type}} {{F ExtF : Type}} [Field F] [Field ExtF] [Circuit F ExtF C] (c : C F ExtF) (row: ℕ) : F :=
   (Circuit.isFirstRow c row)
 def e1 {{C : Type → Type → Type}} {{F ExtF : Type}} [Field F] [Field ExtF] [Circuit F ExtF C] (c : C F ExtF) (row: ℕ) : F :=
   (Circuit.isLastRow c row)
