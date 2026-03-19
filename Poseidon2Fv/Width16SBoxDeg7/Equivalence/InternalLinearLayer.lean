@@ -32,7 +32,7 @@ lemma internal_linear_layer_equiv
   =
     ⟨
       PUnit.unit,
-      ⟨start_round, Array.ofFn (Poseidon2.Folding.generic_internal_linear_layer fin_state)⟩
+      ⟨start_round, Array.ofFn (Poseidon2W16S7.Folding.generic_internal_linear_layer fin_state)⟩
     ⟩
 := by
   -- Unfold the spec functions
@@ -98,8 +98,8 @@ lemma internal_linear_layer_equiv
   simp [this]; clear this sum
   split_ands
   all_goals simp [
-    Poseidon2.Folding.generic_internal_linear_layer,
-    Poseidon2.Folding.internal_layer_mat_mul,
+    Poseidon2W16S7.Folding.generic_internal_linear_layer,
+    Poseidon2W16S7.Folding.internal_layer_mat_mul,
     ←add_assoc,
     add_comm _ (fin_state 0)
   ]

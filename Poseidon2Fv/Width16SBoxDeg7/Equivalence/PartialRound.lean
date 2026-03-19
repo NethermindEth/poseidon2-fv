@@ -4,21 +4,21 @@ lemma add_partial_round_constants_equiv
   (fin_state : Fin 16 → ZMod P)
   [Fact P.Prime]
 :
-  ((Array.ofFn fin_state).modify 0 fun x ↦ x + Poseidon2.Folding.partial_round_constants partial_round) =
-  Array.ofFn (Poseidon2.Folding.add_partial_round_constant fin_state partial_round)
+  ((Array.ofFn fin_state).modify 0 fun x ↦ x + Poseidon2W16S7.Folding.partial_round_constants partial_round) =
+  Array.ofFn (Poseidon2W16S7.Folding.add_partial_round_constant fin_state partial_round)
 := by
   apply Array.toList_inj.mp
-  simp [Poseidon2.Folding.add_partial_round_constant]
+  simp [Poseidon2W16S7.Folding.add_partial_round_constant]
 
 lemma apply_partial_round_sbox_equiv
   (fin_state : Fin 16 → ZMod P)
   [Fact P.Prime]
 :
   (Array.ofFn fin_state).modify 0 (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 7⟩, full_rounds, partial_rounds⟩) =
-  Array.ofFn (Poseidon2.Folding.apply_partial_round_sbox fin_state)
+  Array.ofFn (Poseidon2W16S7.Folding.apply_partial_round_sbox fin_state)
 := by
   apply Array.toList_inj.mp
-  simp [Poseidon.HashProfile.sBox, Poseidon2.Folding.apply_partial_round_sbox]
+  simp [Poseidon.HashProfile.sBox, Poseidon2W16S7.Folding.apply_partial_round_sbox]
 
 lemma partial_round_equiv
   (fin_state : Fin 16 → (ZMod P))
@@ -28,14 +28,14 @@ lemma partial_round_equiv
   let profile := ⟨⟨p1, p2, P, 7⟩, 8, 13⟩
   Poseidon2.partialRound
     profile
-    ⟨internalMatrixDiag profile, full_round_constants, Array.ofFn Poseidon2.Folding.partial_round_constants⟩
+    ⟨internalMatrixDiag profile, full_round_constants, Array.ofFn Poseidon2W16S7.Folding.partial_round_constants⟩
     ⟨4 + partial_round.val, Array.ofFn fin_state⟩
   =
     ⟨
       PUnit.unit,
       ⟨
         4 + partial_round.val + 1,
-        Array.ofFn (Poseidon2.Folding.partial_round fin_state partial_round)
+        Array.ofFn (Poseidon2W16S7.Folding.partial_round fin_state partial_round)
       ⟩
     ⟩
 := by

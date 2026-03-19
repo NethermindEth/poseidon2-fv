@@ -8,7 +8,7 @@ open BabyBear (p)
 open LSpec
 open SlimCheck
 
-namespace Poseidon2.EquivalenceWithSpec
+namespace Poseidon2W16S7.EquivalenceWithSpec
 
 def input16 : List ℤ := Array.iota 15 |>.toList
 
@@ -20,4 +20,4 @@ def poseidon2Spec (input : List ℤ) : List ℤ :=
 
 -- #eval poseidon2Spec input16
 
-end Poseidon2.EquivalenceWithSpec
+end Poseidon2W16S7.EquivalenceWithSpec

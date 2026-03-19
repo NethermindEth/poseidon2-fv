@@ -6,7 +6,7 @@ open Plonky3
 
 set_option linter.all false
 
-namespace Poseidon2.Extraction
+namespace Poseidon2W16S7.Extraction
 
 @[Poseidon2_W16S7_expressions] def e0 {{C : Type → Type → Type}} {{F ExtF : Type}} [Field F] [Field ExtF] [Circuit F ExtF C] (c : C F ExtF) (row: ℕ) : F :=
   (Circuit.isFirstRow c row)
@@ -6319,4 +6319,4 @@ def constraint_280 {C : Type → Type → Type} {F ExtF : Type} [Field F] [Field
 def constraint_281 {C : Type → Type → Type} {F ExtF : Type} [Field F] [Field ExtF] [Circuit F ExtF C] (c : C F ExtF) (row: ℕ) :=
   e2872 c row = 0
 
-end Poseidon2.Extraction
+end Poseidon2W16S7.Extraction

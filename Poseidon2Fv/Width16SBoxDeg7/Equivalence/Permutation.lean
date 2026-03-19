@@ -10,9 +10,9 @@ lemma run_rounds_equiv
   let profile := ⟨⟨p1, p2, P, 7⟩, 8, 13⟩
   Poseidon2.runRounds
     profile
-    ⟨internalMatrixDiag profile, full_round_constants, Array.ofFn Poseidon2.Folding.partial_round_constants⟩
+    ⟨internalMatrixDiag profile, full_round_constants, Array.ofFn Poseidon2W16S7.Folding.partial_round_constants⟩
     ⟨0, (Array.ofFn fin_state)⟩ =
-  ⟨(), ⟨21, Array.ofFn (Poseidon2.Folding.permutation fin_state)⟩⟩
+  ⟨(), ⟨21, Array.ofFn (Poseidon2W16S7.Folding.permutation fin_state)⟩⟩
 := by
   simp [
     Poseidon2.runRounds,
@@ -28,32 +28,32 @@ lemma run_rounds_equiv
     p2
     P
     (internalMatrixDiag { M := p1, t := p2, p := P, a := 7, fullRounds := 8, partRounds := 13 })
-    (Array.ofFn Poseidon2.Folding.partial_round_constants)
+    (Array.ofFn Poseidon2W16S7.Folding.partial_round_constants)
     state
     start_round
     fact_prime
-  have this := this (Poseidon2.Folding.mds_light_permutation fin_state) 0
+  have this := this (Poseidon2W16S7.Folding.mds_light_permutation fin_state) 0
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.beginning_full_round (Poseidon2.Folding.mds_light_permutation fin_state) 0
+  set state := Poseidon2W16S7.Folding.beginning_full_round (Poseidon2W16S7.Folding.mds_light_permutation fin_state) 0
   have this := this state 1
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.beginning_full_round state 1
+  set state := Poseidon2W16S7.Folding.beginning_full_round state 1
   have this := this state 2
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.beginning_full_round state 2
+  set state := Poseidon2W16S7.Folding.beginning_full_round state 2
   have this := this state 3
   simp at this
   rewrite [this]; clear this; simp [pure, ReaderT.pure, StateT.pure]
 
   clear this
 
-  set state := Poseidon2.Folding.beginning_full_round state 3
+  set state := Poseidon2W16S7.Folding.beginning_full_round state 3
   have (state : Fin 16 → ZMod P) (partial_round : Fin 13) := @partial_round_equiv
     P
     partial_round
@@ -66,67 +66,67 @@ lemma run_rounds_equiv
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 0
+  set state := Poseidon2W16S7.Folding.partial_round state 0
   have this := this state 1
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 1
+  set state := Poseidon2W16S7.Folding.partial_round state 1
   have this := this state 2
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 2
+  set state := Poseidon2W16S7.Folding.partial_round state 2
   have this := this state 3
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 3
+  set state := Poseidon2W16S7.Folding.partial_round state 3
   have this := this state 4
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 4
+  set state := Poseidon2W16S7.Folding.partial_round state 4
   have this := this state 5
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 5
+  set state := Poseidon2W16S7.Folding.partial_round state 5
   have this := this state 6
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 6
+  set state := Poseidon2W16S7.Folding.partial_round state 6
   have this := this state 7
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 7
+  set state := Poseidon2W16S7.Folding.partial_round state 7
   have this := this state 8
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 8
+  set state := Poseidon2W16S7.Folding.partial_round state 8
   have this := this state 9
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 9
+  set state := Poseidon2W16S7.Folding.partial_round state 9
   have this := this state 10
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 10
+  set state := Poseidon2W16S7.Folding.partial_round state 10
   have this := this state 11
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 11
+  set state := Poseidon2W16S7.Folding.partial_round state 11
   have this := this state 12
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.partial_round state 12
+  set state := Poseidon2W16S7.Folding.partial_round state 12
 
   clear this
 
@@ -135,7 +135,7 @@ lemma run_rounds_equiv
     p2
     P
     (internalMatrixDiag { M := p1, t := p2, p := P, a := 7, fullRounds := 8, partRounds := 13 })
-    (Array.ofFn Poseidon2.Folding.partial_round_constants)
+    (Array.ofFn Poseidon2W16S7.Folding.partial_round_constants)
     state
     ending_round
     fact_prime
@@ -143,22 +143,22 @@ lemma run_rounds_equiv
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.ending_full_round state 0
+  set state := Poseidon2W16S7.Folding.ending_full_round state 0
   have this := this state 1
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.ending_full_round state 1
+  set state := Poseidon2W16S7.Folding.ending_full_round state 1
   have this := this state 2
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.ending_full_round state 2
+  set state := Poseidon2W16S7.Folding.ending_full_round state 2
   have this := this state 3
   simp at this
   rewrite [this]; clear this; simp
 
-  set state := Poseidon2.Folding.ending_full_round state 3
+  set state := Poseidon2W16S7.Folding.ending_full_round state 3
 
   rfl
 
@@ -172,11 +172,11 @@ lemma hash_equiv
     ⟨
       internalMatrixDiag profile,
       full_round_constants,
-      Array.ofFn Poseidon2.Folding.partial_round_constants
+      Array.ofFn Poseidon2W16S7.Folding.partial_round_constants
     ⟩
     (Array.ofFn fin_state)
   =
-  ⟨21, Array.ofFn (Poseidon2.Folding.permutation fin_state)⟩
+  ⟨21, Array.ofFn (Poseidon2W16S7.Folding.permutation fin_state)⟩
 := by
   simp [
     Poseidon2.hash,
@@ -205,32 +205,32 @@ section constraints
     [Field F] [Field ExtF] [Circuit F ExtF C]
     (c : C F ExtF) (row: ℕ)
   :=
-    Poseidon2.Extraction.constraint_128 c row ∧
-    Poseidon2.Extraction.constraint_129 c row ∧
-    Poseidon2.Extraction.constraint_130 c row ∧
-    Poseidon2.Extraction.constraint_131 c row ∧
-    Poseidon2.Extraction.constraint_132 c row ∧
-    Poseidon2.Extraction.constraint_133 c row ∧
-    Poseidon2.Extraction.constraint_134 c row ∧
-    Poseidon2.Extraction.constraint_135 c row ∧
-    Poseidon2.Extraction.constraint_136 c row ∧
-    Poseidon2.Extraction.constraint_137 c row ∧
-    Poseidon2.Extraction.constraint_138 c row ∧
-    Poseidon2.Extraction.constraint_139 c row ∧
-    Poseidon2.Extraction.constraint_140 c row ∧
-    Poseidon2.Extraction.constraint_141 c row ∧
-    Poseidon2.Extraction.constraint_142 c row ∧
-    Poseidon2.Extraction.constraint_143 c row ∧
-    Poseidon2.Extraction.constraint_144 c row ∧
-    Poseidon2.Extraction.constraint_145 c row ∧
-    Poseidon2.Extraction.constraint_146 c row ∧
-    Poseidon2.Extraction.constraint_147 c row ∧
-    Poseidon2.Extraction.constraint_148 c row ∧
-    Poseidon2.Extraction.constraint_149 c row ∧
-    Poseidon2.Extraction.constraint_150 c row ∧
-    Poseidon2.Extraction.constraint_151 c row ∧
-    Poseidon2.Extraction.constraint_152 c row ∧
-    Poseidon2.Extraction.constraint_153 c row
+    Poseidon2W16S7.Extraction.constraint_128 c row ∧
+    Poseidon2W16S7.Extraction.constraint_129 c row ∧
+    Poseidon2W16S7.Extraction.constraint_130 c row ∧
+    Poseidon2W16S7.Extraction.constraint_131 c row ∧
+    Poseidon2W16S7.Extraction.constraint_132 c row ∧
+    Poseidon2W16S7.Extraction.constraint_133 c row ∧
+    Poseidon2W16S7.Extraction.constraint_134 c row ∧
+    Poseidon2W16S7.Extraction.constraint_135 c row ∧
+    Poseidon2W16S7.Extraction.constraint_136 c row ∧
+    Poseidon2W16S7.Extraction.constraint_137 c row ∧
+    Poseidon2W16S7.Extraction.constraint_138 c row ∧
+    Poseidon2W16S7.Extraction.constraint_139 c row ∧
+    Poseidon2W16S7.Extraction.constraint_140 c row ∧
+    Poseidon2W16S7.Extraction.constraint_141 c row ∧
+    Poseidon2W16S7.Extraction.constraint_142 c row ∧
+    Poseidon2W16S7.Extraction.constraint_143 c row ∧
+    Poseidon2W16S7.Extraction.constraint_144 c row ∧
+    Poseidon2W16S7.Extraction.constraint_145 c row ∧
+    Poseidon2W16S7.Extraction.constraint_146 c row ∧
+    Poseidon2W16S7.Extraction.constraint_147 c row ∧
+    Poseidon2W16S7.Extraction.constraint_148 c row ∧
+    Poseidon2W16S7.Extraction.constraint_149 c row ∧
+    Poseidon2W16S7.Extraction.constraint_150 c row ∧
+    Poseidon2W16S7.Extraction.constraint_151 c row ∧
+    Poseidon2W16S7.Extraction.constraint_152 c row ∧
+    Poseidon2W16S7.Extraction.constraint_153 c row
 
   def all_ending_full_round_constraints
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -261,14 +261,14 @@ section constraints
       ⟨
         internalMatrixDiag profile,
         full_round_constants,
-        Array.ofFn Poseidon2.Folding.partial_round_constants
+        Array.ofFn Poseidon2W16S7.Folding.partial_round_constants
       ⟩
-      (Array.ofFn (Poseidon2.Folding.inputs c row))
+      (Array.ofFn (Poseidon2W16S7.Folding.inputs c row))
     =
-    ⟨21, Array.ofFn (Poseidon2.Folding.ending_full_rounds c row 3).post⟩
+    ⟨21, Array.ofFn (Poseidon2W16S7.Folding.ending_full_rounds c row 3).post⟩
   := by
     rewrite [poseidon_permutation]
-    . exact hash_equiv (Poseidon2.Folding.inputs c row)
+    . exact hash_equiv (Poseidon2W16S7.Folding.inputs c row)
     . exact babybear_halve
     . exact babybear_div_pow_2
     . exact babybear_div_pow_3

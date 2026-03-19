@@ -28,11 +28,11 @@ lemma apply_m4_equiv
 :
   ∀ idx: Fin 4,
   (Poseidon2.smallMatrixAction #[x0, x1, x2, x3])[idx]? =
-  .some ↑(Poseidon2.Folding.apply_m4 state offset idx)
+  .some ↑(Poseidon2W16S7.Folding.apply_m4 state offset idx)
 := by
   simp [
     Poseidon2.smallMatrixAction,
-    Poseidon2.Folding.apply_m4,
+    Poseidon2W16S7.Folding.apply_m4,
     Poseidon2.matrix_action,
     Poseidon2.add_array
   ]
@@ -54,7 +54,7 @@ lemma external_linear_layer_equiv
     constants
     ⟨start_round, Array.ofFn fin_state⟩
   =
-    ⟨PUnit.unit, ⟨start_round, Array.ofFn (Poseidon2.Folding.mds_light_permutation fin_state)⟩⟩
+    ⟨PUnit.unit, ⟨start_round, Array.ofFn (Poseidon2W16S7.Folding.mds_light_permutation fin_state)⟩⟩
 := by
   simp [
     Poseidon2.externalLinearLayer,
@@ -88,10 +88,10 @@ lemma external_linear_layer_equiv
   have h3 (a: ZMod profile.p) : 3*a = a+a+a := by grind only
   split_ands
   all_goals simp [
-    Poseidon2.Folding.mds_light_permutation,
-    Poseidon2.Folding.apply_m4_loop,
-    Poseidon2.Folding.apply_m4,
-    Poseidon2.Folding.apply_m4_sums,
+    Poseidon2W16S7.Folding.mds_light_permutation,
+    Poseidon2W16S7.Folding.apply_m4_loop,
+    Poseidon2W16S7.Folding.apply_m4,
+    Poseidon2W16S7.Folding.apply_m4_sums,
     h2, h3,
     ←add_assoc
   ]
