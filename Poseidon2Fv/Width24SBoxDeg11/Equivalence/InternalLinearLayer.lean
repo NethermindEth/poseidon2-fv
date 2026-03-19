@@ -3,6 +3,8 @@ import Mathlib
 import Poseidon.Hash
 import Poseidon2Fv.Width24SBoxDeg11.Folding
 
+namespace Poseidon2W24S11.InternalLinearLayer
+
 def internalMatrixDiag (profile: Poseidon.HashProfile) [Fact profile.p.Prime] : Array (ZMod profile.p) := #[
   0-2,
   1,
@@ -131,3 +133,5 @@ lemma internal_linear_layer_equiv
     add_comm _ (fin_state 0)
   ]
   all_goals ring
+
+end Poseidon2W24S11.InternalLinearLayer

@@ -5,6 +5,8 @@ open Poseidon2W24S11.Extraction
 open Poseidon2W24S11.Folding
 open Poseidon2W24S11.Tactics
 
+namespace Poseidon2W24S11.BeginningFullRounds
+
 -- Offsets will need to change
 -- Start state
 #define_opaque_state 0 4 1
@@ -626,3 +628,5 @@ lemma beginning_full_round_0
 --   )
 -- #prove_beginning_full_round 2
 -- #prove_beginning_full_round 3
+
+end Poseidon2W24S11.BeginningFullRounds

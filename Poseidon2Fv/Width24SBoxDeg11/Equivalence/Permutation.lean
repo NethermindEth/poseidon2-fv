@@ -4,6 +4,14 @@ import Poseidon2Fv.Width24SBoxDeg11.Equivalence.PartialRound
 import Poseidon2Fv.Width24SBoxDeg11.EndingFullRounds
 
 open Field
+open Poseidon2W24S11.BeginningFullRounds
+open Poseidon2W24S11.InternalLinearLayer
+open Poseidon2W24S11.PartialRound
+open Poseidon2W24S11.FullRound
+open Poseidon2W24S11.EndingFullRounds
+open Poseidon2W24S11.ExternalLinearLayer
+
+namespace Poseidon2W24S11.Permuation
 
 lemma run_rounds_equiv
   (fin_state : Fin 24 → (ZMod P))
@@ -433,3 +441,5 @@ section constraints
 
 
 end constraints
+
+end Poseidon2W24S11.Permuation

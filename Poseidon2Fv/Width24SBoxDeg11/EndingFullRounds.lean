@@ -1,9 +1,13 @@
 import Poseidon2Fv.Width24SBoxDeg11.PartialRounds
 
 open Plonky3
+open Poseidon2W24S11.BeginningFullRounds
 open Poseidon2W24S11.Extraction
 open Poseidon2W24S11.Folding
+open Poseidon2W24S11.PartialRounds
 open Poseidon2W24S11.Tactics
+
+namespace Poseidon2W24S11.EndingFullRounds
 
 #define_opaque_state 152 4467 8
 
@@ -401,3 +405,5 @@ lemma poseidon_permutation
     ←ending_full_round_2 c row h_ending_1 h_ending_2,
     ←ending_full_round_3 c row h_ending_2 h_ending_3,
   ]
+
+end Poseidon2W24S11.EndingFullRounds

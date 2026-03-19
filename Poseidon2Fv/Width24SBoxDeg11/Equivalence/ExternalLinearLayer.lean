@@ -3,6 +3,8 @@ import Mathlib
 import Poseidon.Hash
 import Poseidon2Fv.Width24SBoxDeg11.Folding
 
+namespace Poseidon2W24S11.ExternalLinearLayer
+
 lemma smallMatrixAction_size
   (slice : Array (ZMod P))
   (h_slice : slice.size = 4)
@@ -104,3 +106,5 @@ lemma external_linear_layer_equiv
     dsimp
     ring
   )
+
+end Poseidon2W24S11.ExternalLinearLayer
