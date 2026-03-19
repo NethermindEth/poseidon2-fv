@@ -1,15 +1,15 @@
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.ExternalLinearLayer
 
 def full_round_constants [Fact P.Prime]: Array (Array (ZMod P)) :=
-  Array.ofFn (λ x => Array.ofFn (Poseidon2.Folding.beginning_full_round_constants x)) ++
-  Array.ofFn (λ x => Array.ofFn (Poseidon2.Folding.ending_full_round_constants x))
+  Array.ofFn (λ x => Array.ofFn (Poseidon2W24S11.Folding.beginning_full_round_constants x)) ++
+  Array.ofFn (λ x => Array.ofFn (Poseidon2W24S11.Folding.ending_full_round_constants x))
 
 lemma get_beginning_full_round_constants
   (start_round: Fin 4)
   [Fact P.Prime]
 :
   (@full_round_constants P _)[start_round.val]! =
-  Array.ofFn (Poseidon2.Folding.beginning_full_round_constants start_round)
+  Array.ofFn (Poseidon2W24S11.Folding.beginning_full_round_constants start_round)
 := by
   fin_cases start_round <;> rfl
 
@@ -18,7 +18,7 @@ lemma get_ending_full_round_constants
   [Fact P.Prime]
 :
   (@full_round_constants P _)[4 + ending_round.val]! =
-  Array.ofFn (Poseidon2.Folding.ending_full_round_constants ending_round)
+  Array.ofFn (Poseidon2W24S11.Folding.ending_full_round_constants ending_round)
 := by
   fin_cases ending_round <;> rfl
 
@@ -38,32 +38,32 @@ lemma add_beginning_round_constants_equiv
   [Fact P.Prime]
 :
   ((Array.ofFn fin_state).zip
-    (Array.ofFn ((Poseidon2.Folding.beginning_full_round_constants) start_round))).map (λ ⟨x1, x2⟩ => x1 + x2) =
-  Array.ofFn (Poseidon2.Folding.add_beginning_full_round_constants fin_state start_round)
+    (Array.ofFn ((Poseidon2W24S11.Folding.beginning_full_round_constants) start_round))).map (λ ⟨x1, x2⟩ => x1 + x2) =
+  Array.ofFn (Poseidon2W24S11.Folding.add_beginning_full_round_constants fin_state start_round)
 := by
   apply Array.toList_inj.mp
-  simp [Poseidon2.Folding.add_beginning_full_round_constants]
+  simp [Poseidon2W24S11.Folding.add_beginning_full_round_constants]
 
 lemma add_ending_round_constants_equiv
   (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
   ((Array.ofFn fin_state).zip
-    (Array.ofFn ((Poseidon2.Folding.ending_full_round_constants) ending_round))).map (λ ⟨x1, x2⟩ => x1 + x2) =
-  Array.ofFn (Poseidon2.Folding.add_ending_full_round_constants fin_state ending_round)
+    (Array.ofFn ((Poseidon2W24S11.Folding.ending_full_round_constants) ending_round))).map (λ ⟨x1, x2⟩ => x1 + x2) =
+  Array.ofFn (Poseidon2W24S11.Folding.add_ending_full_round_constants fin_state ending_round)
 := by
   apply Array.toList_inj.mp
-  simp [Poseidon2.Folding.add_ending_full_round_constants]
+  simp [Poseidon2W24S11.Folding.add_ending_full_round_constants]
 
 lemma apply_full_round_sbox_equiv
   (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
   Array.map (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 11⟩, full_rounds, partial_rounds⟩) (Array.ofFn fin_state) =
-  Array.ofFn (Poseidon2.Folding.apply_full_round_sbox fin_state)
+  Array.ofFn (Poseidon2W24S11.Folding.apply_full_round_sbox fin_state)
 := by
   apply Array.toList_inj.mp
-  simp [Poseidon.HashProfile.sBox, Poseidon2.Folding.apply_full_round_sbox]
+  simp [Poseidon.HashProfile.sBox, Poseidon2W24S11.Folding.apply_full_round_sbox]
 
 lemma beginning_full_round_equiv
   [Fact P.Prime]
@@ -77,7 +77,7 @@ lemma beginning_full_round_equiv
       PUnit.unit,
       ⟨
         start_round.val + 1,
-        Array.ofFn (Poseidon2.Folding.beginning_full_round fin_state start_round)
+        Array.ofFn (Poseidon2W24S11.Folding.beginning_full_round fin_state start_round)
       ⟩
     ⟩
 := by
@@ -121,7 +121,7 @@ lemma ending_full_round_equiv
       PUnit.unit,
       ⟨
         25 + ending_round.val + 1,
-        Array.ofFn (Poseidon2.Folding.ending_full_round fin_state ending_round)
+        Array.ofFn (Poseidon2W24S11.Folding.ending_full_round fin_state ending_round)
       ⟩
     ⟩
 := by

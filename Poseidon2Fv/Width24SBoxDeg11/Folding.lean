@@ -2,9 +2,9 @@ import LeanZKCircuit_Plonky3.Plonky3.Command.util
 import Poseidon2Fv.Width24SBoxDeg11.Extraction
 import Poseidon2Fv.Width24SBoxDeg11.Tactics
 
-open Plonky3 Poseidon2.Extraction
+open Plonky3 Poseidon2W24S11.Extraction
 
-namespace Poseidon2.Folding
+namespace Poseidon2W24S11.Folding
 
 def eval_sbox_11_2_r1 [Field F] (x3 x : F) : Prop :=
   x3 - ((x * x) * x) = 0
@@ -545,4 +545,4 @@ def permutation [Field F] (input : Fin 24 → F) :=
     ) 2
   ) 3
 
-end Poseidon2.Folding
+end Poseidon2W24S11.Folding
