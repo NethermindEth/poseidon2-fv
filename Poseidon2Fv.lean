@@ -1,3 +1,22 @@
+-- Width 16, with SBox Degree 7
+import Poseidon2Fv.Width16SBoxDeg7.Extraction
+
+import Poseidon2Fv.Width16SBoxDeg7.Tactics
+
+import Poseidon2Fv.Width16SBoxDeg7.Folding
+import Poseidon2Fv.Width16SBoxDeg7.Field
+
+import Poseidon2Fv.Width16SBoxDeg7.BeginningFullRounds
+import Poseidon2Fv.Width16SBoxDeg7.PartialRounds
+import Poseidon2Fv.Width16SBoxDeg7.EndingFullRounds
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.ExternalLinearLayer
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.InternalLinearLayer
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.Permutation
+import Poseidon2Fv.Width16SBoxDeg7.EquivalenceWithSpec
+
+-- Width 24, with SBox Degree 11
 import Poseidon2Fv.Width24SBoxDeg11.Extraction
 
 import Poseidon2Fv.Width24SBoxDeg11.Tactics
