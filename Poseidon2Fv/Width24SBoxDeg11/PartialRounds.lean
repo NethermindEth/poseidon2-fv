@@ -3,6 +3,7 @@ import Poseidon2Fv.Width24SBoxDeg11.BeginningFullRounds
 open Plonky3
 open Poseidon2W24S11.Extraction
 open Poseidon2W24S11.Folding
+open Poseidon2W24S11.Tactics
 
 def state26
   [Field F] [Field ExtF] [Circuit F ExtF C]

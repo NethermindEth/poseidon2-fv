@@ -3,6 +3,7 @@ import Poseidon2Fv.Width24SBoxDeg11.PartialRounds
 open Plonky3
 open Poseidon2W24S11.Extraction
 open Poseidon2W24S11.Folding
+open Poseidon2W24S11.Tactics
 
 #define_opaque_state 152 4467 8
 

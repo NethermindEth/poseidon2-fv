@@ -4,6 +4,8 @@ import LeanZKCircuit_Plonky3.Plonky3.Command.util
 
 open Plonky3
 
+namespace Poseidon2W16S7.Tactics
+
 def define_opaque_state
   (idx: ℕ) (expression : ℕ) (step: ℕ) (log: Bool := false)
 : Lean.Elab.Command.CommandElabM Unit := do
@@ -784,3 +786,5 @@ elab "#prove_ending_full_round" round:num : command => do
 
 elab "#prove_ending_full_round?" round:num : command => do
   prove_full_round round.getNat (round.getNat*6 + 91) 2137 171 154 "ending" true
+
+end Poseidon2W16S7.Tactics

@@ -3,6 +3,7 @@ import Poseidon2Fv.Width24SBoxDeg11.Folding
 open Plonky3
 open Poseidon2W24S11.Extraction
 open Poseidon2W24S11.Folding
+open Poseidon2W24S11.Tactics
 
 -- Offsets will need to change
 -- Start state
