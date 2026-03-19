@@ -1,7 +1,7 @@
-import Poseidon2Fv.Field
-import Poseidon2Fv.Equivalence.FullRound
-import Poseidon2Fv.Equivalence.PartialRound
-import Poseidon2Fv.EndingFullRounds
+import Poseidon2Fv.Width16SBoxDeg7.Field
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
+import Poseidon2Fv.Width16SBoxDeg7.EndingFullRounds
 
 lemma run_rounds_equiv
   (fin_state : Fin 16 → (ZMod P))

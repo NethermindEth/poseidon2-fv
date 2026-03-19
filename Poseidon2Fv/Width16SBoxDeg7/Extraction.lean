@@ -1,6 +1,6 @@
 import LeanZKCircuit_Plonky3.Plonky3.Circuit
 
-import Poseidon2Fv.Attributes
+import Poseidon2Fv.Width16SBoxDeg7.Attributes
 
 open Plonky3
 

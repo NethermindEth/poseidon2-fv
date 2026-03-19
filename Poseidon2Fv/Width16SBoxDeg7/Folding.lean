@@ -1,6 +1,6 @@
 import LeanZKCircuit_Plonky3.Plonky3.Command.util
-import Poseidon2Fv.Extraction
-import Poseidon2Fv.Tactics
+import Poseidon2Fv.Width16SBoxDeg7.Extraction
+import Poseidon2Fv.Width16SBoxDeg7.Tactics
 
 open Plonky3 Poseidon2.Extraction
 

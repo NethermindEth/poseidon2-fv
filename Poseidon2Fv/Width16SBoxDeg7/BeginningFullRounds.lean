@@ -1,4 +1,4 @@
-import Poseidon2Fv.Folding
+import Poseidon2Fv.Width16SBoxDeg7.Folding
 
 open Plonky3
 open Poseidon2.Extraction

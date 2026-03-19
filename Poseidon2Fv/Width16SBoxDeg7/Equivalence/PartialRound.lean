@@ -1,4 +1,4 @@
-import Poseidon2Fv.Equivalence.InternalLinearLayer
+import Poseidon2Fv.Width16SBoxDeg7.Equivalence.InternalLinearLayer
 
 lemma add_partial_round_constants_equiv
   (fin_state : Fin 16 → ZMod P)

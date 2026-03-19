@@ -1,4 +1,4 @@
-import Poseidon2Fv.Folding
+import Poseidon2Fv.Width16SBoxDeg7.Folding
 import Poseidon.Hash
 import Poseidon.Parameters.BabyBear
 import LSpec
