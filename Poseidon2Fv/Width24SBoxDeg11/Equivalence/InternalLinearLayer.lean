@@ -1,7 +1,7 @@
 import Mathlib
 
 import Poseidon.Hash
-import Poseidon2Fv.Folding
+import Poseidon2Fv.Width24SBoxDeg11.Folding
 
 def internalMatrixDiag (profile: Poseidon.HashProfile) [Fact profile.p.Prime] : Array (ZMod profile.p) := #[
   0-2,

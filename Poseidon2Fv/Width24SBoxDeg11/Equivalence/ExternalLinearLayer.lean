@@ -1,7 +1,7 @@
 import Mathlib
 
 import Poseidon.Hash
-import Poseidon2Fv.Folding
+import Poseidon2Fv.Width24SBoxDeg11.Folding
 
 lemma smallMatrixAction_size
   (slice : Array (ZMod P))

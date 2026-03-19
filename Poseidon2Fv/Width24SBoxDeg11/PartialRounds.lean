@@ -1,4 +1,4 @@
-import Poseidon2Fv.BeginningFullRounds
+import Poseidon2Fv.Width24SBoxDeg11.BeginningFullRounds
 
 open Plonky3
 open Poseidon2.Extraction

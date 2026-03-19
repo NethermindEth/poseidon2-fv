@@ -1,16 +1,16 @@
-import Poseidon2Fv.Extraction
+import Poseidon2Fv.Width24SBoxDeg11.Extraction
 
-import Poseidon2Fv.Tactics
+import Poseidon2Fv.Width24SBoxDeg11.Tactics
 
-import Poseidon2Fv.Folding
-import Poseidon2Fv.Field
+import Poseidon2Fv.Width24SBoxDeg11.Folding
+import Poseidon2Fv.Width24SBoxDeg11.Field
 
-import Poseidon2Fv.BeginningFullRounds
-import Poseidon2Fv.PartialRounds
-import Poseidon2Fv.EndingFullRounds
-import Poseidon2Fv.Equivalence.ExternalLinearLayer
-import Poseidon2Fv.Equivalence.InternalLinearLayer
-import Poseidon2Fv.Equivalence.FullRound
-import Poseidon2Fv.Equivalence.PartialRound
-import Poseidon2Fv.Equivalence.Permutation
-import Poseidon2Fv.EquivalenceWithSpec
+import Poseidon2Fv.Width24SBoxDeg11.BeginningFullRounds
+import Poseidon2Fv.Width24SBoxDeg11.PartialRounds
+import Poseidon2Fv.Width24SBoxDeg11.EndingFullRounds
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.ExternalLinearLayer
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.InternalLinearLayer
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.FullRound
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.PartialRound
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.Permutation
+import Poseidon2Fv.Width24SBoxDeg11.EquivalenceWithSpec
