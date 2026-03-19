@@ -45,7 +45,7 @@ section external_linear_layer_zero
     fin_cases x
     all_goals (
       simp [
-        Poseidon2_expressions,
+        Poseidon2_W24S11_expressions,
         state0, apply_m4_sums, apply_m4_loop, apply_m4
       ]
       congr
@@ -94,8 +94,8 @@ def state3'
 
 section sbox_zero_internal
 
-  #tag_simp_range "e" 1442 24 8 "Poseidon2_expressions"
-  #tag_simp_range "e" 1443 24 8 "Poseidon2_expressions"
+  #tag_simp_range "e" 1442 24 8 "Poseidon2_W24S11_expressions"
+  #tag_simp_range "e" 1443 24 8 "Poseidon2_W24S11_expressions"
 
   lemma state3_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -107,7 +107,7 @@ section sbox_zero_internal
     funext x
     fin_cases x <;> (
       simp [
-        Poseidon2_expressions,
+        Poseidon2_W24S11_expressions,
         pow_three'
       ]
     )
@@ -138,10 +138,10 @@ def state5'
 
 section sbox_zero_external
 
-  #tag_simp_range "constraint_equiv_" 0 48 1 "Poseidon2_constraints"
-  -- #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
+  #tag_simp_range "constraint_equiv_" 0 48 1 "Poseidon2_W24S11_constraints"
+  -- #tag_simp_range "e" 20 16 1 "Poseidon2_W24S11_expressions"
+  -- #tag_simp_range "e" 677 16 6 "Poseidon2_W24S11_expressions"
+  -- #tag_simp_range "e" 678 16 6 "Poseidon2_W24S11_expressions"
 
   lemma state5_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -155,7 +155,7 @@ section sbox_zero_external
     have hExp11 (x : F) : (x * x * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
     simp [
       beginning_full_round_0_sbox_constraints,
-      Poseidon2_constraints,
+      Poseidon2_W24S11_constraints,
       eval_sbox_11_2_r1,
       eval_sbox_11_2_r2,
       beginning_full_rounds,
@@ -198,7 +198,7 @@ section external_linear_layer_one
     fin_cases x
     all_goals (
       simp [
-        -- Poseidon2_expressions,
+        -- Poseidon2_W24S11_expressions,
         state5, apply_m4_sums, apply_m4_loop, apply_m4
       ]
       congr
@@ -218,9 +218,9 @@ def state7'
 
 section full_round_0_post
 
-  #tag_simp_range "constraint_" 48 24 1 "Poseidon2_constraints"
-  #tag_simp_range "e" 1743 24 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
+  #tag_simp_range "constraint_" 48 24 1 "Poseidon2_W24S11_constraints"
+  #tag_simp_range "e" 1743 24 1 "Poseidon2_W24S11_expressions"
+  -- #tag_simp_range "e" 841 16 1 "Poseidon2_W24S11_expressions"
   -- attribute [local simp]
   --   eval_sbox_7_1
   --   beginning_full_rounds
@@ -240,8 +240,8 @@ section full_round_0_post
     funext x
     simp [
       beginning_full_round_0_post_constraints,
-      Poseidon2_constraints,
-      Poseidon2_expressions,
+      Poseidon2_W24S11_constraints,
+      Poseidon2_W24S11_expressions,
       sub_eq_zero
     ] at h
     simp [h]
@@ -332,8 +332,8 @@ lemma beginning_full_round_0
 
 -- section sbox_zero_internal
 
---   #tag_simp_range "e" 1768 24 8 "Poseidon2_expressions"
---   #tag_simp_range "e" 1769 24 8 "Poseidon2_expressions"
+--   #tag_simp_range "e" 1768 24 8 "Poseidon2_W24S11_expressions"
+--   #tag_simp_range "e" 1769 24 8 "Poseidon2_W24S11_expressions"
 
 --   lemma state9_equiv
 --     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -345,7 +345,7 @@ lemma beginning_full_round_0
 --     funext x
 --     fin_cases x <;> (
 --       simp [
---         Poseidon2_expressions,
+--         Poseidon2_W24S11_expressions,
 --         pow_three'
 --       ]
 --     )
@@ -375,10 +375,10 @@ lemma beginning_full_round_0
 
 -- section sbox_zero_external
 
---   #tag_simp_range "constraint_equiv_" 72 48 1 "Poseidon2_constraints"
---   -- #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
---   -- #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
---   -- #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
+--   #tag_simp_range "constraint_equiv_" 72 48 1 "Poseidon2_W24S11_constraints"
+--   -- #tag_simp_range "e" 20 16 1 "Poseidon2_W24S11_expressions"
+--   -- #tag_simp_range "e" 677 16 6 "Poseidon2_W24S11_expressions"
+--   -- #tag_simp_range "e" 678 16 6 "Poseidon2_W24S11_expressions"
 
 --   lemma state11_equiv
 --     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -392,7 +392,7 @@ lemma beginning_full_round_0
 --     have hExp11 (x : F) : ((x * x) * x) * ((x * x) * x) * ((x * x) * x) * (x * x) = x ^ 11 := by ring
 --     simp [
 --       beginning_full_round_1_sbox_constraints,
---       Poseidon2_constraints,
+--       Poseidon2_W24S11_constraints,
 --       eval_sbox_11_2_r1,
 --       eval_sbox_11_2_r2,
 --       beginning_full_rounds,
@@ -437,7 +437,7 @@ lemma beginning_full_round_0
 --     fin_cases x
 --     all_goals (
 --       simp [
---         -- Poseidon2_expressions,
+--         -- Poseidon2_W24S11_expressions,
 --         state11, apply_m4_sums, apply_m4_loop, apply_m4
 --       ]
 --       congr
@@ -457,9 +457,9 @@ lemma beginning_full_round_0
 
 -- section full_round_0_post
 
---   #tag_simp_range "constraint_" 120 24 1 "Poseidon2_constraints"
---   #tag_simp_range "e" 2069 24 1 "Poseidon2_expressions"
---   -- #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
+--   #tag_simp_range "constraint_" 120 24 1 "Poseidon2_W24S11_constraints"
+--   #tag_simp_range "e" 2069 24 1 "Poseidon2_W24S11_expressions"
+--   -- #tag_simp_range "e" 841 16 1 "Poseidon2_W24S11_expressions"
 --   -- attribute [local simp]
 --   --   eval_sbox_7_1
 --   --   beginning_full_rounds
@@ -480,8 +480,8 @@ lemma beginning_full_round_0
 --     funext x
 --     simp [
 --       beginning_full_round_1_post_constraints,
---       Poseidon2_constraints,
---       Poseidon2_expressions,
+--       Poseidon2_W24S11_constraints,
+--       Poseidon2_W24S11_expressions,
 --       sub_eq_zero
 --     ] at h
 --     simp [h]

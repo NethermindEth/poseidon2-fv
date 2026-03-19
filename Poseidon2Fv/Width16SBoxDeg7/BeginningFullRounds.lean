@@ -44,7 +44,7 @@ section external_linear_layer_zero
     fin_cases x
     all_goals (
       simp [
-        Poseidon2_expressions,
+        Poseidon2_W16S7_expressions,
         state0, apply_m4_sums, apply_m4_loop, apply_m4
       ]
       congr
@@ -81,8 +81,8 @@ def state3'
 
 section sbox_zero_internal
 
-  #tag_simp_range "e" 674 16 6 "Poseidon2_expressions"
-  #tag_simp_range "e" 675 16 6 "Poseidon2_expressions"
+  #tag_simp_range "e" 674 16 6 "Poseidon2_W16S7_expressions"
+  #tag_simp_range "e" 675 16 6 "Poseidon2_W16S7_expressions"
 
   lemma state3_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -94,7 +94,7 @@ section sbox_zero_internal
     funext x
     fin_cases x <;> (
       simp [
-        Poseidon2_expressions,
+        Poseidon2_W16S7_expressions,
         pow_three'
       ]
     )
@@ -126,10 +126,10 @@ def state5'
 
 section sbox_zero_external
 
-  -- #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_constraints"
-  -- #tag_simp_range "e" 20 16 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 677 16 6 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 678 16 6 "Poseidon2_expressions"
+  -- #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_W16S7_constraints"
+  -- #tag_simp_range "e" 20 16 1 "Poseidon2_W16S7_expressions"
+  -- #tag_simp_range "e" 677 16 6 "Poseidon2_W16S7_expressions"
+  -- #tag_simp_range "e" 678 16 6 "Poseidon2_W16S7_expressions"
 
   lemma state5_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -196,7 +196,7 @@ section external_linear_layer_one
     fin_cases x
     all_goals (
       simp [
-        -- Poseidon2_expressions,
+        -- Poseidon2_W16S7_expressions,
         state5, apply_m4_sums, apply_m4_loop, apply_m4
       ]
       congr
@@ -216,9 +216,9 @@ def state7'
 
 section full_round_0_post
 
-  -- #tag_simp_range "constraint_" 16 16 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 36 16 1 "Poseidon2_expressions"
-  -- #tag_simp_range "e" 841 16 1 "Poseidon2_expressions"
+  -- #tag_simp_range "constraint_" 16 16 1 "Poseidon2_W16S7_expressions"
+  -- #tag_simp_range "e" 36 16 1 "Poseidon2_W16S7_expressions"
+  -- #tag_simp_range "e" 841 16 1 "Poseidon2_W16S7_expressions"
   -- attribute [local simp]
   --   eval_sbox_7_1
   --   beginning_full_rounds
