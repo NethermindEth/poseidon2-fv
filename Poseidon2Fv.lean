@@ -1,10 +1,11 @@
+import Poseidon2Fv.Field
+
 -- Width 16, with SBox Degree 7
 import Poseidon2Fv.Width16SBoxDeg7.Extraction
 
 import Poseidon2Fv.Width16SBoxDeg7.Tactics
 
 import Poseidon2Fv.Width16SBoxDeg7.Folding
-import Poseidon2Fv.Width16SBoxDeg7.Field
 
 import Poseidon2Fv.Width16SBoxDeg7.BeginningFullRounds
 import Poseidon2Fv.Width16SBoxDeg7.PartialRounds
@@ -22,7 +23,6 @@ import Poseidon2Fv.Width24SBoxDeg11.Extraction
 import Poseidon2Fv.Width24SBoxDeg11.Tactics
 
 import Poseidon2Fv.Width24SBoxDeg11.Folding
-import Poseidon2Fv.Width24SBoxDeg11.Field
 
 import Poseidon2Fv.Width24SBoxDeg11.BeginningFullRounds
 import Poseidon2Fv.Width24SBoxDeg11.PartialRounds

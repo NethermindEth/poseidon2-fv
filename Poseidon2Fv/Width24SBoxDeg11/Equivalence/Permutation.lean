@@ -1,7 +1,9 @@
-import Poseidon2Fv.Width24SBoxDeg11.Field
+import Poseidon2Fv.Field
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.FullRound
 import Poseidon2Fv.Width24SBoxDeg11.Equivalence.PartialRound
 import Poseidon2Fv.Width24SBoxDeg11.EndingFullRounds
+
+open Field
 
 lemma run_rounds_equiv
   (fin_state : Fin 24 → (ZMod P))

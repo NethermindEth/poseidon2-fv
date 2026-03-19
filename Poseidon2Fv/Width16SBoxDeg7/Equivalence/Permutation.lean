@@ -1,4 +1,4 @@
-import Poseidon2Fv.Width16SBoxDeg7.Field
+import Poseidon2Fv.Field
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
 import Poseidon2Fv.Width16SBoxDeg7.EndingFullRounds
