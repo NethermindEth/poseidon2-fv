@@ -1,5 +1,9 @@
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.ExternalLinearLayer
 
+open Poseidon2W16S7.ExternalLinearLayer
+
+namespace Poseidon2W16S7.FullRound
+
 def full_round_constants [Fact P.Prime]: Array (Array (ZMod P)) :=
   Array.ofFn (λ x => Array.ofFn (Poseidon2W16S7.Folding.beginning_full_round_constants x)) ++
   Array.ofFn (λ x => Array.ofFn (Poseidon2W16S7.Folding.ending_full_round_constants x))
@@ -152,3 +156,5 @@ lemma ending_full_round_equiv
     external_linear_layer_equiv
   ]
   rfl
+
+end Poseidon2W16S7.FullRound

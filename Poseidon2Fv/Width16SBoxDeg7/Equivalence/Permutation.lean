@@ -3,6 +3,15 @@ import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
 import Poseidon2Fv.Width16SBoxDeg7.EndingFullRounds
 
+open Poseidon2W16S7.BeginningFullRounds
+open Poseidon2W16S7.InternalLinearLayer
+open Poseidon2W16S7.PartialRound
+open Poseidon2W16S7.FullRound
+open Poseidon2W16S7.EndingFullRounds
+open Poseidon2W16S7.ExternalLinearLayer
+
+namespace Poseidon2W16S7.Permuation
+
 lemma run_rounds_equiv
   (fin_state : Fin 16 → (ZMod P))
   [fact_prime: Fact P.Prime]
@@ -313,3 +322,5 @@ section constraints
 
 
 end constraints
+
+end Poseidon2W16S7.Permuation

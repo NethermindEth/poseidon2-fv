@@ -5,6 +5,8 @@ open Poseidon2W16S7.Extraction
 open Poseidon2W16S7.Folding
 open Poseidon2W16S7.Tactics
 
+namespace Poseidon2W16S7.BeginningFullRounds
+
 -- Start state
 #define_opaque_state 0 4 1
 
@@ -332,3 +334,5 @@ lemma beginning_full_round_0
 #prove_beginning_full_round 1
 #prove_beginning_full_round 2
 #prove_beginning_full_round 3
+
+end Poseidon2W16S7.BeginningFullRounds

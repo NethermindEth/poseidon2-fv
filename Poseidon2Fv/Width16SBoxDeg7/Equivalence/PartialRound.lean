@@ -1,5 +1,9 @@
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.InternalLinearLayer
 
+open Poseidon2W16S7.InternalLinearLayer
+
+namespace Poseidon2W16S7.PartialRound
+
 lemma add_partial_round_constants_equiv
   (fin_state : Fin 16 → ZMod P)
   [Fact P.Prime]
@@ -64,3 +68,5 @@ lemma partial_round_equiv
     internal_linear_layer_equiv
   ]
   rfl
+
+end Poseidon2W16S7.PartialRound

@@ -1,9 +1,12 @@
 import Poseidon2Fv.Width16SBoxDeg7.BeginningFullRounds
 
 open Plonky3
+open Poseidon2W16S7.BeginningFullRounds
 open Poseidon2W16S7.Extraction
 open Poseidon2W16S7.Folding
 open Poseidon2W16S7.Tactics
+
+namespace Poseidon2W16S7.PartialRounds
 
 def state26
   [Field F] [Field ExtF] [Circuit F ExtF C]
@@ -284,3 +287,5 @@ lemma partial_round_0
 #prove_partial_round 10
 #prove_partial_round 11
 #prove_partial_round 12
+
+end Poseidon2W16S7.PartialRounds
