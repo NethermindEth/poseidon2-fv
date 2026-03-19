@@ -19,7 +19,7 @@ rev = "Dom/4.27.0"
 [[require]]
 name = "Poseidon.lean"
 git = "https://github.com/NethermindEth/Poseidon.lean.git"
-rev = "Dan/width16"
+rev = "main"
 
 [[lean_lib]]
 name = "Poseidon2Fv"
