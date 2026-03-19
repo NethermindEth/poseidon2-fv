@@ -1,4 +1,4 @@
-import Poseidon2Fv.Equivalence.ExternalLinearLayer
+import Poseidon2Fv.Width24SBoxDeg11.Equivalence.ExternalLinearLayer
 
 def full_round_constants [Fact P.Prime]: Array (Array (ZMod P)) :=
   Array.ofFn (λ x => Array.ofFn (Poseidon2.Folding.beginning_full_round_constants x)) ++
@@ -25,7 +25,7 @@ lemma get_ending_full_round_constants
 lemma getFullRound_ending_round
   (ending_round: Fin 4)
 :
-  Poseidon2.getFullRound (17 + ending_round.val) ⟨profile, 8, 13⟩ =
+  Poseidon2.getFullRound (25 + ending_round.val) ⟨profile, 8, 21⟩ =
   4 + ending_round.val
 := by
   simp [
@@ -34,7 +34,7 @@ lemma getFullRound_ending_round
   fin_cases ending_round <;> simp
 
 lemma add_beginning_round_constants_equiv
-  (fin_state : Fin 16 → ZMod P)
+  (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
   ((Array.ofFn fin_state).zip
@@ -45,7 +45,7 @@ lemma add_beginning_round_constants_equiv
   simp [Poseidon2.Folding.add_beginning_full_round_constants]
 
 lemma add_ending_round_constants_equiv
-  (fin_state : Fin 16 → ZMod P)
+  (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
   ((Array.ofFn fin_state).zip
@@ -56,10 +56,10 @@ lemma add_ending_round_constants_equiv
   simp [Poseidon2.Folding.add_ending_full_round_constants]
 
 lemma apply_full_round_sbox_equiv
-  (fin_state : Fin 16 → ZMod P)
+  (fin_state : Fin 24 → ZMod P)
   [Fact P.Prime]
 :
-  Array.map (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 7⟩, full_rounds, partial_rounds⟩) (Array.ofFn fin_state) =
+  Array.map (Poseidon.HashProfile.sBox ⟨⟨a, b, P, 11⟩, full_rounds, partial_rounds⟩) (Array.ofFn fin_state) =
   Array.ofFn (Poseidon2.Folding.apply_full_round_sbox fin_state)
 := by
   apply Array.toList_inj.mp
@@ -69,7 +69,7 @@ lemma beginning_full_round_equiv
   [Fact P.Prime]
 :
   Poseidon2.fullRound
-    ⟨⟨p1, p2, P, 7⟩, 8, 13⟩
+    ⟨⟨p1, p2, P, 11⟩, 8, 21⟩
     ⟨diag, full_round_constants, partial_round_constants⟩
     ⟨start_round.val, Array.ofFn fin_state⟩
   =
@@ -113,14 +113,14 @@ lemma ending_full_round_equiv
   [Fact P.Prime]
 :
   Poseidon2.fullRound
-    ⟨⟨p1, p2, P, 7⟩, 8, 13⟩
+    ⟨⟨p1, p2, P, 11⟩, 8, 21⟩
     ⟨diag, full_round_constants, partial_round_constants⟩
-    ⟨17 + ending_round.val, Array.ofFn fin_state⟩
+    ⟨25 + ending_round.val, Array.ofFn fin_state⟩
   =
     ⟨
       PUnit.unit,
       ⟨
-        17 + ending_round.val + 1,
+        25 + ending_round.val + 1,
         Array.ofFn (Poseidon2.Folding.ending_full_round fin_state ending_round)
       ⟩
     ⟩

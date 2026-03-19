@@ -1,4 +1,4 @@
-import Poseidon2Fv.BeginningFullRounds
+import Poseidon2Fv.Width24SBoxDeg11.BeginningFullRounds
 
 open Plonky3
 open Poseidon2.Extraction
@@ -7,15 +7,15 @@ open Poseidon2.Folding
 def state26
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => match x with
-    | 0 => e1409 c row
+    | 0 => e2745 c row
     | x => state25 c row x
 
 def state26'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   add_partial_round_constant (state25 c row) 0
 
 lemma state26_equiv
@@ -31,7 +31,7 @@ lemma state26_equiv
   . rewrite [state25_equiv c row h]
     simp [
       add_partial_round_constant, partial_round_constants,
-      e1409, state25', e132
+      e2745, state25', e292
     ]
   all_goals {
     simp [
@@ -42,15 +42,15 @@ lemma state26_equiv
 def state27
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => match x with
-    | 0 => e1411 c row
+    | 0 => e2747 c row
     | x => state26 c row x
 
 def state27'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F
+: Fin 24 → F
   | 0 => (state26 c row 0) ^ 3
   | x => state26 c row x
 
@@ -64,50 +64,40 @@ lemma state27_equiv
   funext x
   fin_cases x
   . simp [
-      e1411, e1410, state26,
+      e2747, e2746, state26,
       pow_three'
     ]
-  all_goals simp
+  all_goals rfl
 
-lemma constraint_equiv_128
+lemma constraint_equiv_288
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 :
-  constraint_128 c row =
-  eval_sbox_7_1
-    ((partial_rounds c row 0).sbox)
+  constraint_288 c row =
+  eval_sbox_11_2_r1
+    ((partial_rounds c row 0).sbox_r1)
     (state26 c row 0)
-:= by
-  simp [
-    constraint_128,
-    eval_sbox_7_1,
-    partial_rounds,
-    state26,
-    sub_eq_zero,
-    e1412,
-    e148,
-    e1411, e1410
-  ]
+:= rfl
 
 def state28
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => match x with
-    | 0 => e1414 c row
+    | 0 => e2750 c row
     | x => state26 c row x
 
 def state28'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F
-  | 0 => (state26 c row 0) ^ 7
+: Fin 24 → F
+  | 0 => (state26 c row 0) ^ 9
   | x => state26 c row x
 
 lemma state28_equiv
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-  (h : constraint_128 c row)
+  (h : constraint_288 c row)
 :
   state28 c row = state28' c row
 := by
@@ -115,54 +105,50 @@ lemma state28_equiv
   funext x
   fin_cases x
   . simp [
-      constraint_equiv_128 c row,
-      eval_sbox_7_1,
+      constraint_equiv_288 c row,
+      eval_sbox_11_2_r1,
       partial_rounds, state26,
       sub_eq_zero
     ] at h
     simp [
-      e1414, state26,
-      e1413,
-      e148,
+      e2750, e2749,
+      e316,
+      state26,
       h
     ]
-    grind
-  all_goals simp
+    ring
+  all_goals rfl
 
-lemma constraint_equiv_129
+lemma constraint_equiv_289
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
 :
-  constraint_129 c row =
-  (state28 c row 0 = (partial_rounds c row 0).post_sbox)
-:= by
-  simp [
-    constraint_129,
-    e1415,
-    sub_eq_zero,
-    state28,
-    partial_rounds,
-    e149
-  ]
+  constraint_289 c row =
+  eval_sbox_11_2_r2
+    ((partial_rounds c row 0).sbox_r2)
+    ((partial_rounds c row 0).sbox_r1)
+:= rfl
 
 def state29
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
+: Fin 24 → F :=
   λ x => match x with
-    | 0 => e149 c row
-    | x => state28 c row x
+    | 0 => e2752 c row
+    | x => state26 c row x
 
 def state29'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
-  state28 c row
+: Fin 24 → F
+  | 0 => (state26 c row 0) ^ 11
+  | x => state26 c row x
 
 lemma state29_equiv
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-  (h : constraint_129 c row)
+  (h1 : constraint_288 c row)
+  (h2 : constraint_289 c row)
 :
   state29 c row = state29' c row
 := by
@@ -170,21 +156,83 @@ lemma state29_equiv
   funext x
   fin_cases x
   . simp [
-      constraint_equiv_129,
-      partial_rounds
-    ] at h
-    simp [e149, h]
-  all_goals simp
+      constraint_equiv_288 c row,
+      eval_sbox_11_2_r1,
+      partial_rounds,
+      sub_eq_zero
+    ] at h1
+    simp [
+      constraint_equiv_289 c row,
+      eval_sbox_11_2_r2,
+      partial_rounds,
+      sub_eq_zero
+    ] at h2
+    simp [
+      state26,
+      e2752,
+      e2746,
+      e317,
+      h1, h2
+    ]
+    ring
+  all_goals rfl
 
-#define_internal_matrix_state 30 1465 0
+lemma constraint_equiv_290
+  [Field F] [Field ExtF] [Circuit F ExtF C]
+  (c : C F ExtF) (row: ℕ)
+:
+  constraint_290 c row =
+  (state29 c row 0 = (partial_rounds c row 0).post_sbox)
+:= by
+  simp [
+    constraint_290,
+    e2753,
+    sub_eq_zero,
+    state29,
+    partial_rounds,
+    e318
+  ]
+
+def state30
+  [Field F] [Field ExtF] [Circuit F ExtF C]
+  (c : C F ExtF) (row : ℕ)
+: Fin 24 → F :=
+  λ x => match x with
+    | 0 => e318 c row
+    | x => state29 c row x
 
 def state30'
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
-: Fin 16 → F :=
-  generic_internal_linear_layer (state29 c row)
+: Fin 24 → F :=
+  state29 c row
 
 lemma state30_equiv
+  [Field F] [Field ExtF] [Circuit F ExtF C]
+  (c : C F ExtF) (row: ℕ)
+  (h : constraint_290 c row)
+:
+  state30 c row = state30' c row
+:= by
+  unfold state30 state30'
+  funext x
+  fin_cases x
+  . simp [
+      constraint_equiv_290,
+      partial_rounds
+    ] at h
+    simp [e318, h]
+  all_goals rfl
+
+#define_internal_matrix_state 31 2827 0
+
+def state31'
+  [Field F] [Field ExtF] [Circuit F ExtF C]
+  (c : C F ExtF) (row : ℕ)
+: Fin 24 → F :=
+  generic_internal_linear_layer (state30 c row)
+
+lemma state31_equiv
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row : ℕ)
   (h: beginning_full_round_3_post_constraints c row)
@@ -192,62 +240,54 @@ lemma state30_equiv
   (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)
   (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)
   (h_div_pow_4 : ∀ x: F, x * 1887436801 = x / 2 ^ 4)
+  (h_div_pow_5 : ∀ x: F, x * 1950351361 = x / 2 ^ 5)
+  (h_div_pow_6 : ∀ x: F, x * 1981808641 = x / 2 ^ 6)
+  (h_div_pow_7 : ∀ x: F, x * 1997537281 = x / 2 ^ 7)
   (h_div_pow_8 : ∀ x: F, x * 2005401601 = x / 2 ^ 8)
+  (h_div_pow_9 : ∀ x: F, x * 2009333761 = x / 2 ^ 9)
   (h_div_pow_27 : ∀ x: F, x * 2013265906 = x / 2 ^ 27)
 :
-  state30 c row = state30' c row
+  state31 c row = state31' c row
 := by
-  unfold state30 state30'
+  unfold state31 state31'
   funext x
   fin_cases x
-  all_goals (
-    simp [
-      generic_internal_linear_layer,
-      internal_layer_mat_mul,
-      state29,
-      state28,
-      state26,
-      state25_equiv c row h,
-      state25',
-      ←h_halve,
-      ←h_div_pow_2,
-      ←h_div_pow_3,
-      ←h_div_pow_4,
-      ←h_div_pow_8,
-      ←h_div_pow_27,
-    ]
-  )
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
-  . congr
+  all_goals simp [
+    generic_internal_linear_layer,
+    state30, state29, state26, state25_equiv c row h, state25',
+    internal_layer_mat_mul,
+    ←h_halve,
+    ←h_div_pow_2,
+    ←h_div_pow_3,
+    ←h_div_pow_4,
+    ←h_div_pow_5,
+    ←h_div_pow_6,
+    ←h_div_pow_7,
+    ←h_div_pow_8,
+    ←h_div_pow_9,
+    ←h_div_pow_27,
+  ]
+  all_goals rfl
 
 lemma partial_round_0
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)
-  (h128: constraint_128 c row)
-  (h129: constraint_129 c row)
+  (h288: constraint_288 c row)
+  (h289: constraint_289 c row)
+  (h290: constraint_290 c row)
   (h_round_3: beginning_full_round_3_constraints c row)
   (h_halve : ∀ x: F, x * 1006632961 = x / 2)
   (h_div_pow_2 : ∀ x: F, x * 1509949441 = x / 2 ^ 2)
   (h_div_pow_3 : ∀ x: F, x * 1761607681 = x / 2 ^ 3)
   (h_div_pow_4 : ∀ x: F, x * 1887436801 = x / 2 ^ 4)
+  (h_div_pow_5 : ∀ x: F, x * 1950351361 = x / 2 ^ 5)
+  (h_div_pow_6 : ∀ x: F, x * 1981808641 = x / 2 ^ 6)
+  (h_div_pow_7 : ∀ x: F, x * 1997537281 = x / 2 ^ 7)
   (h_div_pow_8 : ∀ x: F, x * 2005401601 = x / 2 ^ 8)
+  (h_div_pow_9 : ∀ x: F, x * 2009333761 = x / 2 ^ 9)
   (h_div_pow_27 : ∀ x: F, x * 2013265906 = x / 2 ^ 27)
 :
-  state30 c row =
+  state31 c row =
   partial_round (
     (beginning_full_rounds c row 3).post
   ) 0
@@ -255,15 +295,15 @@ lemma partial_round_0
 
   have ⟨h_sbox3, h_post3⟩ := h_round_3
   rewrite [
-    state30_equiv c row h_post3 h_halve h_div_pow_2 h_div_pow_3 h_div_pow_4 h_div_pow_8 h_div_pow_27
+    state31_equiv c row h_post3 h_halve h_div_pow_2 h_div_pow_3 h_div_pow_4 h_div_pow_5 h_div_pow_6 h_div_pow_7 h_div_pow_8 h_div_pow_9 h_div_pow_27
   ]
-  unfold state30' partial_round
+  unfold state31' partial_round
 
-  rewrite [state29_equiv c row h129]
+  rewrite [state30_equiv c row h290]
+  unfold state30'
+
+  rewrite [state29_equiv c row h288 h289]
   unfold state29'
-
-  rewrite [state28_equiv c row h128]
-  unfold state28'
 
   rewrite [state26_equiv c row h_post3]
   unfold state26'
@@ -283,3 +323,11 @@ lemma partial_round_0
 #prove_partial_round 10
 #prove_partial_round 11
 #prove_partial_round 12
+#prove_partial_round 13
+#prove_partial_round 14
+#prove_partial_round 15
+#prove_partial_round 16
+#prove_partial_round 17
+#prove_partial_round 18
+#prove_partial_round 19
+#prove_partial_round 20

@@ -1,7 +1,7 @@
 import Mathlib
 
 import Poseidon.Hash
-import Poseidon2Fv.Folding
+import Poseidon2Fv.Width24SBoxDeg11.Folding
 
 def internalMatrixDiag (profile: Poseidon.HashProfile) [Fact profile.p.Prime] : Array (ZMod profile.p) := #[
   0-2,
@@ -16,9 +16,17 @@ def internalMatrixDiag (profile: Poseidon.HashProfile) [Fact profile.p.Prime] : 
   ((1: ZMod profile.p) / 256),
   ((1: ZMod profile.p) / 4),
   ((1: ZMod profile.p) / 8),
+  ((1: ZMod profile.p) / 16),
+  ((1: ZMod profile.p) / 128),
+  ((1: ZMod profile.p) / 512),
   ((1: ZMod profile.p) / 134217728),
   0-((1: ZMod profile.p) / 256),
+  0-((1: ZMod profile.p) / 4),
+  0-((1: ZMod profile.p) / 8),
   0-((1: ZMod profile.p) / 16),
+  0-((1: ZMod profile.p) / 32),
+  0-((1: ZMod profile.p) / 64),
+  0-((1: ZMod profile.p) / 128),
   0-((1: ZMod profile.p) / 134217728),
 ]
 
@@ -70,7 +78,15 @@ lemma internal_linear_layer_equiv
     fin_state 12 +
     fin_state 13 +
     fin_state 14 +
-    fin_state 15
+    fin_state 15 +
+    fin_state 16 +
+    fin_state 17 +
+    fin_state 18 +
+    fin_state 19 +
+    fin_state 20 +
+    fin_state 21 +
+    fin_state 22 +
+    fin_state 23
   := by
     unfold sum
     rewrite [
@@ -90,8 +106,19 @@ lemma internal_linear_layer_equiv
         fin_state 12,
         fin_state 13,
         fin_state 14,
-        fin_state 15
-      ] by rfl
+        fin_state 15,
+        fin_state 16,
+        fin_state 17,
+        fin_state 18,
+        fin_state 19,
+        fin_state 20,
+        fin_state 21,
+        fin_state 22,
+        fin_state 23
+      ] by {
+        apply Array.toList_inj.mp
+        simp
+      }
     ]
     simp
 
