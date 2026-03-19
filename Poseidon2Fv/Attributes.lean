@@ -1,0 +1,6 @@
+import Mathlib.Tactic.Attr.Register
+
+register_simp_attr Poseidon2_constraints
+register_simp_attr Poseidon2_expressions
+register_simp_attr Poseidon2_air_simplification
+register_simp_attr Poseidon2_constraint_and_interaction_simplification
