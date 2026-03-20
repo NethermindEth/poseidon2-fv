@@ -2,6 +2,7 @@ import Poseidon2Fv.Field
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.FullRound
 import Poseidon2Fv.Width16SBoxDeg7.Equivalence.PartialRound
 import Poseidon2Fv.Width16SBoxDeg7.EndingFullRounds
+import Poseidon.Parameters.BabyBear
 
 open Poseidon2W16S7.BeginningFullRounds
 open Poseidon2W16S7.InternalLinearLayer
@@ -319,6 +320,66 @@ section constraints
     . exact h_constraints.2.2.2.2.1
     . exact h_constraints.2.2.2.2.2
 
+  -- The following lemmas double-check that the above proof `hash_equiv_of_constraints` works with the parameters defined in the Poseidon.lean repository,
+  --   which has been tested against other Poseidon 2 implementations.
+  lemma equivalentBabyBearPrime : BabyBear_Prime = Poseidon2.BabyBear16.hashProfile.p := by
+    unfold BabyBear_Prime
+    unfold Poseidon2.BabyBear16.hashProfile
+    unfold Poseidon2.BabyBear16.secProfile
+    unfold Poseidon2.BabyBear.commonProfile
+    unfold Poseidon2.BabyBear.p
+    simp
+    
+  lemma equivalentProfile : ∃ p1 p2, ⟨⟨p1, p2, Poseidon2.BabyBear16.hashProfile.p, 7⟩, 8, 13⟩ = Poseidon2.BabyBear16.hashProfile := by
+    exists 128
+    exists 16
+
+  instance : Fact BabyBear_Prime.Prime := ⟨by unfold BabyBear_Prime; norm_num⟩
+  instance : Fact Poseidon2.BabyBear16.hashProfile.p.Prime :=
+    ⟨by unfold Poseidon2.BabyBear16.hashProfile
+        unfold Poseidon2.BabyBear16.secProfile
+        unfold Poseidon2.BabyBear.commonProfile
+        unfold Poseidon2.BabyBear.p
+        simp
+        norm_num⟩
+  
+  lemma equivalentInternalMatrixDiag : ( #[0 - 2, 1, 2, 1 / 2, 3, 4, 0 - 1 / 2, 0 - 3, 0 - 4, 1 / 256, 1 / 4, 1 / 8, 1 / 134217728, 0 - 1 / 256, 0 - 1 / 16, 0 - 1 / 134217728] : Array (ZMod BabyBear_Prime))
+    = #[0x77ffffff, 0x1, 0x2, 0x3c000001, 0x3, 0x4, 0x3c000000, 0x77fffffe, 0x77fffffd, 0x77880001, 0x5a000001, 0x69000001, 0x77fffff2, 0x780000, 0x7800000, 0xf]
+      := by decide
+   
+  lemma hash_equiv_of_constraints'
+    [hInst₁ : Field ExtF] [hInst₂ : Circuit (ZMod BabyBear_Prime) ExtF C]
+    (c : C (ZMod BabyBear_Prime) ExtF) (row: ℕ)
+    (h_constraints : all_constraints c row)
+  :
+    Poseidon2.hash
+      ⟨⟨p1, p2, BabyBear_Prime, 7⟩, 8, 13⟩
+      ⟨
+        Poseidon2.BabyBear16.internalMatrixDiag,
+        Poseidon2.BabyBear16.fullRoundConstants,
+        Poseidon2.BabyBear16.partialRoundConstants⟩
+      (Array.ofFn (Poseidon2W16S7.Folding.inputs c row))
+    =
+    ⟨21, Array.ofFn (Poseidon2W16S7.Folding.ending_full_rounds c row 3).post⟩ := by
+  
+  have hEquiv := @hash_equiv_of_constraints ExtF C p1 p2 inferInstance hInst₁ hInst₂ c row h_constraints
+  simp only [Fin.isValue] at hEquiv
+  
+  have hInternalMatrixDiag : internalMatrixDiag ⟨⟨p1, p2, BabyBear_Prime, 7⟩, 8, 13⟩ = Poseidon2.BabyBear16.internalMatrixDiag := by
+    unfold Poseidon2.BabyBear16.internalMatrixDiag
+    unfold internalMatrixDiag
+    exact equivalentInternalMatrixDiag
+  rw [hInternalMatrixDiag] at hEquiv  
+  
+  have hFullRoundConstants : full_round_constants = Poseidon2.BabyBear16.fullRoundConstants := by
+    decide
+  rw [hFullRoundConstants] at hEquiv
+  
+  have hPartialRoundConstants : Array.ofFn Folding.partial_round_constants = Poseidon2.BabyBear16.partialRoundConstants := by
+    decide
+  rw [hPartialRoundConstants] at hEquiv
+  
+  exact hEquiv
 
 
 end constraints
