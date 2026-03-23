@@ -389,10 +389,7 @@ section constraints
   :
     Poseidon2.hash
       Poseidon2.BabyBear16.hashProfile
-      ⟨
-        Poseidon2.BabyBear16.internalMatrixDiag,
-        Poseidon2.BabyBear16.fullRoundConstants,
-        Poseidon2.BabyBear16.partialRoundConstants⟩
+      Poseidon2.BabyBear16.lurkContext
       (Array.ofFn (Poseidon2W16S7.Folding.inputs c row))
     =
     ⟨21, Array.ofFn (Poseidon2W16S7.Folding.ending_full_rounds c row 3).post⟩ :=

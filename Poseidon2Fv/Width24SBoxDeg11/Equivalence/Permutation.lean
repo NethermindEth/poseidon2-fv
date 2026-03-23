@@ -508,10 +508,7 @@ section constraints
   :
     Poseidon2.hash
       Poseidon2.BabyBear24.hashProfile
-      ⟨
-        Poseidon2.BabyBear24.internalMatrixDiag,
-        Poseidon2.BabyBear24.fullRoundConstants,
-        Poseidon2.BabyBear24.partialRoundConstants⟩
+      Poseidon2.BabyBear24.lurkContext
       (Array.ofFn (Poseidon2W24S11.Folding.inputs c row))
     =
     ⟨29, Array.ofFn (Poseidon2W24S11.Folding.ending_full_rounds c row 3).post⟩ :=
