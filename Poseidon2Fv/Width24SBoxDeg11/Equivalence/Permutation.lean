@@ -453,7 +453,6 @@ section constraints
     exists 128
     exists 24
 
-  instance : Fact BabyBear_Prime.Prime := ⟨by unfold BabyBear_Prime; norm_num⟩
   instance : Fact Poseidon2.BabyBear24.hashProfile.p.Prime :=
     ⟨by unfold Poseidon2.BabyBear24.hashProfile
         unfold Poseidon2.BabyBear24.secProfile
@@ -461,11 +460,11 @@ section constraints
         unfold Poseidon2.BabyBear.p
         simp
         norm_num⟩
-  
-  lemma equivalentInternalMatrixDiag : (#[0 - 2, 1, 2, 1 / 2, 3, 4, 0 - 1 / 2, 0 - 3, 0 - 4, 1 / 256, 1 / 4, 1 / 8, 1 / 16, 1 / 128, 1 / 512, 1 / 134217728, 0 - 1 / 256, 0 - 1 / 4, 0 - 1 / 8, 0 - 1 / 16, 0 - 1 / 32, 0 - 1 / 64, 0 - 1 / 128, 0 - 1 / 134217728] : Array (ZMod BabyBear_Prime)) 
+
+  lemma equivalentInternalMatrixDiag : (#[0 - 2, 1, 2, 1 / 2, 3, 4, 0 - 1 / 2, 0 - 3, 0 - 4, 1 / 256, 1 / 4, 1 / 8, 1 / 16, 1 / 128, 1 / 512, 1 / 134217728, 0 - 1 / 256, 0 - 1 / 4, 0 - 1 / 8, 0 - 1 / 16, 0 - 1 / 32, 0 - 1 / 64, 0 - 1 / 128, 0 - 1 / 134217728] : Array (ZMod BabyBear_Prime))
     = #[2013265919, 1, 2, 1006632961, 3, 4, 1006632960, 2013265918, 2013265917, 2005401601, 1509949441, 1761607681, 1887436801, 1997537281, 2009333761, 2013265906, 7864320, 503316480, 251658240, 125829120, 62914560, 31457280, 15728640, 15]
      := by decide
-  
+
   lemma hash_equiv_of_constraints'
     [hInst₁ : Field ExtF] [hInst₂ : Circuit (ZMod BabyBear_Prime) ExtF C]
     (c : C (ZMod BabyBear_Prime) ExtF) (row: ℕ)
@@ -480,26 +479,47 @@ section constraints
       (Array.ofFn (Poseidon2W24S11.Folding.inputs c row))
     =
     ⟨29, Array.ofFn (Poseidon2W24S11.Folding.ending_full_rounds c row 3).post⟩ := by
-  
+
   have hEquiv := @hash_equiv_of_constraints ExtF C p1 p2 inferInstance hInst₁ hInst₂ c row h_constraints
   simp only [Fin.isValue] at hEquiv
-  
+
   have hInternalMatrixDiag : internalMatrixDiag ⟨⟨p1, p2, BabyBear_Prime, 11⟩, 8, 21⟩ = Poseidon2.BabyBear24.internalMatrixDiag := by
     unfold Poseidon2.BabyBear24.internalMatrixDiag
     unfold internalMatrixDiag
     exact equivalentInternalMatrixDiag
-  rw [hInternalMatrixDiag] at hEquiv  
-  
+  rw [hInternalMatrixDiag] at hEquiv
+
   have hFullRoundConstants : full_round_constants = Poseidon2.BabyBear24.fullRoundConstants := by
     decide
   rw [hFullRoundConstants] at hEquiv
-  
+
   have hPartialRoundConstants : Array.ofFn Folding.partial_round_constants = Poseidon2.BabyBear24.partialRoundConstants := by
     decide
   rw [hPartialRoundConstants] at hEquiv
-  
+
   exact hEquiv
-  
+
+  instance [Field ExtF] [c: Circuit (ZMod BabyBear_Prime) ExtF C] : Circuit (ZMod Poseidon2.BabyBear24.hashProfile.p) ExtF C := by aesop
+
+  lemma hash_equiv_of_constraints''
+    [hInst₁ : Field ExtF] [hInst₂ : Circuit (ZMod BabyBear_Prime) ExtF C]
+    (c : C (ZMod BabyBear_Prime) ExtF) (row: ℕ)
+    (h_constraints : all_constraints c row)
+  :
+    Poseidon2.hash
+      Poseidon2.BabyBear24.hashProfile
+      ⟨
+        Poseidon2.BabyBear24.internalMatrixDiag,
+        Poseidon2.BabyBear24.fullRoundConstants,
+        Poseidon2.BabyBear24.partialRoundConstants⟩
+      (Array.ofFn (Poseidon2W24S11.Folding.inputs c row))
+    =
+    ⟨29, Array.ofFn (Poseidon2W24S11.Folding.ending_full_rounds c row 3).post⟩ :=
+  by
+    apply hash_equiv_of_constraints'
+    exact h_constraints
+
+
 end constraints
 
 end Poseidon2W24S11.Permuation
