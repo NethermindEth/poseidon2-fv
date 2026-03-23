@@ -129,11 +129,6 @@ def state5'
 
 section sbox_zero_external
 
-  -- #tag_simp_range "constraint_equiv_" 0 16 1 "Poseidon2_W16S7_constraints"
-  -- #tag_simp_range "e" 20 16 1 "Poseidon2_W16S7_expressions"
-  -- #tag_simp_range "e" 677 16 6 "Poseidon2_W16S7_expressions"
-  -- #tag_simp_range "e" 678 16 6 "Poseidon2_W16S7_expressions"
-
   lemma state5_equiv
     [Field F] [Field ExtF] [Circuit F ExtF C]
     (c : C F ExtF) (row: ℕ)
@@ -218,15 +213,6 @@ def state7'
 #define_constraint_group "beginning_full_round_0_post_constraints" 16 16
 
 section full_round_0_post
-
-  -- #tag_simp_range "constraint_" 16 16 1 "Poseidon2_W16S7_expressions"
-  -- #tag_simp_range "e" 36 16 1 "Poseidon2_W16S7_expressions"
-  -- #tag_simp_range "e" 841 16 1 "Poseidon2_W16S7_expressions"
-  -- attribute [local simp]
-  --   eval_sbox_7_1
-  --   beginning_full_rounds
-  --   state7
-  --   sub_eq_zero
 
   #prove_full_round_post_constraints 16 0 7 16
 

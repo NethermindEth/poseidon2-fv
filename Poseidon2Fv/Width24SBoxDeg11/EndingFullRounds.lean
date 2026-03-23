@@ -284,7 +284,6 @@ lemma ending_full_round_0 {F ExtF C}
 #prove_ending_full_round 2
 #prove_ending_full_round 3
 
--- This will need to be updated due to the change in the number of partial rounds
 lemma poseidon_permutation
   [Field F] [Field ExtF] [Circuit F ExtF C]
   (c : C F ExtF) (row: ℕ)

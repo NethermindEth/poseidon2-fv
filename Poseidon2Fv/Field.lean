@@ -92,5 +92,3 @@ lemma babybear_div_pow_27' (x: ZMod 2013265921) :
 lemma babybear_div_pow_27 (x: ZMod BabyBear_Prime) :
   x * 2013265906 = x / 2 ^ 27
 := by convert babybear_div_pow_27' x
-
--- instance [Fact BabyBear_Prime.Prime]: Field (ZMod BabyBear_Prime) := ZMod.instField BabyBear_Prime
