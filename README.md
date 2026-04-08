@@ -1,13 +1,3 @@
-# poseidon2-fv
+# Poseidon 2 Formal Verification
 
-## GitHub configuration
-
-To set up your new GitHub repository, follow these steps:
-
-* Under your repository name, click **Settings**.
-* In the **Actions** section of the sidebar, click "General".
-* Check the box **Allow GitHub Actions to create and approve pull requests**.
-* Click the **Pages** section of the settings sidebar.
-* In the **Source** dropdown menu, select "GitHub Actions".
-
-After following the steps above, you can remove this section from the README file.
+Proofs of equivalence between extracted constraints from a [Plonky3 AIR version of the Poseidon 2 permutation](https://github.com/NethermindEth/Plonky3/tree/Dom/extraction_deliverable/poseidon2-air) and an implementation of [Poseidon 2 written directly in Lean](https://github.com/NethermindEth/Poseidon.lean/). Equivalence is proved for two different sets of parameters to Poseidon 2 as indicated by the names of the subfolders of `Poseidon2Fv`.
