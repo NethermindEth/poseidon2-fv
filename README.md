@@ -1,3 +1,3 @@
 # Poseidon 2 Formal Verification
 
-Proofs of equivalence between extracted constraints from a [Plonky3 AIR version of the Poseidon 2 permutation](https://github.com/NethermindEth/Plonky3/tree/Dom/extraction_deliverable/poseidon2-air) and an implementation of [Poseidon 2 written directly in Lean](https://github.com/NethermindEth/Poseidon.lean/). Equivalence is proved for two different sets of parameters to Poseidon 2 as indicated by the names of the subfolders of `Poseidon2Fv`.
+Proofs of soundness of extracted constraints from a [Plonky3 AIR version of the Poseidon 2 permutation](https://github.com/NethermindEth/Plonky3/tree/Dom/extraction_deliverable/poseidon2-air) with respect to an implementation of [Poseidon 2 written directly in Lean](https://github.com/NethermindEth/Poseidon.lean/). Soundness is proved for two different sets of parameters to Poseidon 2 as indicated by the names of the subfolders of `Poseidon2Fv`.
